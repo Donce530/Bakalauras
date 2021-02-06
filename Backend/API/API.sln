@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API.csproj", "{7730CC21-111A-432C-9EDF-F5CA11D38D00}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users", "..\Authentication\Users.csproj", "{1A32D527-51F3-4FC3-B579-B826A29E894B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Configuration", "..\Configuration\Configuration.csproj", "{0932F9AE-0327-4DDF-BE9F-DD1684710074}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7730CC21-111A-432C-9EDF-F5CA11D38D00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7730CC21-111A-432C-9EDF-F5CA11D38D00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7730CC21-111A-432C-9EDF-F5CA11D38D00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7730CC21-111A-432C-9EDF-F5CA11D38D00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A32D527-51F3-4FC3-B579-B826A29E894B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A32D527-51F3-4FC3-B579-B826A29E894B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A32D527-51F3-4FC3-B579-B826A29E894B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A32D527-51F3-4FC3-B579-B826A29E894B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0932F9AE-0327-4DDF-BE9F-DD1684710074}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0932F9AE-0327-4DDF-BE9F-DD1684710074}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0932F9AE-0327-4DDF-BE9F-DD1684710074}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0932F9AE-0327-4DDF-BE9F-DD1684710074}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8F91DE39-D975-476E-B53B-7EB4771D96BC}
+	EndGlobalSection
+EndGlobal
