@@ -1,0 +1,10 @@
+:host() {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+:host ::ng-deep .p-card-footer {
+    padding-top: 0;
+}

@@ -39,7 +39,10 @@ namespace Users.Services
             var user = _users.SingleOrDefault(x => x.Username == model.Username && x.Password == model.Password);
 
             // return null if user not found
-            if (user == null) return null;
+            if (user is null)
+            {
+                return null;
+            }
 
             // authentication successful so generate jwt token
             var token = GenerateJwtToken(user);
@@ -61,7 +64,7 @@ namespace Users.Services
         {
             // generate token that is valid for 7 days
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var key = Encoding.ASCII.GetBytes(_appSettings.ApiSecret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),

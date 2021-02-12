@@ -1,0 +1,16 @@
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+.p-inputgroup.invalid-field > * {
+    border-color: red;
+}
+
+.p-inputgroup.invalid-field > *::placeholder {
+    color: red;
+}
+
+.p-inputgroup.invalid-field > span > fa-icon {
+    color: red;
+}
