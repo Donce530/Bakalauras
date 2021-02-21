@@ -7,7 +7,7 @@ using Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Users.Services;
+using Users.Api.Services;
 
 namespace API.Middleware
 {

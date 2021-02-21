@@ -1,48 +1,51 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
+using AutoMapper;
 using Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Users.Models.Authentication;
+using Users.Models.Data;
 using Users.Models.Dto;
+using Users.Repository;
 
-namespace Users.Services
+namespace Users.Api.Services
 {
-    public interface IUserService
-    {
-        AuthenticateResponse Authenticate(AuthenticateRequest model);
-        IEnumerable<UserDto> GetAll();
-        UserDto GetById(int id);
-    }
-
     public class UserService : IUserService
     {
-        // users hardcoded for simplicity, store in a db with hashed passwords in production applications
-        private List<UserDto> _users = new List<UserDto>
-        {
-            new UserDto { Id = 1, FirstName = "Test", LastName = "User", Username = "test", Password = "test" }
-        };
-
         private readonly AppSettings _appSettings;
+        private readonly IUsersRepository _usersRepository;
+        private readonly IMapper _mapper;
 
-        public UserService(IOptions<AppSettings> appSettings)
+        public User User { get; private set; }
+
+        public UserService(IOptions<AppSettings> appSettings, IUsersRepository usersRepository, IMapper mapper)
         {
+            _usersRepository = usersRepository;
+            _mapper = mapper;
             _appSettings = appSettings.Value;
         }
 
-        public AuthenticateResponse Authenticate(AuthenticateRequest model)
+        public async Task<AuthenticateResponse> AuthenticateAsync(AuthenticateRequest model)
         {
-            var user = _users.SingleOrDefault(x => x.Username == model.Username && x.Password == model.Password);
+            var userDao = await _usersRepository.Get(u => u.Username.Equals(model.Username));
 
-            // return null if user not found
-            if (user is null)
+            if (userDao is null)
             {
                 return null;
             }
+
+            var (hashedPassword, _) = HashPassword(model.Password, userDao.Salt);
+            if (!hashedPassword.Equals(userDao.Password))
+            {
+                return null;
+            }
+
+            var user = _mapper.Map<User>(userDao);
 
             // authentication successful so generate jwt token
             var token = GenerateJwtToken(user);
@@ -50,17 +53,40 @@ namespace Users.Services
             return new AuthenticateResponse(user, token);
         }
 
-        public IEnumerable<UserDto> GetAll()
+        public User GetById(int id)
         {
-            return _users;
+            var userDao = _usersRepository.Get(u => u.Id == id).GetAwaiter().GetResult();
+            var user = _mapper.Map<User>(userDao);
+
+            User = user;
+
+            return user;
         }
 
-        public UserDto GetById(int id)
+        private static Tuple<string, string> HashPassword(string password, string salt = null)
         {
-            return _users.FirstOrDefault(x => x.Id == id);
+            byte[] saltBytes;
+            if (string.IsNullOrWhiteSpace(salt))
+            {
+                saltBytes = new byte[16];
+                new RNGCryptoServiceProvider().GetBytes(saltBytes);
+            }
+            else
+            {
+                saltBytes = Convert.FromBase64String(salt);
+            }
+
+            var pbkdf2 = new Rfc2898DeriveBytes(password, saltBytes, 100000);
+            var hash = pbkdf2.GetBytes(20);
+
+            var hashBytes = new byte[36];
+            Array.Copy(saltBytes, 0, hashBytes, 0, 16);
+            Array.Copy(hash, 0, hashBytes, 16, 20);
+
+            return new Tuple<string, string>(Convert.ToBase64String(hashBytes), Convert.ToBase64String(saltBytes));
         }
 
-        private string GenerateJwtToken(UserDto user)
+        private string GenerateJwtToken(User user)
         {
             // generate token that is valid for 7 days
             var tokenHandler = new JwtSecurityTokenHandler();

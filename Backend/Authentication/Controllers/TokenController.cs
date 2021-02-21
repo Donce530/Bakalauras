@@ -1,10 +1,9 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Users.Attributes;
+using Users.Api.Services;
 using Users.Models.Authentication;
-using Users.Services;
 
-namespace Users.Controllers
+namespace Users.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -20,20 +19,12 @@ namespace Users.Controllers
         [HttpPost(nameof(Authenticate))]
         public async Task<IActionResult> Authenticate(AuthenticateRequest model)
         {
-            var response = _userService.Authenticate(model);
+            var response = await _userService.AuthenticateAsync(model);
 
             if (response == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
 
             return Ok(response);
-        }
-
-        [Authorize]
-        [HttpGet(nameof(GetAll))]
-        public async Task<IActionResult> GetAll()
-        {
-            var users = _userService.GetAll();
-            return Ok(users);
         }
     }
 }

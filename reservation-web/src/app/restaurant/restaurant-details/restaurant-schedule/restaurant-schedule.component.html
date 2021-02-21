@@ -1,0 +1,34 @@
+<p-fieldset>
+    <ng-template pTemplate="header">Darbo laikas</ng-template>
+    <p-table [value]="schedule" [scrollable]="true" scrollHeight="300px" class="p-datatable-responsive">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>Diena</th>
+                <th>Atsidarome</th>
+                <th>Užsidarome</th>
+            </tr>
+        </ng-template>
+        <ng-template #displayBody pTemplate="body" let-openHours>
+            <tr *ngIf="edit; else displayRow">
+                <td>{{openHours.get('writeableDay').value}}</td>
+                <td>
+                    <p-calendar [formControl]="openHours.get('open')" [timeOnly]="true" class="small-time-input"
+                        appendTo="body">
+                    </p-calendar>
+                </td>
+                <td>
+                    <p-calendar [formControl]="openHours.get('close')" [timeOnly]="true" class="small-time-input"
+                        appendTo="body">
+                    </p-calendar>
+                </td>
+            </tr>
+            <ng-template #displayRow>
+                <tr>
+                    <td>{{openHours.get('writeableDay').value}}</td>
+                    <td>{{openHours.get('open').value | time}}</td>
+                    <td>{{openHours.get('close').value | time}}</td>
+                </tr>
+            </ng-template>
+        </ng-template>
+    </p-table>
+</p-fieldset>

@@ -1,0 +1,7 @@
+:host ::ng-deep .small-time-input > span > input {
+    padding: 0;
+    text-align: center;
+    border: none;
+    outline: 1px solid #dee2e6;
+    outline-offset: -1px;
+}

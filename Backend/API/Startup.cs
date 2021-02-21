@@ -1,23 +1,30 @@
+using API.Mapper;
 using API.Middleware;
+using AutoMapper;
 using Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Users.Extensions;
+using Repository;
+using Restaurants.Api.Extensions;
+using Users.Api.Extensions;
 
 namespace API
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IHostEnvironment environment)
         {
             Configuration = configuration;
+            _environment = environment;
         }
 
         public IConfiguration Configuration { get; }
+        private readonly IHostEnvironment _environment;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -29,10 +36,22 @@ namespace API
                     .AllowAnyHeader();
             }));
 
+            services.AddDbContext<AppDbContext>(options =>
+            {
+                options.EnableSensitiveDataLogging(_environment.IsDevelopment());
+                options.UseNpgsql(Configuration.GetSection("AppSettings").GetValue<string>("DbConnectionString"));
+            });
+
+            services.AddAutoMapper(c =>
+            {
+                c.AddProfile<MappingProfile>();
+            });
+
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.AddControllers();
 
             services.AddUsersServiceConfiguration();
+            services.AddRestaurantServiceConfiguration();
 
             services.AddSwaggerGen(c =>
             {

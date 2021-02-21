@@ -1,0 +1,32 @@
+<ng-container [formGroup]="locationFormGroup">
+    <p-fieldset styleClass="h-100">
+        <ng-template pTemplate="header">Vieta</ng-template>
+        <div class="d-flex flex-column h-100">
+            <div class="row flex-fill">
+                <div class="col-md-12 col-lg-5 ">
+                    <label>Gatvės adresas</label>
+                </div>
+                <div class="col-md-12 col-lg-7 ">
+                    <input *ngIf="edit; else addressLabel" pInputText formControlName="address">
+                    <ng-template #addressLabel>
+                        <label>{{locationFormGroup.controls.address.value}}</label>
+                    </ng-template>
+                </div>
+            </div>
+            <div class="flex-shrink-1">
+                <p-divider></p-divider>
+            </div>
+            <div class="row flex-fill">
+                <div class="col-md-12 col-lg-5 ">
+                    <label>Miestas</label>
+                </div>
+                <div class="col-md-12 col-lg-7">
+                    <input *ngIf="edit; else cityLabel" pInputText formControlName="city">
+                    <ng-template #cityLabel>
+                        <label>{{locationFormGroup.controls.city.value}}</label>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </p-fieldset>
+</ng-container>

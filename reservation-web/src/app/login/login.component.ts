@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { faKey } from '@fortawesome/free-solid-svg-icons';
@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
 
     this._route.queryParams.subscribe(
       params => {
-        const returnUrl = params['returnUrl'];
+        const returnUrl = params.returnUrl;
         if (returnUrl) {
           this._navigateTo = returnUrl;
         }

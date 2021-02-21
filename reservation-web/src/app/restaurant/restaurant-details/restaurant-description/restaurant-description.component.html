@@ -1,0 +1,13 @@
+<ng-container [formGroup]="descriptionControlGroup">
+    <div class="description-container mb-2">
+        <div *ngIf="edit; else description" class="h-100">
+            <textarea pInputTextarea formControlName="description" [autoResize]="false" style="height: 100%;"
+                placeholder="Aprašykite savo įstaigą"></textarea>
+        </div>
+        <ng-template #description>
+            <p-scrollPanel styleClass="scroll-panel">
+                {{descriptionControlGroup.controls.description.value}}
+            </p-scrollPanel>
+        </ng-template>
+    </div>
+</ng-container>

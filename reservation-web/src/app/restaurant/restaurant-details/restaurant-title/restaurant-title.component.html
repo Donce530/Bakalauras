@@ -1,0 +1,10 @@
+<ng-container [formGroup]="titleControlGroup">
+    <div *ngIf="edit; else nameLabel" class="p-2">
+        <input pInputText formControlName="title" type="text" placeholder="Įstaigos pavadinimas">
+    </div>
+    <ng-template #nameLabel>
+        <div class="p-2">
+            <h1>{{titleControlGroup.controls.title.value}}</h1>
+        </div>
+    </ng-template>
+</ng-container>

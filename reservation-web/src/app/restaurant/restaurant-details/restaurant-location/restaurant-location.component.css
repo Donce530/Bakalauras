@@ -1,0 +1,19 @@
+.row.flex-fill > .col-lg-5, .row.flex-fill > .col-lg-7, .row.flex-fill > .col-md-12 {
+    align-self: center;
+    text-align: center;
+}
+
+.col-lg-5 label {
+    font-weight: 600;
+    color: #495057;
+}
+
+.flex-fill > div > input {
+    padding: 0;
+    width: 100%;
+    text-align: center;
+    border: none;
+    margin-bottom: 8px;
+    outline: 1px solid #dee2e6;
+    outline-offset: -1px;
+}

@@ -1,6 +1,23 @@
 html, body {
     height: 100%;
     width: 100%;
+    background-color: var(--cancel-col);
+}
+
+body {
+    margin: 0;
+}
+
+router-outlet + * > div {
+    height: 90vh;
+}
+
+body {
+    --primary-col: #faa916ff;
+    --backgroud-col: #fbfffeff;
+    --cancel-col: #6d676eff;
+    --border-col: #1b1b1eff;
+    --warning-col: #96031aff;
 }
 
 .p-inputgroup.invalid-field > * {
@@ -13,4 +30,23 @@ html, body {
 
 .p-inputgroup.invalid-field > span > fa-icon {
     color: red;
+}
+
+p-card.full-height > .p-card {
+    height: 100%;
+    overflow-y: auto;
+}
+
+.flex-even {
+    flex: 1;
+}
+
+p-fieldset > fieldset > legend {
+    padding: 0.8rem;
+    font-size: medium;
+    width: fit-content;
+    max-width: fit-content;
+    margin-left: 1vw;
+    margin-bottom: 0;
+    padding: 0.5em !important;
 }

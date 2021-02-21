@@ -1,0 +1,32 @@
+<form class="h-100" [formGroup]="restaurantForm" (ngSubmit)="save()">
+    <p-card class="full-height">
+        <ng-template pTemplate="header">
+            <div class="d-flex align-items-center">
+                <app-restaurant-title [edit]="edit" formControlName="title">
+                </app-restaurant-title>
+                <div class="p-2 ml-auto flex-shrink-1 mr-1 pt-2">
+                    <button *ngIf="edit" [disabled]="restaurantForm.invalid" pButton pRipple
+                        class="p-button-rounded p-button-icon-only mr-2" type="submit">
+                        <fa-icon [icon]="icons.save"></fa-icon>
+                    </button>
+                    <button pButton pRipple class="p-button-rounded p-button-icon-only" (click)="toggleEdit()"
+                        type="button">
+                        <fa-icon [icon]="icons.edit"></fa-icon>
+                    </button>
+                </div>
+            </div>
+        </ng-template>
+        <app-restaurant-description [edit]="edit" formControlName="description">
+        </app-restaurant-description>
+        <div class="row">
+            <div class="col-6">
+                <app-restaurant-schedule [scheduleFormArray]="scheduleFormArray" [edit]="edit">
+                </app-restaurant-schedule>
+            </div>
+            <div class="col-6">
+                <app-restaurant-location [edit]="edit" [locationFormGroup]="locationFormGroup">
+                </app-restaurant-location>
+            </div>
+        </div>
+    </p-card>
+</form>

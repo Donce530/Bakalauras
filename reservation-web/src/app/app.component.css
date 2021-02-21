@@ -1,0 +1,16 @@
+#menu {
+    background-color: var(--backgroud-col);
+    height: 10vh;
+}
+
+img {
+    max-width:100%;
+    max-height:100%;
+}
+
+.image-container {
+    max-height: 10vh;
+    max-width: 10vh;
+    padding-top: 1vw;
+    padding-left: 1vw;
+}

@@ -1,14 +1,15 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
-using Users.Services;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Users.Api.Services;
+using Users.Repository;
 
-namespace Users.Extensions
+namespace Users.Api.Extensions
 {
     public static class UsersServiceConfiguration
     {
         public static void AddUsersServiceConfiguration(this IServiceCollection services)
         {
-            services.AddTransient<IUserService, UserService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddTransient<IUsersRepository, UsersRepository>();
         }
     }
 }

@@ -1,0 +1,15 @@
+:host ::ng-deep p-scrollPanel .p-scrollpanel-wrapper {
+    height: 15vh;
+    max-height: 15vh;
+}
+
+textarea {
+    width: 100%;
+    height: 100%;
+    resize: none !important;
+}
+
+.description-container {
+    max-height: 15vh;
+    height: 15vh;
+}
