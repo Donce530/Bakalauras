@@ -4,12 +4,17 @@ import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { OpenHours } from '../models/open-hours';
 import { Restaurant } from '../models/restaurant';
+import { Table } from '../restaurant-plan/restaurant-plan-editor/drawables/table';
+import { Wall } from '../restaurant-plan/restaurant-plan-editor/drawables/wall';
+import { EditorStorage } from '../restaurant-plan/restaurant-plan-editor/models/editor-storage';
+import { RestaurantPlan } from '../restaurant-plan/restaurant-plan-editor/models/restaurant-plan';
 import { RestaurantHttpService } from './restaurant-http.service';
 
 @Injectable()
 export class RestaurantDataService {
-
   constructor(private _httpService: RestaurantHttpService) { }
+
+  private plan: RestaurantPlan;
 
   public GetDetails(): Observable<Restaurant> {
     return this._httpService.GetDetails().pipe(map<Restaurant, Restaurant>(
@@ -44,5 +49,31 @@ export class RestaurantDataService {
 
   public SaveDetails(restaurant: Restaurant): Observable<void> {
     return this._httpService.SaveDetails(restaurant);
+  }
+
+  public savePlan(plan: RestaurantPlan): Observable<void> {
+    return this._httpService.savePlan(plan);
+  }
+
+  public getPlan(): Observable<RestaurantPlan> {
+    return this._httpService.getPlan().pipe(
+      map(plan => {
+        if (plan == null) {
+          return new RestaurantPlan(0, '', new EditorStorage());
+        } else {
+          return new RestaurantPlan(plan.id, plan.webSvg,
+            new EditorStorage({
+              tables: plan.tables.map(t => new Table(t)),
+              walls: plan.walls.map(w => new Wall(w))
+            }));
+        }
+      })
+    );
+  }
+
+  public getPlanWebPreview(): Observable<string> {
+    return this._httpService.getPlanWebPreview().pipe(
+      map(svg => svg == null ? '' : svg)
+    );
   }
 }

@@ -1,8 +1,8 @@
 <div class="d-flex align-items-stretch">
-    <div class="flex-even p-1">
+    <div class="flex-even p-1" [class.hide]="editorStateChangeObservable | async">
         <app-restaurant-details></app-restaurant-details>
     </div>
     <div class="flex-even p-1">
-        <app-restaurant-editor></app-restaurant-editor>
+        <app-restaurant-plan></app-restaurant-plan>
     </div>
 </div>

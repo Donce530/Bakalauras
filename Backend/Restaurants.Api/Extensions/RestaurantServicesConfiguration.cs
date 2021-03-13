@@ -9,7 +9,8 @@ namespace Restaurants.Api.Extensions
         public static void AddRestaurantServiceConfiguration(this IServiceCollection services)
         {
             services.AddTransient<IRestaurantService, RestaurantService>();
-            services.AddTransient<IRestaurantRepository, RestaurantRepository>();
+            services.AddTransient<IRestaurantRepository, RestaurantsRepository>();
+            services.AddTransient<IRestaurantPlanRepository, RestaurantPlansRepository>();
         }
     }
 }

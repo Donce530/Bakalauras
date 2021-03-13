@@ -1,0 +1,23 @@
+<p-toolbar>
+    <div class="p-toolbar-group-left">
+        <p-selectButton [options]="modes" [(ngModel)]="currentMode" optionLabel="tooltip" optionValue="mode">
+            <ng-template let-mode>
+                <fa-icon [icon]="mode.icon"></fa-icon>
+            </ng-template>
+        </p-selectButton>
+        <div class="snapping-slider-wrapper ml-5">
+            <p-checkbox [ngModel]="snappingSettings.enabled" (onChange)="updateSnappingState($event.checked)" [binary]="true" [disabled]="!snappingSettings.available" class="pb-2 pr-2"></p-checkbox>
+            <h5>Tikslumas: {{snappingSettings.scale}}</h5> 
+            <p-slider [disabled]="!snappingSettings.available || !snappingSettings.enabled" [ngModel]="snappingSettings.scale" (onChange)="updateSnappingScale($event.value)" [min]="1" [max]="10"
+                [step]="1"></p-slider>
+        </div>
+    </div>
+    <div class="p-toolbar-group-right">
+        <button pButton pRipple class="p-button-rounded p-button-icon-only mr-2" type="button" (click)="save()">
+            <fa-icon [icon]="icons.save"></fa-icon>
+        </button>
+        <button pButton pRipple class="p-button-rounded p-button-icon-only" type="button" (click)="back()">
+            <fa-icon [icon]="icons.cancel"></fa-icon>
+        </button>
+    </div>
+</p-toolbar>

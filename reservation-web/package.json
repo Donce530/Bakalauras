@@ -26,6 +26,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.15.2",
     "@fortawesome/free-solid-svg-icons": "^5.15.2",
     "bootstrap": "^4.6.0",
+    "canvas2svg": "^1.0.16",
     "jwt-decode": "^3.1.2",
     "primeflex": "^2.0.0",
     "primeicons": "^4.1.0",

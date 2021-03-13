@@ -1,0 +1,11 @@
+:host ::ng-deep input {
+    max-width: 2vw;
+}
+
+.row {
+    align-items: baseline;
+}
+
+.col-7 {
+    padding-top: 0.5rem;
+}

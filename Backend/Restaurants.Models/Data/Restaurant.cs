@@ -14,5 +14,6 @@ namespace Restaurants.Models.Data
         public IList<OpenHours> Schedule { get; set; }
         public UserDao User { get; set; }
         public int UserId { get; set; }
+        public RestaurantPlan RestaurantPlan { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 using API.Mapper;
 using API.Middleware;
 using AutoMapper;
+using AutoMapper.EquivalencyExpression;
 using Configuration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -45,6 +46,7 @@ namespace API
             services.AddAutoMapper(c =>
             {
                 c.AddProfile<MappingProfile>();
+                c.AddCollectionMappers();
             });
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));

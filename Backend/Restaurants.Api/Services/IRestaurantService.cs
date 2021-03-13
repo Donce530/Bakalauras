@@ -7,5 +7,8 @@ namespace Restaurants.Api.Services
     {
         Task<RestaurantDto> GetDetails();
         Task SaveDetails(RestaurantDto restaurant);
+        Task<RestaurantPlanDto> GetPlan();
+        Task SavePlan(RestaurantPlanDto plan);
+        Task<string> GetPlanSvg();
     }
 }

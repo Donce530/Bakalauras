@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Restaurants.Models.Data;
 using Restaurants.Models.Dto;
 using Restaurants.Repository;
@@ -14,13 +12,15 @@ namespace Restaurants.Api.Services
     {
         private readonly IUserService _userService;
         private readonly IRestaurantRepository _restaurantRepository;
+        private readonly IRestaurantPlanRepository _restaurantPlanRepository;
         private readonly IMapper _mapper;
 
-        public RestaurantService(IUserService userService, IRestaurantRepository restaurantRepository, IMapper mapper)
+        public RestaurantService(IUserService userService, IRestaurantRepository restaurantRepository, IMapper mapper, IRestaurantPlanRepository restaurantPlanRepository)
         {
             _userService = userService;
             _restaurantRepository = restaurantRepository;
             _mapper = mapper;
+            _restaurantPlanRepository = restaurantPlanRepository;
         }
 
         public async Task<RestaurantDto> GetDetails()
@@ -38,16 +38,47 @@ namespace Restaurants.Api.Services
 
             if (await _restaurantRepository.Exists(r => r.UserId == userId))
             {
-                var relatedData = new Expression<Func<Restaurant, object>>[]
-                {
-                    r => r.Schedule
-                };
-                await _restaurantRepository.Update(mappedRestaurant, r => r.UserId == userId, relatedData);
+                await _restaurantRepository.Update(mappedRestaurant, r => r.UserId == userId);
             } 
             else
             {
                 await _restaurantRepository.Create(mappedRestaurant);
             }
+        }
+
+        public Task<RestaurantPlanDto> GetPlan()
+        {
+            var userId = _userService.User.Id;
+            var plan = _restaurantPlanRepository.GetMapped<RestaurantPlanDto>(
+                rp => rp.Restaurant.UserId == userId);
+
+            return plan;
+        }
+
+        public async Task SavePlan(RestaurantPlanDto plan)
+        {
+            var userId = _userService.User.Id;
+            var mappedPlan = _mapper.Map<RestaurantPlan>(plan);
+
+            if (await _restaurantPlanRepository.Exists(r => r.Restaurant.UserId == userId))
+            {
+                await _restaurantPlanRepository.Update(mappedPlan, r => r.Restaurant.UserId == userId);
+            }
+            else
+            {
+                mappedPlan.RestaurantId = await _restaurantRepository.GetMapped(r => r.UserId == userId, 
+                    r => r.Id);
+                await _restaurantPlanRepository.Create(mappedPlan);
+            }
+        }
+
+        public Task<string> GetPlanSvg()
+        {
+            var userId = _userService.User.Id;
+            var planSvg = _restaurantPlanRepository.GetMapped(rp => rp.Restaurant.UserId == userId,
+                rp => rp.WebSvg);
+
+            return planSvg;
         }
     }
 }

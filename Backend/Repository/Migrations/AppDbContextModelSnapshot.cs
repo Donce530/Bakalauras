@@ -16,7 +16,7 @@ namespace Repository.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 63)
-                .HasAnnotation("ProductVersion", "5.0.3")
+                .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("Restaurants.Models.Data.OpenHours", b =>
@@ -40,6 +40,33 @@ namespace Repository.Migrations
                     b.HasIndex("WeekDay", "RestaurantId");
 
                     b.ToTable("OpenHours");
+                });
+
+            modelBuilder.Entity("Restaurants.Models.Data.PlanItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<double>("Height")
+                        .HasColumnType("double precision");
+
+                    b.Property<string>("Svg")
+                        .HasColumnType("text");
+
+                    b.Property<double>("Width")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("X")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Y")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PlanItems");
                 });
 
             modelBuilder.Entity("Restaurants.Models.Data.Restaurant", b =>
@@ -69,6 +96,27 @@ namespace Repository.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Restaurants");
+                });
+
+            modelBuilder.Entity("Restaurants.Models.Data.RestaurantPlan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("RestaurantId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("WebSvg")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId")
+                        .IsUnique();
+
+                    b.ToTable("RestaurantPlans");
                 });
 
             modelBuilder.Entity("Users.Models.Dao.UserDao", b =>
@@ -116,6 +164,36 @@ namespace Repository.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Restaurants.Models.Data.PlanTable", b =>
+                {
+                    b.HasBaseType("Restaurants.Models.Data.PlanItem");
+
+                    b.Property<int>("Number")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("PlanId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Seats")
+                        .HasColumnType("integer");
+
+                    b.HasIndex("PlanId");
+
+                    b.ToTable("PlanTables");
+                });
+
+            modelBuilder.Entity("Restaurants.Models.Data.PlanWall", b =>
+                {
+                    b.HasBaseType("Restaurants.Models.Data.PlanItem");
+
+                    b.Property<int>("PlanId")
+                        .HasColumnType("integer");
+
+                    b.HasIndex("PlanId");
+
+                    b.ToTable("PlanWalls");
+                });
+
             modelBuilder.Entity("Restaurants.Models.Data.OpenHours", b =>
                 {
                     b.HasOne("Restaurants.Models.Data.Restaurant", "Restaurant")
@@ -138,9 +216,63 @@ namespace Repository.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Restaurants.Models.Data.RestaurantPlan", b =>
+                {
+                    b.HasOne("Restaurants.Models.Data.Restaurant", "Restaurant")
+                        .WithOne("RestaurantPlan")
+                        .HasForeignKey("Restaurants.Models.Data.RestaurantPlan", "RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Restaurant");
+                });
+
+            modelBuilder.Entity("Restaurants.Models.Data.PlanTable", b =>
+                {
+                    b.HasOne("Restaurants.Models.Data.PlanItem", null)
+                        .WithOne()
+                        .HasForeignKey("Restaurants.Models.Data.PlanTable", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Restaurants.Models.Data.RestaurantPlan", "Plan")
+                        .WithMany("Tables")
+                        .HasForeignKey("PlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Plan");
+                });
+
+            modelBuilder.Entity("Restaurants.Models.Data.PlanWall", b =>
+                {
+                    b.HasOne("Restaurants.Models.Data.PlanItem", null)
+                        .WithOne()
+                        .HasForeignKey("Restaurants.Models.Data.PlanWall", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Restaurants.Models.Data.RestaurantPlan", "Plan")
+                        .WithMany("Walls")
+                        .HasForeignKey("PlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Plan");
+                });
+
             modelBuilder.Entity("Restaurants.Models.Data.Restaurant", b =>
                 {
+                    b.Navigation("RestaurantPlan");
+
                     b.Navigation("Schedule");
+                });
+
+            modelBuilder.Entity("Restaurants.Models.Data.RestaurantPlan", b =>
+                {
+                    b.Navigation("Tables");
+
+                    b.Navigation("Walls");
                 });
 #pragma warning restore 612, 618
         }

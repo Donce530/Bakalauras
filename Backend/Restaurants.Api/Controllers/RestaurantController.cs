@@ -38,5 +38,39 @@ namespace Restaurants.Api.Controllers
 
             return Ok();
         }
+
+        [HttpGet("Plan")]
+        public async Task<IActionResult> GetPlan()
+        {
+            var plan = await _restaurantService.GetPlan();
+
+            if (plan is null)
+            {
+                return NoContent();
+            }
+
+            return Ok(plan);
+        }
+
+        [HttpGet("Plan/Preview")]
+        public async Task<IActionResult> GetPlanSvg()
+        {
+            var planSvg = await _restaurantService.GetPlanSvg();
+
+            if (planSvg is null)
+            {
+                return NoContent();
+            }
+
+            return Ok(planSvg);
+        }
+
+        [HttpPost("Plan")]
+        public async Task<IActionResult> SavePlan([FromBody] RestaurantPlanDto plan)
+        {
+            await _restaurantService.SavePlan(plan);
+
+            return Ok();
+        }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -10,12 +9,12 @@ using Microsoft.EntityFrameworkCore.Query;
 
 namespace Repository
 {
-    public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : class, new()
+    public abstract class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : class, new()
     {
         protected readonly AppDbContext DbContext;
         protected readonly IMapper Mapper;
 
-        public RepositoryBase(AppDbContext dbContext, IMapper mapper)
+        protected RepositoryBase(AppDbContext dbContext, IMapper mapper)
         {
             DbContext = dbContext;
             Mapper = mapper;
@@ -38,16 +37,19 @@ namespace Repository
             return await query.SingleOrDefaultAsync();
         }
 
-        public async Task<TResult> GetMapped<TResult>(Expression<Func<TEntity, bool>> filter = null)
+        public async Task<TResult> GetMapped<TResult>(Expression<Func<TEntity, bool>> filter)
         {
-            IQueryable<TEntity> query = DbContext.Set<TEntity>();
-
-            if (filter is not null)
-            {
-                query = query.Where(filter);
-            }
+            var query = DbContext.Set<TEntity>().Where(filter);
 
             return await query.ProjectTo<TResult>(Mapper.ConfigurationProvider).SingleOrDefaultAsync();
+        }
+
+        public async Task<TResult> GetMapped<TResult>(Expression<Func<TEntity, bool>> filter,
+            Expression<Func<TEntity, TResult>> select)
+        {
+            var query = DbContext.Set<TEntity>().Where(filter).Select(select);
+
+            return await query.SingleOrDefaultAsync();
         }
 
         public async Task<bool> Exists(Expression<Func<TEntity, bool>> filter)
@@ -61,27 +63,6 @@ namespace Repository
             await DbContext.SaveChangesAsync();
         }
 
-        public async Task Update(TEntity restaurant, Expression<Func<TEntity, bool>> filter,
-            IList<Expression<Func<TEntity, object>>> relatedDataExpressions = null)
-        {
-            var query = DbContext.Set<TEntity>().Where(filter);
-
-            if (relatedDataExpressions is not null && relatedDataExpressions.Any())
-            {
-                query = relatedDataExpressions.Aggregate(query,
-                    (current, relatedDataExpression) => current.Include(relatedDataExpression));
-            }
-
-            var existingEntity = await query.SingleOrDefaultAsync();
-
-            if (existingEntity is null)
-            {
-                throw new InvalidOperationException("Cannot update non-existing entities");
-            }
-
-            Mapper.Map(restaurant, existingEntity);
-
-            await DbContext.SaveChangesAsync();
-        }
+        public abstract Task Update(TEntity entity, Expression<Func<TEntity, bool>> filter);
     }
 }
