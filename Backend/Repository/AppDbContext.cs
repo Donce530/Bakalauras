@@ -32,7 +32,7 @@ namespace Repository
             modelBuilder.SeedAdmin();
 
             modelBuilder.Entity<UserDao>()
-                .HasIndex(u => u.Username)
+                .HasIndex(u => u.Email)
                 .IsUnique();
 
             modelBuilder.Entity<OpenHours>()

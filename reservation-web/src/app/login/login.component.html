@@ -3,11 +3,11 @@
         <div class="row">
             <div class="col-12 pb-1">
                 <div class="p-inputgroup"
-                    [class.invalid-field]="loginForm.controls.username.invalid && loginForm.controls.username.dirty">
+                    [class.invalid-field]="loginForm.controls.email.invalid && loginForm.controls.email.dirty">
                     <span class="p-inputgroup-addon">
                         <fa-icon [icon]="icons.user"></fa-icon>
                     </span>
-                    <input type="text" formControlName="username" pInputText placeholder="Vartotojo vardas">
+                    <input type="text" formControlName="email" pInputText placeholder="El. pašto adresas">
                 </div>
             </div>
             <div class="col-12">

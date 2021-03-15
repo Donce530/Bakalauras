@@ -42,12 +42,12 @@ namespace Repository.Migrations
                     b.Property<string>("Salt")
                         .HasColumnType("text");
 
-                    b.Property<string>("Username")
+                    b.Property<string>("Email")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Username")
+                    b.HasIndex("Email")
                         .IsUnique();
 
                     b.ToTable("Users");

@@ -8,7 +8,7 @@ using AutoMapper;
 using Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Users.Models.Authentication;
+using Users.Models.Dao;
 using Users.Models.Data;
 using Users.Models.Dto;
 using Users.Repository;
@@ -22,7 +22,7 @@ namespace Users.Api.Services
         private readonly IMapper _mapper;
 
         public User User { get; private set; }
-
+        
         public UserService(IOptions<AppSettings> appSettings, IUsersRepository usersRepository, IMapper mapper)
         {
             _usersRepository = usersRepository;
@@ -30,9 +30,24 @@ namespace Users.Api.Services
             _appSettings = appSettings.Value;
         }
 
+        public async Task Register(RegisterRequest registerRequest)
+        {
+            if (await _usersRepository.Exists(u => u.Email == registerRequest.Email))
+            {
+                throw new InvalidOperationException("Email already in use");
+            }
+
+            var user = _mapper.Map<UserDao>(registerRequest);
+            (user.Password, user.Salt) = HashPassword(registerRequest.Password);
+            user.Role = Role.Client;
+
+            await _usersRepository.Create(user);
+        }
+
+
         public async Task<AuthenticateResponse> AuthenticateAsync(AuthenticateRequest model)
         {
-            var userDao = await _usersRepository.Get(u => u.Username.Equals(model.Username));
+            var userDao = await _usersRepository.Get(u => u.Email.Equals(model.Email));
 
             if (userDao is null)
             {

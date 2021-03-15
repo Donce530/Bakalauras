@@ -126,6 +126,9 @@ namespace Repository.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
 
@@ -135,18 +138,18 @@ namespace Repository.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("text");
 
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
+
                     b.Property<int>("Role")
                         .HasColumnType("integer");
 
                     b.Property<string>("Salt")
                         .HasColumnType("text");
 
-                    b.Property<string>("Username")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("Username")
+                    b.HasIndex("Email")
                         .IsUnique();
 
                     b.ToTable("Users");
@@ -155,12 +158,12 @@ namespace Repository.Migrations
                         new
                         {
                             Id = 1,
+                            Email = "admin",
                             FirstName = "Administrator",
                             LastName = "Administrator",
                             Password = "GL2wAuCc9zf3Laur5fp+Q8dymRZIxrf3Vxa8DsyV8QAtLMFx",
                             Role = 2,
-                            Salt = "GL2wAuCc9zf3Laur5fp+Qw==",
-                            Username = "admin"
+                            Salt = "GL2wAuCc9zf3Laur5fp+Qw=="
                         });
                 });
 

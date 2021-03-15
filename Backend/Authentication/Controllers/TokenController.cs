@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Users.Api.Services;
-using Users.Models.Authentication;
+using Users.Models.Dto;
 
 namespace Users.Api.Controllers
 {
@@ -22,7 +22,7 @@ namespace Users.Api.Controllers
             var response = await _userService.AuthenticateAsync(model);
 
             if (response == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
+                return BadRequest(new { message = "Email or password is incorrect" });
 
             return Ok(response);
         }

@@ -6,6 +6,7 @@ using Restaurants.Models.Data;
 using Restaurants.Models.Dto;
 using Users.Models.Dao;
 using Users.Models.Data;
+using Users.Models.Dto;
 
 namespace API.Mapper
 {
@@ -14,6 +15,7 @@ namespace API.Mapper
         public MappingProfile()
         {
             CreateMap<UserDao, User>();
+            CreateMap<RegisterRequest, UserDao>();
 
             CreateMap<Restaurant, RestaurantDto>()
                 .ForMember(dst => dst.Schedule,

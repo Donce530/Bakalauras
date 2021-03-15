@@ -27,13 +27,13 @@ namespace Repository.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "FirstName", "LastName", "Password", "Role", "Salt", "Username" },
+                columns: new[] { "Id", "FirstName", "LastName", "Password", "Role", "Salt", "Email" },
                 values: new object[] { 1, "Administrator", "Administrator", "GL2wAuCc9zf3Laur5fp+Q8dymRZIxrf3Vxa8DsyV8QAtLMFx", 2, "GL2wAuCc9zf3Laur5fp+Qw==", "admin" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Username",
                 table: "Users",
-                column: "Username",
+                column: "Email",
                 unique: true);
         }
 

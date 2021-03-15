@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
 
   public ngOnInit(): void {
     this.loginForm = new FormGroup({
-      username: new FormControl(null, [Validators.required]),
+      email: new FormControl(null, [Validators.required]),
       password: new FormControl(null, [Validators.required])
     });
 
@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
           this._navigateTo = returnUrl;
         }
       }
-    )
+    );
 
     this.loginForm.updateValueAndValidity();
     console.log(this.loginForm);

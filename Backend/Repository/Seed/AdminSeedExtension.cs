@@ -16,7 +16,7 @@ namespace Repository.Seed
                     FirstName = "Administrator",
                     LastName = "Administrator",
                     Id = 1,
-                    Username = "admin",
+                    Email = "admin",
                     Password = "GL2wAuCc9zf3Laur5fp+Q8dymRZIxrf3Vxa8DsyV8QAtLMFx",
                     Salt = "GL2wAuCc9zf3Laur5fp+Qw==",
                     Role = Role.Admin
