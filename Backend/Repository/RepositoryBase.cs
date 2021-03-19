@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -35,6 +36,36 @@ namespace Repository
             }
 
             return await query.SingleOrDefaultAsync();
+        }
+
+        public async Task<IList<TResult>> GetAll<TResult>(Expression<Func<TEntity, TResult>> select, Expression<Func<TEntity, bool>> filter = null, bool distinct = false)
+        {
+            var query = DbContext.Set<TEntity>().AsQueryable();
+
+            if (filter is not null)
+            {
+                query = query.Where(filter);
+            }
+
+            var selectedQuery = query.Select(select);
+            if (distinct)
+            {
+                selectedQuery = selectedQuery.Distinct();
+            }
+
+            return await selectedQuery.ToListAsync();
+        }
+
+        public async Task<IList<TResult>> GetPaged<TResult>(int skip, int take, Expression<Func<TEntity, bool>> filter = null)
+        {
+            var query = DbContext.Set<TEntity>().AsQueryable();
+
+            if (filter is not null)
+            {
+                query = query.Where(filter);
+            }
+
+            return await query.ProjectTo<TResult>(Mapper.ConfigurationProvider).Skip(skip).Take(take).ToListAsync();
         }
 
         public async Task<TResult> GetMapped<TResult>(Expression<Func<TEntity, bool>> filter)

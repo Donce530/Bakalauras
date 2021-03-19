@@ -2,15 +2,15 @@ import 'dart:convert';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:reservation_app/main.dart';
 import 'package:reservation_app/register.dart';
 import 'package:reservation_app/services/animated_routes.dart';
 import 'package:reservation_app/services/http_requests.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Models/login/login_request.dart';
-import 'Models/login/login_response.dart';
 import 'package:another_flushbar/flushbar_route.dart' as flushbarRoute;
+
+import 'home.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -159,14 +159,6 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    final _errorFlushbarRoute = flushbarRoute.showFlushbar(
-        context: context,
-        flushbar: Flushbar(
-            message: 'Neteisingas vartotojo vardas ar slaptažodis',
-            flushbarPosition: FlushbarPosition.TOP,
-            isDismissible: true,
-            duration: Duration(seconds: 5)));
-
     final loginRequest =
         new LoginRequest(_usernameController.text, _passwordController.text);
     final response =
@@ -180,10 +172,20 @@ class _LoginPageState extends State<LoginPage> {
       preferences.setString('token', token);
 
       Navigator.of(context)
-          .pushReplacement(AnimatedRoutes.slideToRight(context, MyHomePage()));
-    }
+          .pushReplacement(AnimatedRoutes.slideToRight(context, HomePage()));
 
-    Navigator.of(context, rootNavigator: true).push(_errorFlushbarRoute);
+      return;
+    } else {
+      final _errorFlushbarRoute = flushbarRoute.showFlushbar(
+          context: context,
+          flushbar: Flushbar(
+              message: 'Neteisingas vartotojo vardas ar slaptažodis',
+              flushbarPosition: FlushbarPosition.TOP,
+              isDismissible: true,
+              duration: Duration(seconds: 5)));
+
+      Navigator.of(context, rootNavigator: true).push(_errorFlushbarRoute);
+    }
   }
 
   Future<void> _register() async {

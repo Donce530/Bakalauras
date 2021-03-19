@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using Restaurants.Models.Data;
 using Restaurants.Models.Dto;
 using Restaurants.Repository;
@@ -72,13 +74,36 @@ namespace Restaurants.Api.Services
             }
         }
 
-        public Task<string> GetPlanSvg()
+        public async Task<string> GetPlanSvg()
         {
             var userId = _userService.User.Id;
-            var planSvg = _restaurantPlanRepository.GetMapped(rp => rp.Restaurant.UserId == userId,
+            var planSvg = await _restaurantPlanRepository.GetMapped(rp => rp.Restaurant.UserId == userId,
                 rp => rp.WebSvg);
 
             return planSvg;
+        }
+
+        public async Task<IList<string>> GetRestaurantCities()
+        {
+            var cities = await _restaurantRepository.GetAll(r => r.City, distinct: true);
+
+            return cities;
+        }
+
+        public async Task<IList<RestaurantPageItemDto>> GetPage(int page, string city, string filter)
+        {
+            city = city.ToLower();
+            if (filter is not null)
+            {
+                filter = filter.ToLower();
+            }
+            Expression<Func<Restaurant, bool>> filterExpression = string.IsNullOrEmpty(filter) ?
+                r => r.City.ToLower().Equals(city) :
+                r => r.City.ToLower().Equals(city) && r.Title.ToLower().Contains(filter) || r.Address.ToLower().Contains(filter);
+
+            var restaurants = await _restaurantRepository.GetPaged<RestaurantPageItemDto>(page * 10, 10, filterExpression);
+
+            return restaurants;
         }
     }
 }

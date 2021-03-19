@@ -39,6 +39,27 @@ namespace Restaurants.Api.Controllers
             return Ok();
         }
 
+        [HttpGet("AvailableCities")]
+        public async Task<IActionResult> GetAvailableCities()
+        {
+            var cities = await _restaurantService.GetRestaurantCities();
+
+            return Ok(cities);
+        }
+
+        [HttpGet("Page")]
+        public async Task<IActionResult> GetPage([FromQuery] int page, [FromQuery] string city, [FromQuery] string filter)
+        {
+            if (page < 0 || string.IsNullOrEmpty(city))
+            {
+                return BadRequest(new { message = "page cannot be negative and city must be provided"});
+            }
+
+            var restaurants = await _restaurantService.GetPage(page, city, filter);
+
+            return Ok(restaurants);
+        }
+
         [HttpGet("Plan")]
         public async Task<IActionResult> GetPlan()
         {

@@ -20,7 +20,8 @@ class _SplashPageState extends State<SplashPage> {
         var expirationTimestamp = parsedToken['exp'];
         var expirationTime =
             DateTime.fromMicrosecondsSinceEpoch(expirationTimestamp * 1000);
-        if (expirationTime.isAfter(DateTime.now().add(new Duration(days: 1)))) {
+        if (expirationTime
+            .isBefore(DateTime.now().add(new Duration(days: 1)))) {
           debugPrint('tokenok');
           Navigator.pushReplacementNamed(context, 'home');
         } else {

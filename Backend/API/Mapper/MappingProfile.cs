@@ -30,6 +30,7 @@ namespace API.Mapper
                 .ForMember(dst => dst.Id, opt => opt.Ignore());
             CreateMap<OpenHours, OpenHours>();
 
+            CreateMap<Restaurant, RestaurantPageItemDto>();
 
             CreateMap<WallDto, PlanWall>().ReverseMap();
             CreateMap<TableDto, PlanTable>().ReverseMap();

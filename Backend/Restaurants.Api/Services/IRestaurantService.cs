@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Restaurants.Models.Dto;
 
 namespace Restaurants.Api.Services
@@ -10,5 +11,7 @@ namespace Restaurants.Api.Services
         Task<RestaurantPlanDto> GetPlan();
         Task SavePlan(RestaurantPlanDto plan);
         Task<string> GetPlanSvg();
+        Task<IList<string>> GetRestaurantCities();
+        Task<IList<RestaurantPageItemDto>> GetPage(int page, string city, string filter);
     }
 }
