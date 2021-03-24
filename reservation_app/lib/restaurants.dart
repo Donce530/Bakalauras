@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:reservation_app/services/http_requests.dart';
 
 import 'Models/restaurants/restaurant_list_item.dart';
+import 'Models/utils/id_wrapper.dart';
 
 class RestaurantsPage extends StatefulWidget {
   @override
@@ -164,7 +165,10 @@ class _RestaurantsPageState extends State<RestaurantsPage> {
     });
   }
 
-  void _onItemClick(RestaurantListItem item) {}
+  void _onItemClick(RestaurantListItem item) {
+    Navigator.of(context, rootNavigator: true)
+        .pushNamed('/restaurantDetails', arguments: IdWrapper(item.id));
+  }
 
   Future<List<String>> _getCities() async {
     final url = 'api/Restaurant/AvailableCities';

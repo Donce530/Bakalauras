@@ -32,6 +32,13 @@ namespace Restaurants.Api.Services
             return restaurant;
         }
 
+        public async Task<RestaurantDto> GetDetails(int id)
+        {
+            var restaurant = await _restaurantRepository.GetMapped<RestaurantDto>(r => r.Id == id);
+
+            return restaurant;
+        }
+
         public async Task SaveDetails(RestaurantDto restaurant)
         {
             var userId = _userService.User.Id;
@@ -53,6 +60,15 @@ namespace Restaurants.Api.Services
             var userId = _userService.User.Id;
             var plan = _restaurantPlanRepository.GetMapped<RestaurantPlanDto>(
                 rp => rp.Restaurant.UserId == userId);
+
+            return plan;
+        }
+
+        public Task<RestaurantPlanDto> GetPlan(int restaurantId)
+        {
+            var userId = _userService.User.Id;
+            var plan = _restaurantPlanRepository.GetMapped<RestaurantPlanDto>(
+                rp => rp.RestaurantId == restaurantId);
 
             return plan;
         }

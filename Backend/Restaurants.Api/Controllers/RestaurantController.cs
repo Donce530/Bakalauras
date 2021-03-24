@@ -31,6 +31,19 @@ namespace Restaurants.Api.Controllers
             return Ok(restaurant);
         }
 
+        [HttpGet("Details/{id}")]
+        public async Task<IActionResult> GetDetailsById([FromRoute] int id)
+        {
+            var restaurant = await _restaurantService.GetDetails(id);
+
+            if (restaurant is null)
+            {
+                return NoContent();
+            }
+
+            return Ok(restaurant);
+        }
+
         [HttpPost("Details")]
         public async Task<IActionResult> SaveDetails([FromBody] RestaurantDto restaurant)
         {
@@ -64,6 +77,19 @@ namespace Restaurants.Api.Controllers
         public async Task<IActionResult> GetPlan()
         {
             var plan = await _restaurantService.GetPlan();
+
+            if (plan is null)
+            {
+                return NoContent();
+            }
+
+            return Ok(plan);
+        }
+
+        [HttpGet("Plan/{restaurantId}")]
+        public async Task<IActionResult> GetPlan([FromRoute] int restaurantId)
+        {
+            var plan = await _restaurantService.GetPlan(restaurantId);
 
             if (plan is null)
             {

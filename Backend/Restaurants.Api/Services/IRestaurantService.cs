@@ -13,5 +13,7 @@ namespace Restaurants.Api.Services
         Task<string> GetPlanSvg();
         Task<IList<string>> GetRestaurantCities();
         Task<IList<RestaurantPageItemDto>> GetPage(int page, string city, string filter);
+        Task<RestaurantDto> GetDetails(int id);
+        Task<RestaurantPlanDto> GetPlan(int id);
     }
 }
