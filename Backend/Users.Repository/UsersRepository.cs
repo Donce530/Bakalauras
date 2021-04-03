@@ -2,8 +2,8 @@
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
+using Models.Users.Models.Dao;
 using Repository;
-using Users.Models.Dao;
 
 namespace Users.Repository
 {

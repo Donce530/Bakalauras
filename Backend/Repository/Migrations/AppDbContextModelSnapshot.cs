@@ -19,6 +19,42 @@ namespace Repository.Migrations
                 .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+            modelBuilder.Entity("Reservations.Models.Dao.Reservation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTime>("Day")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<TimeSpan>("End")
+                        .HasColumnType("interval");
+
+                    b.Property<int>("RestaurantId")
+                        .HasColumnType("integer");
+
+                    b.Property<TimeSpan>("Start")
+                        .HasColumnType("interval");
+
+                    b.Property<int>("TableId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId");
+
+                    b.HasIndex("TableId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reservations");
+                });
+
             modelBuilder.Entity("Restaurants.Models.Data.OpenHours", b =>
                 {
                     b.Property<int>("WeekDay")
@@ -195,6 +231,33 @@ namespace Repository.Migrations
                     b.HasIndex("PlanId");
 
                     b.ToTable("PlanWalls");
+                });
+
+            modelBuilder.Entity("Reservations.Models.Dao.Reservation", b =>
+                {
+                    b.HasOne("Restaurants.Models.Data.Restaurant", "Restaurant")
+                        .WithMany()
+                        .HasForeignKey("RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Restaurants.Models.Data.PlanTable", "Table")
+                        .WithMany()
+                        .HasForeignKey("TableId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Users.Models.Dao.UserDao", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Restaurant");
+
+                    b.Navigation("Table");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Restaurants.Models.Data.OpenHours", b =>

@@ -1,9 +1,10 @@
 ﻿using Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Models.Reservations.Models.Data;
+using Models.Restaurants.Models.Data;
+using Models.Users.Models.Dao;
 using Repository.Seed;
-using Restaurants.Models.Data;
-using Users.Models.Dao;
 
 namespace Repository
 {
@@ -18,6 +19,7 @@ namespace Repository
         public DbSet<PlanWall> PlanWalls { get; set; }
         public DbSet<PlanTable> PlanTables { get; set; }
         public DbSet<PlanItem> PlanItems { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
 
         public AppDbContext(IOptions<AppSettings> appSettings)
         {
@@ -63,6 +65,21 @@ namespace Repository
                 .WithOne(w => w.Plan)
                 .HasForeignKey(w => w.PlanId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Reservation>()
+                .HasOne(r => r.Restaurant)
+                .WithMany(r => r.Reservations)
+                .HasForeignKey(r => r.RestaurantId);
+
+            modelBuilder.Entity<Reservation>()
+                .HasOne(r => r.Table)
+                .WithMany(t => t.Reservations)
+                .HasForeignKey(r => r.TableId);
+
+            modelBuilder.Entity<UserDao>()
+                .HasMany<Reservation>()
+                .WithOne(r => r.User)
+                .HasForeignKey(r => r.UserId);
 
             base.OnModelCreating(modelBuilder);
         }

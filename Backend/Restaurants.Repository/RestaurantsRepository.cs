@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Restaurants.Models.Data;
+using Models.Restaurants.Models.Data;
 using Repository;
 
 namespace Restaurants.Repository

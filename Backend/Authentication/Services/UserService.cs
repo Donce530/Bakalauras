@@ -8,9 +8,9 @@ using AutoMapper;
 using Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Users.Models.Dao;
-using Users.Models.Data;
-using Users.Models.Dto;
+using Models.Users.Models.Dao;
+using Models.Users.Models.Data;
+using Models.Users.Models.Dto;
 using Users.Repository;
 
 namespace Users.Api.Services

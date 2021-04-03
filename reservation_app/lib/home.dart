@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reservation_app/reservations.dart';
 import 'package:reservation_app/restaurants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -11,7 +12,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _navigatorKey = GlobalKey<NavigatorState>();
-
   var _currentIndex = 0;
   static const _routeOptions = ['restaurants', 'reservations'];
   static const _navigationItems = [
@@ -25,6 +25,12 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.yellow,
       appBar: AppBar(
         title: Text(_navigationItems[_currentIndex].label),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: _logout,
+          )
+        ],
       ),
       body: Navigator(
           key: _navigatorKey, initialRoute: 'restaurants', onGenerateRoute: _resolveRoute),
@@ -44,6 +50,13 @@ class _HomePageState extends State<HomePage> {
             });
           }
         });
+  }
+
+  Future<void> _logout() async {
+    var preferences = await SharedPreferences.getInstance();
+    await preferences.remove('user');
+    await preferences.remove('token');
+    Navigator.of(context, rootNavigator: true).pushReplacementNamed('login');
   }
 
   Route<dynamic> _resolveRoute(RouteSettings settings) {

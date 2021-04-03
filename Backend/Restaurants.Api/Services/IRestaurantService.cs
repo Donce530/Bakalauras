@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Restaurants.Models.Dto;
+using Models.Restaurants.Models.Dto;
 
 namespace Restaurants.Api.Services
 {

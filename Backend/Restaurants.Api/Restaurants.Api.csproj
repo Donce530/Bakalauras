@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Authentication\Users.Api.csproj" />
-    <ProjectReference Include="..\Restaurants.Models\Restaurants.Models.csproj" />
     <ProjectReference Include="..\Restaurants.Repository\Restaurants.Repository.csproj" />
   </ItemGroup>
 

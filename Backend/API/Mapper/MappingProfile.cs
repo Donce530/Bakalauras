@@ -1,12 +1,13 @@
-﻿using System.IO.Compression;
+﻿using System;
 using AutoMapper;
 using AutoMapper.EquivalencyExpression;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Restaurants.Models.Data;
-using Restaurants.Models.Dto;
-using Users.Models.Dao;
-using Users.Models.Data;
-using Users.Models.Dto;
+using Models.Reservations.Models.Data;
+using Models.Reservations.Models.Dto;
+using Models.Restaurants.Models.Data;
+using Models.Restaurants.Models.Dto;
+using Models.Users.Models.Dao;
+using Models.Users.Models.Data;
+using Models.Users.Models.Dto;
 
 namespace API.Mapper
 {
@@ -44,6 +45,20 @@ namespace API.Mapper
                 .EqualityComparison((src, dst) => src.Id.Equals(dst.Id));
             CreateMap<PlanTable, PlanTable>()
                 .EqualityComparison((src, dst) => src.Id.Equals(dst.Id));
+
+            CreateMap<NewReservationDto, Reservation>()
+                .ForMember(dst => dst.Start, opt => opt.MapFrom(src => src.Start.TimeOfDay))
+                .ForMember(dst => dst.End, opt => opt.MapFrom(src => src.End.TimeOfDay));
+
+            CreateMap<Reservation, ReservationListItemDto>()
+                .ForMember(dst => dst.TableNumber, opt => opt.MapFrom(src => src.Table.Number))
+                .ForMember(dst => dst.TableSeats, opt => opt.MapFrom(src => src.Table.Seats))
+                .ForMember(dst => dst.RestaurantTitle, opt => opt.MapFrom(src => src.Restaurant.Title))
+                .ForMember(dst => dst.RestaurantAddress, opt => opt.MapFrom(src => src.Restaurant.Address))
+                .ForMember(dst => dst.Start,
+                    opt => opt.MapFrom(src => new DateTime(src.Day.Year, src.Day.Month, src.Day.Day) + src.Start))
+                .ForMember(dst => dst.End,
+                    opt => opt.MapFrom(src => new DateTime(src.Day.Year, src.Day.Month, src.Day.Day) + src.End));
         }
     }
 }

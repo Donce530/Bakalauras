@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Models.Restaurants.Models.Dto;
 using Restaurants.Api.Services;
-using Restaurants.Models.Dto;
 using Users.Api.Attributes;
 
 namespace Restaurants.Api.Controllers

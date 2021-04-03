@@ -20,7 +20,32 @@
     <ProjectReference Include="..\Authentication\Users.Api.csproj" />
     <ProjectReference Include="..\Configuration\Configuration.csproj" />
     <ProjectReference Include="..\Repository\Repository.csproj" />
+    <ProjectReference Include="..\Reservations.Api\Reservations.Api.csproj" />
     <ProjectReference Include="..\Restaurants.Api\Restaurants.Api.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Models\Reservations.Models\bin\Debug\net5.0\publish\Reservations.Models.deps.json" />
+    <_ContentIncludedByDefault Remove="Models\Reservations.Models\bin\Debug\net5.0\Reservations.Models.deps.json" />
+    <_ContentIncludedByDefault Remove="Models\obj\Models.csproj.nuget.dgspec.json" />
+    <_ContentIncludedByDefault Remove="Models\obj\project.assets.json" />
+    <_ContentIncludedByDefault Remove="Models\obj\project.packagespec.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Models\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Models\**" />
   </ItemGroup>
 
 </Project>

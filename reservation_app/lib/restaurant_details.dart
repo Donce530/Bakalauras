@@ -2,24 +2,26 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:reservation_app/Models/restaurants/restaurant_details.dart';
-import 'package:reservation_app/Models/utils/id_wrapper.dart';
-import 'package:reservation_app/Models/utils/new_reservation_params.dart';
 import 'package:reservation_app/services/http_requests.dart';
 
 class RestaurantDetailsPage extends StatefulWidget {
+  final int restaurantId;
+
+  RestaurantDetailsPage(this.restaurantId);
+
   @override
   _RestaurantDetailsPageState createState() => _RestaurantDetailsPageState();
 }
 
 class _RestaurantDetailsPageState extends State<RestaurantDetailsPage> {
   final Map<int, String> _weekDays = {
-    0: 'Sekmadienis',
     1: 'Pirmadienis',
     2: 'Antradienis',
     3: 'Trečiadienis',
     4: 'Ketvirtadienis',
     5: 'Penktadienis',
-    6: 'Šeštadienis'
+    6: 'Šeštadienis',
+    7: 'Sekmadienis',
   };
 
   @override
@@ -164,8 +166,8 @@ class _RestaurantDetailsPageState extends State<RestaurantDetailsPage> {
                 padding: EdgeInsets.only(top: 40, bottom: 40),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(context, rootNavigator: true).pushNamed('/newReservation',
-                        arguments: NewReservationParams(details.id, details.schedule));
+                    Navigator.of(context, rootNavigator: true)
+                        .pushNamed('/newReservation', arguments: details);
                   },
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 8),
@@ -182,14 +184,15 @@ class _RestaurantDetailsPageState extends State<RestaurantDetailsPage> {
   }
 
   Future<RestaurantDetails> get _details async {
-    final id = (ModalRoute.of(context).settings.arguments as IdWrapper).id;
-    final response = await HttpRequests.get('/api/Restaurant/Details', {'id': id.toString()});
+    final response =
+        await HttpRequests.get('/api/Restaurant/Details', {'id': widget.restaurantId.toString()});
     if (response.statusCode != 200) {
       throw Exception('could not get restaurant');
     }
 
     final details = RestaurantDetails.fromJson(jsonDecode(response.body));
     details.schedule.sort((a, b) => a.weekDay < b.weekDay ? -1 : 1);
+    details.schedule.firstWhere((element) => element.weekDay == 0).weekDay = 7;
     details.schedule.add(details.schedule.removeAt(0));
 
     return details;

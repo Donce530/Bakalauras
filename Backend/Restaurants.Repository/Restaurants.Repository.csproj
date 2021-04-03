@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\API\Models\Models.csproj" />
     <ProjectReference Include="..\Repository\Repository.csproj" />
-    <ProjectReference Include="..\Restaurants.Models\Restaurants.Models.csproj" />
   </ItemGroup>
 
 </Project>

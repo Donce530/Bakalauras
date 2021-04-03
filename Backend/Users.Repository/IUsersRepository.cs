@@ -1,5 +1,5 @@
-﻿using Repository;
-using Users.Models.Dao;
+﻿using Models.Users.Models.Dao;
+using Repository;
 
 namespace Users.Repository
 {

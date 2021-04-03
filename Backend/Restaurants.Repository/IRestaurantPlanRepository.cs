@@ -1,7 +1,7 @@
-﻿using Repository;
-using Restaurants.Models.Data;
+﻿using Models.Restaurants.Models.Data;
+using Repository;
 
-namespace Restaurants.Api.Services
+namespace Restaurants.Repository
 {
     public interface IRestaurantPlanRepository : IRepositoryBase<RestaurantPlan>
     {

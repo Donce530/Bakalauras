@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Models.Users.Models.Dto;
 using Users.Api.Services;
-using Users.Models.Dto;
 
 namespace Users.Api.Controllers
 {

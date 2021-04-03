@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Configuration\Configuration.csproj" />
-    <ProjectReference Include="..\Users.Models\Users.Models.csproj" />
     <ProjectReference Include="..\Users.Repository\Users.Repository.csproj" />
   </ItemGroup>
 

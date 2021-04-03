@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Users.Models.Data;
-using Users.Models.Dto;
+using Models.Users.Models.Data;
+using Models.Users.Models.Dto;
 
 namespace Users.Api.Services
 {

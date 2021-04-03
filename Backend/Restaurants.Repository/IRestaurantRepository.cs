@@ -1,5 +1,5 @@
-﻿using Repository;
-using Restaurants.Models.Data;
+﻿using Models.Restaurants.Models.Data;
+using Repository;
 
 namespace Restaurants.Repository
 {

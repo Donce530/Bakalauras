@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
-using Restaurants.Models.Data;
-using Restaurants.Models.Dto;
+using Models.Restaurants.Models.Data;
+using Models.Restaurants.Models.Dto;
 using Restaurants.Repository;
 using Users.Api.Services;
 

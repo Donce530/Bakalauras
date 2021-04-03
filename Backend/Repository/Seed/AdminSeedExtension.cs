@@ -1,8 +1,6 @@
-﻿using System;
-using System.Security.Cryptography;
-using Microsoft.EntityFrameworkCore;
-using Users.Models.Dao;
-using Users.Models.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Models.Users.Models.Dao;
+using Models.Users.Models.Data;
 
 namespace Repository.Seed
 {

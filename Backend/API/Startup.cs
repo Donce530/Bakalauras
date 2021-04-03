@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Repository;
+using Reservations.Api.Extensions;
 using Restaurants.Api.Extensions;
 using Users.Api.Extensions;
 
@@ -54,6 +55,7 @@ namespace API
 
             services.AddUsersServiceConfiguration();
             services.AddRestaurantServiceConfiguration();
+            services.AddReservationServiceConfiguration();
 
             services.AddSwaggerGen(c =>
             {

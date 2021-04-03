@@ -18,18 +18,15 @@ class _SplashPageState extends State<SplashPage> {
       } else {
         var parsedToken = parseJwt(preferences.getString('token'));
         var expirationTimestamp = parsedToken['exp'];
-        var expirationTime =
-            DateTime.fromMicrosecondsSinceEpoch(expirationTimestamp * 1000);
-        if (expirationTime
-            .isBefore(DateTime.now().add(new Duration(days: 1)))) {
+        var expirationTime = DateTime.fromMillisecondsSinceEpoch(expirationTimestamp * 1000);
+        if (expirationTime.isAfter(DateTime.now().add(new Duration(days: -1)))) {
           debugPrint('tokenok');
           Navigator.pushReplacementNamed(context, 'home');
         } else {
           debugPrint('tokenShit');
           preferences.remove('user').then((_) => preferences
               .remove('token')
-              .then(
-                  (value) => Navigator.pushReplacementNamed(context, 'login')));
+              .then((value) => Navigator.pushReplacementNamed(context, 'login')));
         }
       }
     });

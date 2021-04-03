@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Users.Models.Data;
+using Models.Users.Models.Data;
 
 namespace Users.Api.Attributes
 {
