@@ -7,6 +7,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using Repository.Migrations;
 
 namespace Repository
 {
@@ -89,6 +90,8 @@ namespace Repository
         public async Task<TResult> GetMapped<TResult>(Expression<Func<TEntity, bool>> filter)
         {
             var query = DbContext.Set<TEntity>().Where(filter);
+
+            var test = DbContext.RestaurantPlans.Include(r => r.Tables).ThenInclude(t => t.LinkedTables).Where(p => p.Id == 3).Single();
 
             return await query.ProjectTo<TResult>(Mapper.ConfigurationProvider).SingleOrDefaultAsync();
         }

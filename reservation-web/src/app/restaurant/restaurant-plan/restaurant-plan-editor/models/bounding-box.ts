@@ -31,4 +31,8 @@ export class BoundingBox {
             this.height = this.height * -1;
         }
     }
+
+    public get middle(): [number, number] {
+        return [this.x + this.width / 2, this.y + this.height / 2];
+    }
 }

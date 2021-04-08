@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -25,6 +26,10 @@ namespace Restaurants.Repository
                 .Include(rp => rp.Walls)
                 .SingleOrDefaultAsync();
 
+            var tableIds = existingItem.Tables.Select(t => t.Id).ToList();
+            var existingTableLinks = await DbContext.TableLinks.Where(tl =>
+                tableIds.Contains(tl.FirstTableId) || tableIds.Contains(tl.SecondTableId)).ToListAsync();
+
             if (existingItem is null)
             {
                 throw new InvalidOperationException("Cannot update not existing restaurant");
@@ -41,19 +46,50 @@ namespace Restaurants.Repository
                 }
             }
 
-            foreach (var entityTable in entity.Tables)
+            foreach (var incomingTable in entity.Tables)
             {
-                entityTable.PlanId = entity.Id;
-                var existingChild = existingItem.Tables
-                    .SingleOrDefault(c => c.Id == entityTable.Id && c.Id != 0);
+                incomingTable.PlanId = entity.Id;
+                var existingTable = existingItem.Tables
+                    .SingleOrDefault(c => c.Id == incomingTable.Id && c.Id != 0);
 
-                if (existingChild is not null)
+                if (existingTable is not null)
                 {
-                    DbContext.Entry(existingChild).CurrentValues.SetValues(entityTable);
+                    DbContext.Entry(existingTable).CurrentValues.SetValues(incomingTable);
+                    
+                    // foreach (var existingLinkedTable in existingTable.LinkedTables)
+                    // {
+                    //     if (incomingTable.LinkedTables.All(t => t.Id != existingLinkedTable.Id))
+                    //     {
+                    //         var linkToRemove = existingTableLinks.SingleOrDefault(etl =>
+                    //             etl.FirstTableId == existingTable.Id && etl.SecondTableId == existingLinkedTable.Id);
+                    //         if (linkToRemove is not null)
+                    //         {
+                    //             DbContext.Remove(linkToRemove);
+                    //         }
+                    //     }
+                    // }
+                    //
+                    // foreach (var incomingLinkedTable in incomingTable.LinkedTables)
+                    // {
+                    //     var existingLink = existingTableLinks.SingleOrDefault(etl =>
+                    //         etl.FirstTableId == existingTable.Id && etl.SecondTableId == incomingLinkedTable.Id
+                    //         ||
+                    //         etl.SecondTableId == existingTable.Id && etl.FirstTableId == incomingLinkedTable.Id);
+                    //     if (existingLink is null)
+                    //     {
+                    //         var link = new TableLink
+                    //         {
+                    //             FirstTableId = existingTable.Id,
+                    //             SecondTableId = incomingLinkedTable.Id
+                    //         };
+                    //         await DbContext.AddAsync(link);
+                    //         existingTableLinks.Add(link);
+                    //     }
+                    // }
                 }
                 else
                 {
-                    existingItem.Tables.Add(entityTable);
+                    existingItem.Tables.Add(incomingTable);
                 }
             }
 
@@ -82,6 +118,28 @@ namespace Restaurants.Repository
             }
 
             await DbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateTableLinks(ICollection<TableLink> links, ICollection<int> planTableIds)
+        {
+            var existingLinks = await DbContext.TableLinks.Where(l =>
+                planTableIds.Contains(l.FirstTableId) || planTableIds.Contains(l.SecondTableId)).ToListAsync();
+
+            var linksToRemove = existingLinks.Except(links);
+            DbContext.TableLinks.RemoveRange(linksToRemove);
+
+            var newLinks = links.Except(existingLinks);
+            await DbContext.TableLinks.AddRangeAsync(newLinks);
+
+            await DbContext.SaveChangesAsync();
+        }
+
+        public async Task<ICollection<TableLink>> GetTableLinks(ICollection<int> tableIds)
+        {
+            var links = await DbContext.TableLinks.Where(l =>
+                tableIds.Contains(l.FirstTableId) || tableIds.Contains(l.SecondTableId)).ToListAsync();
+
+            return links;
         }
     }
 }

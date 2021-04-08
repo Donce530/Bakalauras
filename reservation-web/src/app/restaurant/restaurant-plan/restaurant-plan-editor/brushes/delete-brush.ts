@@ -37,6 +37,7 @@ export class DeleteBrush extends BrushBase {
             this.clear(this.drawContext, this.svgContext);
             this.storage.drawables.forEach(element => {
                 element.draw(this.drawContext, this.svgContext);
+                element.drawLabel(this.drawContext, this.svgContext);
             });
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -55,19 +56,42 @@ namespace Restaurants.Api.Services
             }
         }
 
-        public Task<RestaurantPlanDto> GetPlan()
+        public async Task<RestaurantPlanDto> GetPlan()
         {
             var userId = _userService.User.Id;
-            var plan = _restaurantPlanRepository.GetMapped<RestaurantPlanDto>(
+            var plan = await _restaurantPlanRepository.GetMapped<RestaurantPlanDto>(
                 rp => rp.Restaurant.UserId == userId);
 
+            await AddTableLinks(plan);
+            
             return plan;
         }
 
-        public Task<RestaurantPlanDto> GetPlan(int restaurantId)
+        private async Task AddTableLinks(RestaurantPlanDto plan)
+        {
+            var tableLinks = (await _restaurantPlanRepository.GetTableLinks(plan.Tables.Select(t => t.Id).ToList())).ToList();
+
+            foreach (var table in plan.Tables)
+            {
+                var linkedTables = plan.Tables.Where(t =>
+                {
+                    var link = new TableLink
+                    {
+                        FirstTableId = table.Id,
+                        SecondTableId = t.Id
+                    };
+
+                    return tableLinks.Exists(tl => tl.Equals(link));
+                });
+
+                table.LinkedTableNumbers = linkedTables.Select(lt => lt.Number).ToList();
+            }
+        }
+
+        public async Task<RestaurantPlanDto> GetPlan(int restaurantId)
         {
             var userId = _userService.User.Id;
-            var plan = _restaurantPlanRepository.GetMapped<RestaurantPlanDto>(
+            var plan = await _restaurantPlanRepository.GetMapped<RestaurantPlanDto>(
                 rp => rp.RestaurantId == restaurantId);
 
             return plan;
@@ -88,6 +112,31 @@ namespace Restaurants.Api.Services
                     r => r.Id);
                 await _restaurantPlanRepository.Create(mappedPlan);
             }
+
+            await UpdateTableLinks(mappedPlan);
+        }
+
+        private async Task UpdateTableLinks(RestaurantPlan mappedPlan)
+        {
+            var links = new List<TableLink>();
+            
+            foreach (var table in mappedPlan.Tables)
+            {
+                foreach (var linkedTable in table.LinkedTables)
+                {
+                    if (!links.Exists(l => l.FirstTableId == table.Id && l.SecondTableId == linkedTable.Id ||
+                                           l.SecondTableId == table.Id && l.FirstTableId == linkedTable.Id))
+                    {
+                        links.Add(new TableLink
+                        {
+                            FirstTableId = table.Id,
+                            SecondTableId = linkedTable.Id
+                        });
+                    }
+                }
+            }
+
+            await _restaurantPlanRepository.UpdateTableLinks(links, mappedPlan.Tables.Select(t => t.Id).ToList());
         }
 
         public async Task<string> GetPlanSvg()

@@ -20,6 +20,7 @@ namespace Repository
         public DbSet<PlanTable> PlanTables { get; set; }
         public DbSet<PlanItem> PlanItems { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<TableLink> TableLinks { get; set; }
 
         public AppDbContext(IOptions<AppSettings> appSettings)
         {
@@ -80,6 +81,16 @@ namespace Repository
                 .HasMany<Reservation>()
                 .WithOne(r => r.User)
                 .HasForeignKey(r => r.UserId);
+
+            modelBuilder.Entity<PlanTable>()
+                .HasMany(x => x.LinkedTables)
+                .WithMany(x => x.LinkedTables)
+                .UsingEntity<TableLink>(
+                    x => x.HasOne(tl => tl.FirstTable)
+                        .WithMany().HasForeignKey(tl => tl.FirstTableId),
+                    x => x.HasOne(tl => tl.SecondTable)
+                        .WithMany().HasForeignKey(tl => tl.SecondTableId),
+                    x => x.HasKey(tl => new { tl.FirstTableId, tl.SecondTableId }));
 
             base.OnModelCreating(modelBuilder);
         }

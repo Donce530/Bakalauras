@@ -13,5 +13,6 @@ namespace Models.Restaurants.Models.Data
         public RestaurantPlan Plan { get; set; }
         public int PlanId { get; set; }
         public ICollection<Reservation> Reservations { get; set; }
+        public ICollection<PlanTable> LinkedTables { get; set; }
     }
 }

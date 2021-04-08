@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using AutoMapper.EquivalencyExpression;
 using Models.Reservations.Models.Data;
@@ -34,9 +36,25 @@ namespace API.Mapper
             CreateMap<Restaurant, RestaurantPageItemDto>();
 
             CreateMap<WallDto, PlanWall>().ReverseMap();
-            CreateMap<TableDto, PlanTable>().ReverseMap();
+            CreateMap<TableDto, PlanTable>();
+            CreateMap<PlanTable, TableDto>().ForMember(dst => dst.LinkedTableNumbers,
+                opt => opt.MapFrom(src => src.LinkedTables.Select(lt => lt.Number)));
 
-            CreateMap<RestaurantPlanDto, RestaurantPlan>().ReverseMap();
+            CreateMap<RestaurantPlanDto, RestaurantPlan>()
+                .AfterMap((src, dst) =>
+                {
+                    var sourceTableByNumber = src.Tables.ToDictionary(t => t.Number, t => t);
+                    var destinationTableByNumber = dst.Tables.ToDictionary(t => t.Number, t => t);
+                    
+                    foreach (var table in dst.Tables)
+                    {
+                        table.LinkedTables = sourceTableByNumber[table.Number].LinkedTableNumbers
+                            .Select(tn => destinationTableByNumber[tn]).ToList();
+                    }
+                });
+
+            CreateMap<RestaurantPlan, RestaurantPlanDto>();
+            
             CreateMap<RestaurantPlan, RestaurantPlan>()
                 .ForMember(dst => dst.Id, opt => opt.Ignore())
                 .ForMember(dst => dst.RestaurantId, opt => opt.Ignore());

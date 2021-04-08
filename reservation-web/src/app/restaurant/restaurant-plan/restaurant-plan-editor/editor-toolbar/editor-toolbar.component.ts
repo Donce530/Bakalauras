@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { faSave, faWindowClose } from '@fortawesome/free-regular-svg-icons';
-import { faChair, faDoorOpen, faFont, faTrash, faVectorSquare } from '@fortawesome/free-solid-svg-icons';
+import { faChair, faDoorOpen, faFont, faProjectDiagram, faTrash, faVectorSquare } from '@fortawesome/free-solid-svg-icons';
 import { RestaurantBehaviourService } from 'src/app/restaurant/services/restaurant-behaviour.service';
 import { EditorMode } from '../enums/editor-mode.enum';
 import { EditorBehaviourService } from '../services/editor-behaviour.service';
@@ -49,9 +49,10 @@ export class EditorToolbarComponent implements OnInit {
     this.modes = [
       new ModeButton({ mode: EditorMode.Wall, tooltip: 'Siena', icon: faVectorSquare }),
       new ModeButton({ mode: EditorMode.Table, tooltip: 'Stalas', icon: faChair }),
+      new ModeButton({ mode: EditorMode.Link, tooltip: 'Susiejimas', icon: faProjectDiagram }),
       new ModeButton({ mode: EditorMode.Door, tooltip: 'Durys', icon: faDoorOpen }),
       new ModeButton({ mode: EditorMode.Comment, tooltip: 'Komentaras', icon: faFont }),
-      new ModeButton({ mode: EditorMode.Delete, tooltip: 'Naikinti', icon: faTrash })
+      new ModeButton({ mode: EditorMode.Delete, tooltip: 'Naikinti', icon: faTrash }),
     ];
 
     const storedSnappingState = localStorage.getItem('snappingState');

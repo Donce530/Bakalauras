@@ -26,4 +26,8 @@ export class Wall extends BoundingBox implements Drawable {
             context.stroke();
         });
     }
+
+    drawLabel(...contexts: CanvasRenderingContext2D[]): void {
+
+    }
 }

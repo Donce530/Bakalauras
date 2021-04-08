@@ -4,9 +4,11 @@ import { Drawable } from './drawable';
 export class Table extends BoundingBox implements Drawable {
 
     public svg: string;
-
     public seats = 4;
     public number: number;
+
+    public linkedTables: Table[] = [];
+    public linkedTableNumbers: number[];
 
     private _defaultRounding = 10;
 
@@ -41,6 +43,18 @@ export class Table extends BoundingBox implements Drawable {
             context.arcTo(this.x, this.y, this.x + this.width, this.y, rounding);
             context.closePath();
             context.stroke();
+        });
+    }
+
+    drawLabel(...contexts: CanvasRenderingContext2D[]): void {
+        contexts.forEach(context => {
+            context.font = `bold ${(this.height + this.width) / 8}px serif`;
+            let [midX, midY] = this.middle;
+            const textMeasurement = context.measureText(this.number.toString());
+            midX = midX - textMeasurement.width / 2;
+            midY = midY + (textMeasurement.fontBoundingBoxAscent) / 2;
+
+            context.fillText(this.number.toString(), midX, midY);
         });
     }
 }

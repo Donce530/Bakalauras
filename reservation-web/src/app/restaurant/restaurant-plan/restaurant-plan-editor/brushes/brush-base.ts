@@ -20,6 +20,7 @@ export abstract class BrushBase implements Brush {
     protected parentOffsetY: number;
     protected absoluteX: number;
     protected absoluteY: number;
+    protected lastClickedButton: number;
 
     private _currentSvg: string;
 
@@ -33,7 +34,7 @@ export abstract class BrushBase implements Brush {
         this.parentOffsetY = parentBoundingBox.y;
 
         this._currentSvg = this.svgContext.getSerializedSvg();
-
+        this.clear(previewContext);
         this.initialize();
     }
 
@@ -47,6 +48,7 @@ export abstract class BrushBase implements Brush {
         this.isDrawing = true;
         this.startX = event.x - this.parentOffsetX;
         this.startY = event.y - this.parentOffsetY;
+        this.lastClickedButton = event.button;
         this.down();
     }
 

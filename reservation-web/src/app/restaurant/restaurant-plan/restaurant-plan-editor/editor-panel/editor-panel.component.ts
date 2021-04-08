@@ -4,17 +4,17 @@ import { EditorMode } from '../enums/editor-mode.enum';
 import { EditorBehaviourService } from '../services/editor-behaviour.service';
 import * as C2S from 'canvas2svg/canvas2svg.js';
 import { WallBrush } from '../brushes/wall-brush';
-import { combineLatest, fromEvent, interval, Subject, SubscriptionLike } from 'rxjs';
+import { combineLatest, fromEvent, Subject, SubscriptionLike } from 'rxjs';
 import { EditorSnappingService } from '../services/editor-snapping.service';
 import { DeleteBrush } from '../brushes/delete-brush';
 import { TableBrush } from '../brushes/table-brush';
 import { RestaurantDataService } from 'src/app/restaurant/services/restaurant-data.service';
 import { EditTableParameters } from '../models/edit-table-parameters';
 import { EditorDataService } from '../services/editor-data.service';
-import { RestaurantPlan } from '../models/restaurant-plan';
 import { EditorStorage } from '../models/editor-storage';
 import { map } from 'rxjs/operators';
 import { RestaurantBehaviourService } from 'src/app/restaurant/services/restaurant-behaviour.service';
+import { LinkBrush } from '../brushes/link-brush';
 
 @Component({
   selector: 'app-editor-panel',
@@ -89,7 +89,6 @@ export class EditorPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   private changeBrush(mode: EditorMode): void {
     const canvas: HTMLCanvasElement = this.previewCanvas.nativeElement;
     this._brushSubsciptions.forEach(subscription => subscription?.unsubscribe());
-
     let supportsSnapping = false;
     switch (mode) {
       case EditorMode.Wall: {
@@ -106,6 +105,11 @@ export class EditorPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         this._brushSubsciptions.push(this._behaviourService.snappingState.subscribe(state => brush.snap = state));
         brush.editTable = (parameters: EditTableParameters) => this._behaviourService.initTableEdit(parameters);
         supportsSnapping = true;
+        this.brush = brush;
+        break;
+      }
+      case EditorMode.Link: {
+        const brush = new LinkBrush(this._editorDataService.storage, this._planContext, this._previewContext, this._svgContext);
         this.brush = brush;
         break;
       }

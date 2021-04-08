@@ -52,6 +52,10 @@ export class RestaurantDataService {
   }
 
   public savePlan(plan: RestaurantPlan): Observable<void> {
+    for (const table of plan.tables) {
+      table.linkedTableNumbers = table.linkedTables.map(t => t.number);
+      table.linkedTables = [];
+    }
     return this._httpService.savePlan(plan);
   }
 
@@ -61,11 +65,17 @@ export class RestaurantDataService {
         if (plan == null) {
           return new RestaurantPlan(0, '', new EditorStorage());
         } else {
-          return new RestaurantPlan(plan.id, plan.webSvg,
+          const mappedPlan = new RestaurantPlan(plan.id, plan.webSvg,
             new EditorStorage({
               tables: plan.tables.map(t => new Table(t)),
               walls: plan.walls.map(w => new Wall(w))
             }));
+
+          mappedPlan.tables.forEach(table => {
+            table.linkedTables = mappedPlan.tables.filter(t => table.linkedTableNumbers.includes(t.number));
+          });
+
+          return mappedPlan;
         }
       })
     );

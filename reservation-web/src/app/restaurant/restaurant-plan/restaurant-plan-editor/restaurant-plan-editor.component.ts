@@ -1,7 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { RestaurantDataService } from '../../services/restaurant-data.service';
-import { EditorStorage } from './models/editor-storage';
-import { RestaurantPlan } from './models/restaurant-plan';
+import { Component } from '@angular/core';
 import { EditorBehaviourService } from './services/editor-behaviour.service';
 import { EditorDataService } from './services/editor-data.service';
 import { EditorSnappingService } from './services/editor-snapping.service';

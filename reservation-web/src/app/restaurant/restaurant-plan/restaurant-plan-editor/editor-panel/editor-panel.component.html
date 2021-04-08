@@ -1,11 +1,12 @@
 <div id="container" class="hexagons">
     <div #outerWrapper id='outer_wrapper'>
-       <div id='outer'>
+        <div id='outer'>
             <div #box class='box'>
                 <canvas #planCanvas></canvas>
                 <canvas #snappingCanvas></canvas>
-                <canvas #previewCanvas [style.cursor]="brush ? 'crosshair' : 'default'"></canvas>
+                <canvas #previewCanvas [style.cursor]="brush ? 'crosshair' : 'default'"
+                    oncontextmenu="return false;"></canvas>
             </div>
-       </div>
+        </div>
     </div>
- </div>
+</div>

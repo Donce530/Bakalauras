@@ -1,3 +1,4 @@
+import { Drawable } from '../drawables/drawable';
 import { Table } from '../drawables/table';
 import { BoundingBox } from '../models/bounding-box';
 import { EditTableParameters } from '../models/edit-table-parameters';
@@ -108,6 +109,8 @@ export class TableBrush extends SnappingBrushBase {
 
                 this._table.svg = this.getNewSvg(this.svgContext.getSerializedSvg());
                 this._table.number = this.storage.tables.length + 1;
+
+                this._table.drawLabel(this.drawContext, this.svgContext);
                 this.storage.tables.push(this._table);
             }
 
@@ -124,5 +127,12 @@ export class TableBrush extends SnappingBrushBase {
         this.previewContext.strokeStyle = '#009402';
         this.previewContext.strokeRect(this.snappedX, this.snappedY, 1, 1);
         this.previewContext.strokeStyle = previousStrokeStyle;
+    }
+
+    public draw(drawables: Drawable[]): void {
+        drawables.forEach(drawable => {
+            drawable.draw(this.drawContext, this.svgContext);
+            drawable.drawLabel(this.drawContext, this.svgContext);
+        });
     }
 }

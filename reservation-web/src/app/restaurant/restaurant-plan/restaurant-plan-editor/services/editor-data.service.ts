@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Table } from '../drawables/table';
 import { EditorStorage } from '../models/editor-storage';
 import { RestaurantPlan } from '../models/restaurant-plan';
 
