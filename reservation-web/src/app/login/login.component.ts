@@ -39,7 +39,6 @@ export class LoginComponent implements OnInit {
     );
 
     this.loginForm.updateValueAndValidity();
-    console.log(this.loginForm);
   }
 
   public login(): void {

@@ -184,8 +184,7 @@ class _RestaurantDetailsPageState extends State<RestaurantDetailsPage> {
   }
 
   Future<RestaurantDetails> get _details async {
-    final response =
-        await HttpRequests.get('/api/Restaurant/Details', {'id': widget.restaurantId.toString()});
+    final response = await HttpRequests.get('/api/Restaurant/Details/${widget.restaurantId}');
     if (response.statusCode != 200) {
       throw Exception('could not get restaurant');
     }

@@ -1,14 +1,13 @@
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="authService.currentUser != null">
     <div id="menu" class="row justify-content-center">
         <div class="col-1 image-container">
             <img src="assets/page_icon.png">
         </div>
-        <div class="col-1 h-100">
-            <p-button styleClass="p-button-link" label="Restoranas"></p-button>
-        </div>
-        <div class="col-1 h-100">
-            <p-button styleClass="p-button-link" label="Rezervacijos"></p-button>
-        </div>
+        <p-tabMenu [model]="menuItems" [activeItem]="activeItem">
+            <ng-template pTemplate="item" let-item let-i="index">
+                {{item.label}}
+            </ng-template>
+        </p-tabMenu>
         <div class="ml-auto h-100">
             <button pButton pRipple type="button" icon="pi pi-times"
                 class="p-button-rounded p-button-danger p-button-outlined"></button>

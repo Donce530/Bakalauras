@@ -40,18 +40,7 @@ namespace API.Mapper
             CreateMap<PlanTable, TableDto>().ForMember(dst => dst.LinkedTableNumbers,
                 opt => opt.MapFrom(src => src.LinkedTables.Select(lt => lt.Number)));
 
-            CreateMap<RestaurantPlanDto, RestaurantPlan>()
-                .AfterMap((src, dst) =>
-                {
-                    var sourceTableByNumber = src.Tables.ToDictionary(t => t.Number, t => t);
-                    var destinationTableByNumber = dst.Tables.ToDictionary(t => t.Number, t => t);
-                    
-                    foreach (var table in dst.Tables)
-                    {
-                        table.LinkedTables = sourceTableByNumber[table.Number].LinkedTableNumbers
-                            .Select(tn => destinationTableByNumber[tn]).ToList();
-                    }
-                });
+            CreateMap<RestaurantPlanDto, RestaurantPlan>();
 
             CreateMap<RestaurantPlan, RestaurantPlanDto>();
             
@@ -77,6 +66,31 @@ namespace API.Mapper
                     opt => opt.MapFrom(src => new DateTime(src.Day.Year, src.Day.Month, src.Day.Day) + src.Start))
                 .ForMember(dst => dst.End,
                     opt => opt.MapFrom(src => new DateTime(src.Day.Year, src.Day.Month, src.Day.Day) + src.End));
+
+            CreateMap<Reservation, ReservationDataRow>()
+                .ForMember(dst => dst.User,
+                    opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
+                .ForMember(dst => dst.Start,
+                    opt => opt.MapFrom(src => new DateTime(src.Day.Year, src.Day.Month, src.Day.Day) + src.Start))
+                .ForMember(dst => dst.End,
+                    opt => opt.MapFrom(src => new DateTime(src.Day.Year, src.Day.Month, src.Day.Day) + src.End))
+                .ForMember(dst => dst.TableNumber, opt => opt.MapFrom(src => src.Table.Number));
+
+            CreateMap<Reservation, ReservationDetails>()
+                .ForMember(dst => dst.UserFullName,
+                    opt => opt.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
+                .ForMember(dst => dst.UserEmail,
+                    opt => opt.MapFrom(src => src.User.Email))
+                .ForMember(dst => dst.UserPhoneNumber,
+                    opt => opt.MapFrom(src => src.User.PhoneNumber))
+                .ForMember(dst => dst.Start,
+                    opt => opt.MapFrom(src => new DateTime(src.Day.Year, src.Day.Month, src.Day.Day) + src.Start))
+                .ForMember(dst => dst.End,
+                    opt => opt.MapFrom(src => new DateTime(src.Day.Year, src.Day.Month, src.Day.Day) + src.End))
+                .ForMember(dst => dst.TableNumber, opt => opt.MapFrom(src => src.Table.Number))
+                .ForMember(dst => dst.TableSeats, opt => opt.MapFrom(src => src.Table.Seats))
+                .ForMember(dst => dst.TableId, opt => opt.MapFrom(src => src.Table.Id))
+                .ForMember(dst => dst.LinkedTableDetails, opt => opt.Ignore());
         }
     }
 }

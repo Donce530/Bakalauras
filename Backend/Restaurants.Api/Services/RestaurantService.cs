@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
+using Models.Reservations.Models.Dto;
 using Models.Restaurants.Models.Data;
 using Models.Restaurants.Models.Dto;
 using Restaurants.Repository;
@@ -69,7 +70,9 @@ namespace Restaurants.Api.Services
 
         private async Task AddTableLinks(RestaurantPlanDto plan)
         {
-            var tableLinks = (await _restaurantPlanRepository.GetTableLinks(plan.Tables.Select(t => t.Id).ToList())).ToList();
+            var tableIds = plan.Tables.Select(t => t.Id).ToList();
+            var tableLinks = (await _restaurantPlanRepository.GetTableLinks(l =>
+                tableIds.Contains(l.FirstTableId) || tableIds.Contains(l.SecondTableId))).ToList();
 
             foreach (var table in plan.Tables)
             {
@@ -90,7 +93,6 @@ namespace Restaurants.Api.Services
 
         public async Task<RestaurantPlanDto> GetPlan(int restaurantId)
         {
-            var userId = _userService.User.Id;
             var plan = await _restaurantPlanRepository.GetMapped<RestaurantPlanDto>(
                 rp => rp.RestaurantId == restaurantId);
 
@@ -113,30 +115,32 @@ namespace Restaurants.Api.Services
                 await _restaurantPlanRepository.Create(mappedPlan);
             }
 
-            await UpdateTableLinks(mappedPlan);
+            await UpdateTableLinks(mappedPlan, plan);
         }
 
-        private async Task UpdateTableLinks(RestaurantPlan mappedPlan)
+        private async Task UpdateTableLinks(RestaurantPlan plan, RestaurantPlanDto planDto)
         {
             var links = new List<TableLink>();
+            var tablesByNumber = plan.Tables.ToDictionary(table => table.Number, table => table);
             
-            foreach (var table in mappedPlan.Tables)
+            foreach (var table in planDto.Tables)
             {
-                foreach (var linkedTable in table.LinkedTables)
+                var tableId = tablesByNumber[table.Number].Id;
+                foreach (var linkedTable in table.LinkedTableNumbers.Select(ltn => tablesByNumber[ltn]))
                 {
-                    if (!links.Exists(l => l.FirstTableId == table.Id && l.SecondTableId == linkedTable.Id ||
-                                           l.SecondTableId == table.Id && l.FirstTableId == linkedTable.Id))
+                    if (!links.Exists(l => l.FirstTableId == tableId && l.SecondTableId == linkedTable.Id ||
+                                           l.SecondTableId == tableId && l.FirstTableId == linkedTable.Id))
                     {
                         links.Add(new TableLink
                         {
-                            FirstTableId = table.Id,
+                            FirstTableId = tableId,
                             SecondTableId = linkedTable.Id
                         });
                     }
                 }
             }
 
-            await _restaurantPlanRepository.UpdateTableLinks(links, mappedPlan.Tables.Select(t => t.Id).ToList());
+            await _restaurantPlanRepository.UpdateTableLinks(links, plan.Tables.Select(t => t.Id).ToList());
         }
 
         public async Task<string> GetPlanSvg()
@@ -158,17 +162,19 @@ namespace Restaurants.Api.Services
         public async Task<IList<RestaurantPageItemDto>> GetPage(int page, string city, string filter)
         {
             city = city.ToLower();
-            if (filter is not null)
-            {
-                filter = filter.ToLower();
-            }
+            filter = filter?.ToLower();
             Expression<Func<Restaurant, bool>> filterExpression = string.IsNullOrEmpty(filter) ?
                 r => r.City.ToLower().Equals(city) :
                 r => r.City.ToLower().Equals(city) && r.Title.ToLower().Contains(filter) || r.Address.ToLower().Contains(filter);
 
-            var restaurants = await _restaurantRepository.GetPaged<RestaurantPageItemDto>(page * 10, 10, filterExpression);
+            var paginator = new Paginator
+            {
+                Offset = page * 10,
+                Rows = 10
+            };
+            var restaurants = await _restaurantRepository.GetPaged<RestaurantPageItemDto>(paginator, new List<Expression<Func<Restaurant, bool>>> {filterExpression});
 
-            return restaurants;
+            return restaurants.Results;
         }
     }
 }

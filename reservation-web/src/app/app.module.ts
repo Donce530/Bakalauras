@@ -13,6 +13,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoggedInGuard } from './shared/guards/logged-in.guard';
 import { PrimeNgComponentsModule } from './shared/modules/prime-ng-components/prime-ng-components.module';
 import { JwtTokenInterceptor } from './shared/interceptors/jwt-token.interceptor';
+import { ReservationsModule } from './reservations/reservations.module';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { JwtTokenInterceptor } from './shared/interceptors/jwt-token.interceptor
     AppRoutingModule,
     RestaurantModule,
     LoginModule,
+    ReservationsModule,
     HttpClientModule,
     FontAwesomeModule,
     PrimeNgComponentsModule,

@@ -1,0 +1,75 @@
+<p-card>
+    <p-progressSpinner *ngIf="details == null"></p-progressSpinner>
+    <div *ngIf="details != null" class="container-fluid">
+        <div class="row">
+            <div class="col-4">
+                <p-fieldset>
+                    <ng-template pTemplate="header">Rezervacijos išklotinė</ng-template>
+                    <div class="row">
+                        <div class="col-5">
+                            <label>Klientas</label>
+                        </div>
+                        <div class="col-7">
+                            <label>{{details.userFullName}}</label>
+                        </div>
+                        <div class="col-5">
+                            <label>Telefono numeris</label>
+                        </div>
+                        <div class="col-7">
+                            <label>{{details.userPhoneNumber}}</label>
+                        </div>
+                        <div class="col-5">
+                            <label>El. pašto adresas</label>
+                        </div>
+                        <div class="col-7">
+                            <label>{{details.userEmail}}</label>
+                        </div>
+                        <div class="col-12">
+                            <p-divider></p-divider>
+                        </div>
+                        <div class="col-5">
+                            <label>Staliuko numeris</label>
+                        </div>
+                        <div class="col-7">
+                            <label>{{details.tableNumber}}</label>
+                        </div>
+                        <div class="col-5">
+                            <label>Staliuko sėdimų vietų kiekis</label>
+                        </div>
+                        <div class="col-7">
+                            <label>{{details.tableSeats}}</label>
+                        </div>
+                        <div class="col-12">
+                            <p-divider></p-divider>
+                        </div>
+                        <div class="col-5">
+                            <label>Diena</label>
+                        </div>
+                        <div class="col-7">
+                            <label>{{details.day | date}}</label>
+                        </div>
+                        <div class="col-5">
+                            <label>Rezervacijos pradžia</label>
+                        </div>
+                        <div class="col-7">
+                            <label>{{details.start.toString() | time}}</label>
+                        </div>
+                        <div class="col-5">
+                            <label>Rezervacijos pabaiga</label>
+                        </div>
+                        <div class="col-7">
+                            <label>{{details.end.toString() | time}}</label>
+                        </div>
+                    </div>
+                </p-fieldset>
+            </div>
+            <div class="col-8">
+                <p-fieldset>
+                    <ng-template pTemplate="header">Susiję apsilankymai</ng-template>
+                    <app-reservation-details-table [details]="details.linkedTableDetails">
+                    </app-reservation-details-table>
+                </p-fieldset>
+            </div>
+        </div>
+    </div>
+</p-card>

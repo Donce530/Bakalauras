@@ -55,37 +55,6 @@ namespace Restaurants.Repository
                 if (existingTable is not null)
                 {
                     DbContext.Entry(existingTable).CurrentValues.SetValues(incomingTable);
-                    
-                    // foreach (var existingLinkedTable in existingTable.LinkedTables)
-                    // {
-                    //     if (incomingTable.LinkedTables.All(t => t.Id != existingLinkedTable.Id))
-                    //     {
-                    //         var linkToRemove = existingTableLinks.SingleOrDefault(etl =>
-                    //             etl.FirstTableId == existingTable.Id && etl.SecondTableId == existingLinkedTable.Id);
-                    //         if (linkToRemove is not null)
-                    //         {
-                    //             DbContext.Remove(linkToRemove);
-                    //         }
-                    //     }
-                    // }
-                    //
-                    // foreach (var incomingLinkedTable in incomingTable.LinkedTables)
-                    // {
-                    //     var existingLink = existingTableLinks.SingleOrDefault(etl =>
-                    //         etl.FirstTableId == existingTable.Id && etl.SecondTableId == incomingLinkedTable.Id
-                    //         ||
-                    //         etl.SecondTableId == existingTable.Id && etl.FirstTableId == incomingLinkedTable.Id);
-                    //     if (existingLink is null)
-                    //     {
-                    //         var link = new TableLink
-                    //         {
-                    //             FirstTableId = existingTable.Id,
-                    //             SecondTableId = incomingLinkedTable.Id
-                    //         };
-                    //         await DbContext.AddAsync(link);
-                    //         existingTableLinks.Add(link);
-                    //     }
-                    // }
                 }
                 else
                 {
@@ -134,10 +103,9 @@ namespace Restaurants.Repository
             await DbContext.SaveChangesAsync();
         }
 
-        public async Task<ICollection<TableLink>> GetTableLinks(ICollection<int> tableIds)
+        public async Task<ICollection<TableLink>> GetTableLinks(Expression<Func<TableLink, bool>> filter)
         {
-            var links = await DbContext.TableLinks.Where(l =>
-                tableIds.Contains(l.FirstTableId) || tableIds.Contains(l.SecondTableId)).ToListAsync();
+            var links = await DbContext.TableLinks.Where(filter).ToListAsync();
 
             return links;
         }

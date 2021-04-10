@@ -12,6 +12,7 @@
     <ProjectReference Include="..\API\Models\Models.csproj" />
     <ProjectReference Include="..\Authentication\Users.Api.csproj" />
     <ProjectReference Include="..\Reservations.Repository\Reservations.Repository.csproj" />
+    <ProjectReference Include="..\Restaurants.Repository\Restaurants.Repository.csproj" />
   </ItemGroup>
 
 </Project>

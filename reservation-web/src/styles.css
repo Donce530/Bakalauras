@@ -9,7 +9,7 @@ body {
 }
 
 router-outlet + * > div {
-    height: 90vh;
+    height: 92vh;
 }
 
 body {
@@ -18,6 +18,19 @@ body {
     --cancel-col: #6d676eff;
     --border-col: #1b1b1eff;
     --warning-col: #96031aff;
+}
+
+.p-datepicker-timeonly .p-datepicker-buttonbar > button:first-child {
+    display: none;
+}
+
+.p-datepicker-timeonly .p-datepicker-buttonbar {
+    text-align: center;
+}
+
+.p-datepicker-timeonly .p-datepicker-buttonbar > button:last-child{
+    margin: auto;
+    display: block;
 }
 
 .p-inputgroup.invalid-field > * {

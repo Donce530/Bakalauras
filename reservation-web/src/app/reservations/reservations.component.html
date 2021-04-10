@@ -1,0 +1,151 @@
+<div class="d-flex align-items-stretch">
+    <div class="flex-even p-1">
+        <p-card class="full-height">
+            <ng-template pTemplate="header">
+                <div class="d-flex align-items-left ml-2 mt-1">
+                    <h1>Rezervacijos</h1>
+                </div>
+            </ng-template>
+            <p-table #dt [value]="reservations" [rows]="paginator.rows" [totalRecords]="paginator.totalRows"
+                [lazy]="true" (onLazyLoad)="loadData($event)" [paginator]="true" paginatorPosition="bottom"
+                [loading]="loading" [rowsPerPageOptions]="[10,20,50]" dataKey="id">
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th style="width: 3rem"></th>
+                        <th pSortableColumn="User">Klientas
+                            <p-sortIcon field="User"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="TableNumber">
+                            Staliuko numeris
+                            <p-sortIcon field="TableNumber"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="Day">
+                            Diena
+                            <p-sortIcon field="Day"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="Start">
+                            Pradžia
+                            <p-sortIcon field="Start"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="End">
+                            Pabaiga
+                            <p-sortIcon field="End"></p-sortIcon>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th>
+                            <p-columnFilter field="User" matchMode="contains" [showMenu]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <input placeholder="Paieška..." pInputText type="text"
+                                        (change)="filter($event.target)">
+                                </ng-template>
+                            </p-columnFilter>
+                        </th>
+                        <th>
+                            <p-columnFilter field="TableNumber" matchMode="contains" [showMenu]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <input placeholder="Paieška..." pInputText type="number"
+                                        (change)="filter($event.target)">
+                                </ng-template>
+                            </p-columnFilter>
+                        </th>
+                        <th>
+                            <p-columnFilter field="Day" matchMode="contains" [showMenu]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <p-calendar placeholder="Paieška..." dateFormat="dd-mm-yy" appendTo="body"
+                                        [firstDayOfWeek]="1" [showButtonBar]="true" (onSelect)="filter($event)"
+                                        (onClearClick)="filter(null)">
+                                    </p-calendar>
+                                </ng-template>
+                            </p-columnFilter>
+                        </th>
+                        <th>
+                            <div class="row">
+                                <div class="col-5">
+                                    <p-columnFilter field="StartAfter" matchMode="contains" [showMenu]="false">
+                                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                            <p-calendar placeholder="Nuo" [timeOnly]="true" [(ngModel)]="startAfter"
+                                                [showButtonBar]="true" class="small-time-input"
+                                                (onClickOutside)="filter(startAfter)"
+                                                (onClearClick)="startAfter = null; filter(null);"
+                                                (keyUp.enter)="filter(startAfter)" appendTo="body">
+                                            </p-calendar>
+                                        </ng-template>
+                                    </p-columnFilter>
+                                </div>
+                                <div class="col-2 text-center align-middle">
+                                    -
+                                </div>
+                                <div class="col-5">
+                                    <p-columnFilter field="StartBefore" matchMode="contains" [showMenu]="false">
+                                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                            <p-calendar placeholder="Iki" [timeOnly]="true" [(ngModel)]="startBefore"
+                                                [showButtonBar]="true" class="small-time-input"
+                                                (onClickOutside)="filter(startBefore)"
+                                                (onClearClick)="startBefore = null; filter(null);"
+                                                (keyUp.enter)="filter(startBefore)" appendTo="body">
+                                            </p-calendar>
+                                        </ng-template>
+                                    </p-columnFilter>
+                                </div>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="row">
+                                <div class="col-5">
+                                    <p-columnFilter field="EndAfter" matchMode="contains" [showMenu]="false">
+                                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                            <p-calendar placeholder="Nuo" [timeOnly]="true" [(ngModel)]="endAfter"
+                                                [showButtonBar]="true" class="small-time-input"
+                                                (onClickOutside)="filter(endAfter)"
+                                                (onClearClick)="endAfter = null; filter(null);"
+                                                (keyUp.enter)="filter(endAfter)" appendTo="body">
+                                            </p-calendar>
+                                        </ng-template>
+                                    </p-columnFilter>
+                                </div>
+                                <div class="col-2 text-center align-middle">
+                                    -
+                                </div>
+                                <div class="col-5">
+                                    <p-columnFilter field="EndBefore" matchMode="contains" [showMenu]="false">
+                                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                            <p-calendar placeholder="Iki" [timeOnly]="true" [(ngModel)]="endBefore"
+                                                [showButtonBar]="true" class="small-time-input"
+                                                (onClickOutside)="filter(endBefore)"
+                                                (onClearClick)="endBefore = null; filter(null);"
+                                                (keyUp.enter)="filter(endBefore)" appendTo="body">
+                                            </p-calendar>
+                                        </ng-template>
+                                    </p-columnFilter>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-expanded="expanded">
+                    <tr>
+                        <td class="p-2">
+                            <button type="button" pButton [pRowToggler]="rowData" pRipple
+                                class="p-button-text p-button-rounded p-button-plain"
+                                [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+                        </td>
+                        <td>{{rowData.user}}</td>
+                        <td>{{rowData.tableNumber}}</td>
+                        <td>{{getFormattedDate(rowData.day)}}</td>
+                        <td>{{rowData.start | time}}</td>
+                        <td>{{rowData.end | time}}</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="rowexpansion" let-reservation>
+                    <tr>
+                        <td colspan="6">
+                            <app-reservation-details [id]="reservation.id"></app-reservation-details>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </p-card>
+    </div>
+</div>

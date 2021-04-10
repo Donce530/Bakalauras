@@ -17,6 +17,8 @@ import { SliderModule } from 'primeng/slider';
 import { CheckboxModule } from 'primeng/checkbox';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { TabMenuModule } from 'primeng/tabmenu';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   exports: [
@@ -37,7 +39,9 @@ import { InputNumberModule } from 'primeng/inputnumber';
     SliderModule,
     CheckboxModule,
     OverlayPanelModule,
-    InputNumberModule
+    InputNumberModule,
+    TabMenuModule,
+    ProgressSpinnerModule
   ]
 })
 export class PrimeNgComponentsModule { }

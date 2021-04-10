@@ -1,6 +1,6 @@
 #menu {
     background-color: var(--backgroud-col);
-    height: 10vh;
+    height: 8vh;
 }
 
 img {
@@ -9,8 +9,8 @@ img {
 }
 
 .image-container {
-    max-height: 10vh;
-    max-width: 10vh;
+    max-height: 8vh;
+    max-width: 8vh;
     padding-top: 1vw;
     padding-left: 1vw;
 }

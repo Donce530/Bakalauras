@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
-using Repository.Migrations;
+using Models.Reservations.Models.Dto;
 
 namespace Repository
 {
@@ -75,23 +74,39 @@ namespace Repository
             return await selectedQuery.ToListAsync();
         }
 
-        public async Task<IList<TResult>> GetPaged<TResult>(int skip, int take, Expression<Func<TEntity, bool>> filter = null)
+        public async Task<PagedResponse<TResult>> GetPaged<TResult>(Paginator paginator,
+            ICollection<Expression<Func<TEntity, bool>>> filters = null,
+            Expression<Func<TEntity, object>> orderBy = null)
         {
-            var query = DbContext.Set<TEntity>().AsQueryable();
-
-            if (filter is not null)
+            if (paginator is null)
             {
-                query = query.Where(filter);
+                throw new InvalidOperationException();
             }
 
-            return await query.ProjectTo<TResult>(Mapper.ConfigurationProvider).Skip(skip).Take(take).ToListAsync();
+            var query = DbContext.Set<TEntity>().AsQueryable();
+
+            if (filters is not null)
+            {
+                query = filters.Aggregate(query, (current, filter) => current.Where(filter));
+            }
+
+            if (orderBy is not null && paginator.SortOrder != 0)
+            {
+                query = paginator.SortOrder > 0 ? query.OrderBy(orderBy) : query.OrderByDescending(orderBy);
+            }
+
+            var results = await query.ProjectTo<TResult>(Mapper.ConfigurationProvider)
+                .Skip(paginator.Offset * paginator.Rows).Take(paginator.Rows).ToListAsync();
+            paginator.TotalRows = results.Count > 0 ? await query.CountAsync() : 0;
+
+            var response = new PagedResponse<TResult> {Paginator = paginator, Results = results};
+
+            return response;
         }
 
         public async Task<TResult> GetMapped<TResult>(Expression<Func<TEntity, bool>> filter)
         {
             var query = DbContext.Set<TEntity>().Where(filter);
-
-            var test = DbContext.RestaurantPlans.Include(r => r.Tables).ThenInclude(t => t.LinkedTables).Where(p => p.Id == 3).Single();
 
             return await query.ProjectTo<TResult>(Mapper.ConfigurationProvider).SingleOrDefaultAsync();
         }

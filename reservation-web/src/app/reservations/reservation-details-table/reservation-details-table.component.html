@@ -1,0 +1,38 @@
+<p-table #dt [value]="details">
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th>
+                Klientas
+            </th>
+            <th>
+                Telefono numeris
+            </th>
+            <th>
+                El. pašto adresas
+            </th>
+            <th>
+                Staliuko numeris
+            </th>
+            <th>
+                Sėdimų vietų skaičius
+            </th>
+            <th>
+                Pradžia
+            </th>
+            <th>
+                Pabaiga
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-expanded="expanded">
+        <tr>
+            <td>{{rowData.userFullName}}</td>
+            <td>{{rowData.userPhoneNumber}}</td>
+            <td>{{rowData.userEmail}}</td>
+            <td>{{rowData.tableNumber}}</td>
+            <td>{{rowData.tableSeats}}</td>
+            <td>{{rowData.start | time}}</td>
+            <td>{{rowData.end | time}}</td>
+        </tr>
+    </ng-template>
+</p-table>
