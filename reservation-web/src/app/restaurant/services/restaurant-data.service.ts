@@ -86,4 +86,8 @@ export class RestaurantDataService {
       map(svg => svg == null ? '' : svg)
     );
   }
+
+  public getQrCode(): Observable<Blob> {
+    return this._httpService.getQrCode();
+  }
 }

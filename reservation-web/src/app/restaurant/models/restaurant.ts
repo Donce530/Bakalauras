@@ -1,4 +1,4 @@
-import { OpenHours } from "./open-hours";
+import { OpenHours } from './open-hours';
 
 export class Restaurant {
     public title: string;

@@ -1,0 +1,7 @@
+<p-fieldset styleClass="h-100">
+    <ng-template pTemplate="header">Apsilankymo kodas</ng-template>
+    <p-progressSpinner *ngIf="qrSource == null"></p-progressSpinner>
+    <div class="d-flex flex-column h-100" *ngIf="qrSource != null">
+        <img src="{{qrSource}}">
+    </div>
+</p-fieldset>

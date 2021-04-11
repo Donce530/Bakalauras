@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Drawing.Imaging;
+using System.IO;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Models.Restaurants.Models.Dto;
 using Restaurants.Api.Services;
@@ -50,6 +52,18 @@ namespace Restaurants.Api.Controllers
             await _restaurantService.SaveDetails(restaurant);
 
             return Ok();
+        }
+
+        [HttpGet("QR")]
+        public async Task<IActionResult> GetQrCode()
+        {
+            var qr = await _restaurantService.GetQrCode();
+
+            var outputStream = new MemoryStream();
+            qr.Save(outputStream, ImageFormat.Png);
+            outputStream.Seek(0, SeekOrigin.Begin);
+
+            return File(outputStream, "image/png");
         }
 
         [HttpGet("AvailableCities")]

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -7,6 +8,8 @@ using AutoMapper;
 using Models.Reservations.Models.Dto;
 using Models.Restaurants.Models.Data;
 using Models.Restaurants.Models.Dto;
+using Models.Users.Models.Data;
+using QRCoder;
 using Restaurants.Repository;
 using Users.Api.Services;
 
@@ -97,6 +100,23 @@ namespace Restaurants.Api.Services
                 rp => rp.RestaurantId == restaurantId);
 
             return plan;
+        }
+
+        public async Task<Bitmap> GetQrCode()
+        {
+            if (_userService.User.Role == Role.Client)
+            {
+                throw new InvalidOperationException();
+            }
+            
+            var restaurantId = await _restaurantRepository.GetMapped(r => r.UserId == _userService.User.Id, r => r.Id);
+
+            using var generator = new QRCodeGenerator();
+            var codeData = generator.CreateQrCode(restaurantId.ToString(), QRCodeGenerator.ECCLevel.Q);
+            var code = new QRCode(codeData);
+            var codeImage = code.GetGraphic(50);
+
+            return codeImage;
         }
 
         public async Task SavePlan(RestaurantPlanDto plan)

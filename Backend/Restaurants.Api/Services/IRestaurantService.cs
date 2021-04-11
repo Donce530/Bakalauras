@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Threading.Tasks;
 using Models.Restaurants.Models.Dto;
 
@@ -15,5 +16,6 @@ namespace Restaurants.Api.Services
         Task<IList<RestaurantPageItemDto>> GetPage(int page, string city, string filter);
         Task<RestaurantDto> GetDetails(int id);
         Task<RestaurantPlanDto> GetPlan(int id);
+        Task<Bitmap> GetQrCode();   
     }
 }

@@ -19,11 +19,12 @@ import { RestaurantBehaviourService } from './services/restaurant-behaviour.serv
 import { EditorToolbarComponent } from './restaurant-plan/restaurant-plan-editor/editor-toolbar/editor-toolbar.component';
 import { EditorPanelComponent } from './restaurant-plan/restaurant-plan-editor/editor-panel/editor-panel.component';
 import { EditorTableOverlayComponent } from './restaurant-plan/restaurant-plan-editor/editor-table-overlay/editor-table-overlay.component';
+import { RestaurantQrComponent } from './restaurant-details/restaurant-qr/restaurant-qr.component';
 
 
 
 @NgModule({
-  declarations: [RestaurantComponent, RestaurantDetailsComponent, RestaurantTitleComponent, RestaurantDescriptionComponent, RestaurantScheduleComponent, RestaurantLocationComponent, RestaurantPlanComponent, RestaurantPlanPreviewComponent, RestaurantPlanEditorComponent, EditorToolbarComponent, EditorPanelComponent, EditorTableOverlayComponent],
+  declarations: [RestaurantComponent, RestaurantDetailsComponent, RestaurantTitleComponent, RestaurantDescriptionComponent, RestaurantScheduleComponent, RestaurantLocationComponent, RestaurantPlanComponent, RestaurantPlanPreviewComponent, RestaurantPlanEditorComponent, EditorToolbarComponent, EditorPanelComponent, EditorTableOverlayComponent, RestaurantQrComponent],
   imports: [
     CommonModule,
     PrimeNgComponentsModule,
