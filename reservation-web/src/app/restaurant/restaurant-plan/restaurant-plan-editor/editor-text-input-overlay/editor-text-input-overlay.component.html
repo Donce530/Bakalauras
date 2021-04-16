@@ -1,0 +1,15 @@
+<div #oc class="position-fixed">
+</div>
+
+<p-overlayPanel #op [showCloseIcon]="true" [dismissable]="false" (onHide)="onHide()" [baseZIndex]="100">
+    <ng-template pTemplate>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <input type="text" [(ngModel)]="input" pInputText placeholder="Komentaras.."
+                        (keyUp.Enter)="op.hide()">
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</p-overlayPanel>

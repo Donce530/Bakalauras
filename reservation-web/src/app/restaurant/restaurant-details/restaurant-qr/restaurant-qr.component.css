@@ -1,0 +1,19 @@
+img {
+    display: block;
+    max-width:200px;
+    max-height:200px;
+    width: auto;
+    height: auto;
+}
+
+p-galleria {
+    cursor: pointer;
+}
+
+:host ::ng-deep .p-fieldset-content {
+    padding: 0;
+}
+
+:host ::ng-deep .p-galleria {
+    max-height: 100%;
+}

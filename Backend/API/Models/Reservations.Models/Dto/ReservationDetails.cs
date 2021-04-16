@@ -9,6 +9,8 @@ namespace Models.Reservations.Models.Dto
         public DateTime Day { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
+        public DateTime RealStart { get; set; }
+        public DateTime RealEnd { get; set; }
         
         public int TableId { get; set; }
         public int TableSeats { get; set; }

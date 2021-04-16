@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:reservation_app/Models/restaurants/plan/plan_table.dart';
+import 'package:reservation_app/Models/utils/plan_drawing_constants.dart';
 import 'package:reservation_app/utils/loading_spinner.dart';
 import 'package:svg_path_parser/svg_path_parser.dart';
 
@@ -83,8 +84,6 @@ class _TablePickerState extends State<TablePicker> {
   }
 
   void _scalePlan() {
-    const xScaleFactor = 3.5036496350364965;
-    const yScaleFactor = 3.2432432432432434;
     final regex = new RegExp(r'd="([ \w]{10,})');
     final drawables = List<PlanItemBase>.from(_plan.walls)..addAll(_plan.tables);
     for (var item in drawables) {
@@ -94,20 +93,20 @@ class _TablePickerState extends State<TablePicker> {
         switch (instructions[i]) {
           case 'M':
           case 'L':
-            var x = int.parse(instructions[i + 1]) / xScaleFactor;
-            var y = int.parse(instructions[i + 2]) / yScaleFactor;
+            var x = int.parse(instructions[i + 1]) / PlanDrawingConstants.xScaleFactor;
+            var y = int.parse(instructions[i + 2]) / PlanDrawingConstants.yScaleFactor;
 
             buffer.write('${instructions[i]} $x $y ');
             i += 2;
             break;
           case 'A':
-            var sx = int.parse(instructions[i + 1]) / xScaleFactor;
-            var sy = int.parse(instructions[i + 2]) / yScaleFactor;
+            var sx = int.parse(instructions[i + 1]) / PlanDrawingConstants.xScaleFactor;
+            var sy = int.parse(instructions[i + 2]) / PlanDrawingConstants.yScaleFactor;
             var xAxisRotation = instructions[i + 3];
             var largeArcFlag = instructions[i + 4];
             var sweepFlag = instructions[i + 5];
-            var ex = int.parse(instructions[i + 6]) / xScaleFactor;
-            var ey = int.parse(instructions[i + 7]) / yScaleFactor;
+            var ex = int.parse(instructions[i + 6]) / PlanDrawingConstants.xScaleFactor;
+            var ey = int.parse(instructions[i + 7]) / PlanDrawingConstants.yScaleFactor;
             buffer.write('A $sx $sy $xAxisRotation $largeArcFlag $sweepFlag $ex $ey ');
             i += 7;
             break;
@@ -237,10 +236,8 @@ class PathPainter extends CustomPainter {
     final drawables = List<PlanItemBase>.from(plan.walls)..addAll(plan.tables);
     for (var item in drawables) {
       var color = Colors.black;
-      if (item is PlanTable && !availableTableIds.contains(item.id)) {
-        color = Colors.red;
-      } else if (item.id == selectedId) {
-        color = Colors.green;
+      if (item is PlanTable) {
+        color = _getColor(item.id);
       }
 
       var path = parseSvgPath(item.scaledSvg);
@@ -251,6 +248,40 @@ class PathPainter extends CustomPainter {
             ..color = color
             ..strokeWidth = 2.0);
     }
+
+    var color = Colors.black;
+    for (var label in plan.labels) {
+      final offset = Offset(
+          label.x / PlanDrawingConstants.xScaleFactor +
+              label.width / (PlanDrawingConstants.xScaleFactor * 8),
+          label.y / PlanDrawingConstants.yScaleFactor +
+              label.height / (PlanDrawingConstants.yScaleFactor * 2));
+      _paintText(label.text, offset, label.fontSize / PlanDrawingConstants.xScaleFactor, canvas,
+          size, color,
+          maxWidth: label.width);
+    }
+
+    for (var table in plan.tables) {
+      Color color = _getColor(table.id);
+      final offset = Offset(
+          table.x / PlanDrawingConstants.xScaleFactor +
+              table.width / (PlanDrawingConstants.xScaleFactor * 2),
+          table.y / PlanDrawingConstants.yScaleFactor +
+              table.height / (PlanDrawingConstants.yScaleFactor * 2));
+
+      final fontSize = (table.height + table.width) / 8;
+      _paintText(table.number.toString(), offset, fontSize, canvas, size, color);
+    }
+  }
+
+  Color _getColor(int tableId) {
+    var color = Colors.black;
+    if (tableId == selectedId) {
+      color = Colors.green;
+    } else if (!availableTableIds.contains(tableId)) {
+      color = Colors.red;
+    }
+    return color;
   }
 
   @override
@@ -258,17 +289,25 @@ class PathPainter extends CustomPainter {
 
   @override
   bool shouldRebuildSemantics(PathPainter oldDelegate) => false;
-}
 
-class PathClipper extends CustomClipper<Path> {
-  final PlanItemBase _planItem;
-  PathClipper(this._planItem);
-
-  @override
-  Path getClip(Size size) {
-    return parseSvgPath(_planItem.scaledSvg);
+  void _paintText(
+      String text, Offset offset, double fontSize, Canvas canvas, Size size, Color color,
+      {double maxWidth}) {
+    final textStyle = TextStyle(
+      color: color,
+      fontSize: fontSize,
+    );
+    final textSpan = TextSpan(
+      text: text,
+      style: textStyle,
+    );
+    final textPainter = TextPainter(
+      text: textSpan,
+      textDirection: TextDirection.ltr,
+      textAlign: TextAlign.center,
+    );
+    textPainter.layout(minWidth: 0, maxWidth: maxWidth != null ? maxWidth : 0);
+    final drawOffset = Offset(offset.dx, offset.dy - (textPainter.height / 2));
+    textPainter.paint(canvas, drawOffset);
   }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }

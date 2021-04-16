@@ -65,6 +65,48 @@ namespace Reservations.Api.Controllers
             return Ok(details);
         }
 
+        [HttpGet("TryCheckIn/{restaurantId}/{localTime}")]
+        public async Task<IActionResult> TryCheckIn([FromRoute] int restaurantId, [FromRoute] DateTime localTime)
+        {
+            var reservationToConfirm = await _reservationService.TryCheckIn(restaurantId, localTime);
+
+            if (reservationToConfirm is null)
+            {
+                return NoContent();
+            }
+
+            return Ok(reservationToConfirm);
+        }
+        
+        [HttpGet("CheckIn/{reservationId}")]
+        public async Task<IActionResult> CheckIn([FromRoute] int reservationId,  [FromRoute] DateTime localTime)
+        {
+            await _reservationService.CheckIn(reservationId, localTime);
+            
+            return Ok();
+        }
+        
+        [HttpGet("TryCheckOut/{restaurantId}")]
+        public async Task<IActionResult> TryCheckOut([FromRoute] int restaurantId)
+        {
+            var reservationToConfirm = await _reservationService.TryCheckOut(restaurantId);
+
+            if (reservationToConfirm is null)
+            {
+                return NoContent();
+            }
+            
+            return Ok(reservationToConfirm);
+        }
+        
+        [HttpGet("CheckOut/{reservationId}")]
+        public async Task<IActionResult> CheckOut([FromRoute] int reservationId,  [FromRoute] DateTime localTime)
+        {
+            await _reservationService.CheckOut(reservationId, localTime);
+            
+            return Ok();
+        }
+
         [HttpGet(nameof(GetTablesAvailableToReserve))]
         public async Task<IActionResult> GetTablesAvailableToReserve([FromQuery] int restaurantId,
             [FromQuery] DateTime day, [FromQuery] DateTime startTime, [FromQuery] DateTime endTime)
@@ -72,6 +114,14 @@ namespace Reservations.Api.Controllers
             var tableIds = await _reservationService.GetTableIdsToReserve(restaurantId, day, startTime.TimeOfDay, endTime.TimeOfDay);
 
             return Ok(tableIds);
+        }
+
+        [HttpDelete("Cancel/{id}")]
+        public async Task<IActionResult> Cancel([FromRoute] int id)
+        {
+            await _reservationService.Cancel(id);
+
+            return Ok();
         }
     }
 }

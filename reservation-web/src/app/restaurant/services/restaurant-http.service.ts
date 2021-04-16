@@ -35,8 +35,8 @@ export class RestaurantHttpService {
   }
 
   public getQrCode(): Observable<Blob> {
-    const url = `$${environment.apiUrl}/Restaurant/QR`;
+    const url = `${environment.apiUrl}/Restaurant/QR`;
 
-    return this._httpClient.get<Blob>(url);
+    return this._httpClient.get(url, { responseType: 'blob' });
   }
 }

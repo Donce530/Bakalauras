@@ -3,6 +3,8 @@ export class ReservationDetails {
     public day: Date;
     public start: Date;
     public end: Date;
+    public realStart: Date;
+    public realEnd: Date;
     public tableId: number;
     public tableSeats: number;
     public tableNumber: number;

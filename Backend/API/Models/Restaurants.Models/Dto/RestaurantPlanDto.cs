@@ -6,5 +6,6 @@
         public string WebSvg { get; set; }
         public WallDto[] Walls { get; set; }
         public TableDto[] Tables { get; set; }
+        public LabelDto[] Labels { get; set; }
     }
 }

@@ -10,10 +10,10 @@ export class LoggedInGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     if (this._authenticationService.currentUser) {
+      this._router.navigateByUrl('restaurant');
 
-      return true;
     }
 
-    return false;
+    return true;
   }
 }

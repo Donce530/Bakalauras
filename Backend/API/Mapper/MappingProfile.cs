@@ -36,6 +36,7 @@ namespace API.Mapper
             CreateMap<Restaurant, RestaurantPageItemDto>();
 
             CreateMap<WallDto, PlanWall>().ReverseMap();
+            CreateMap<PlanLabel, LabelDto>().ReverseMap();
             CreateMap<TableDto, PlanTable>();
             CreateMap<PlanTable, TableDto>().ForMember(dst => dst.LinkedTableNumbers,
                 opt => opt.MapFrom(src => src.LinkedTables.Select(lt => lt.Number)));
@@ -74,7 +75,11 @@ namespace API.Mapper
                     opt => opt.MapFrom(src => new DateTime(src.Day.Year, src.Day.Month, src.Day.Day) + src.Start))
                 .ForMember(dst => dst.End,
                     opt => opt.MapFrom(src => new DateTime(src.Day.Year, src.Day.Month, src.Day.Day) + src.End))
-                .ForMember(dst => dst.TableNumber, opt => opt.MapFrom(src => src.Table.Number));
+                .ForMember(dst => dst.TableNumber, opt => opt.MapFrom(src => src.Table.Number))
+                .ForMember(dst => dst.RealStart,
+                    opt => opt.MapFrom(src => src.RealStart != null ? new DateTime(src.Day.Year, src.Day.Month, src.Day.Day) + src.RealStart : null))
+                .ForMember(dst => dst.RealEnd,
+                    opt => opt.MapFrom(src => src.RealEnd != null ? new DateTime(src.Day.Year, src.Day.Month, src.Day.Day) + src.RealEnd : null));
 
             CreateMap<Reservation, ReservationDetails>()
                 .ForMember(dst => dst.UserFullName,
@@ -87,6 +92,10 @@ namespace API.Mapper
                     opt => opt.MapFrom(src => new DateTime(src.Day.Year, src.Day.Month, src.Day.Day) + src.Start))
                 .ForMember(dst => dst.End,
                     opt => opt.MapFrom(src => new DateTime(src.Day.Year, src.Day.Month, src.Day.Day) + src.End))
+                .ForMember(dst => dst.RealStart,
+                    opt => opt.MapFrom(src => src.RealStart != null ? new DateTime(src.Day.Year, src.Day.Month, src.Day.Day) + src.RealStart : null))
+                .ForMember(dst => dst.RealEnd,
+                    opt => opt.MapFrom(src => src.RealEnd != null ? new DateTime(src.Day.Year, src.Day.Month, src.Day.Day) + src.RealEnd : null))
                 .ForMember(dst => dst.TableNumber, opt => opt.MapFrom(src => src.Table.Number))
                 .ForMember(dst => dst.TableSeats, opt => opt.MapFrom(src => src.Table.Seats))
                 .ForMember(dst => dst.TableId, opt => opt.MapFrom(src => src.Table.Id))

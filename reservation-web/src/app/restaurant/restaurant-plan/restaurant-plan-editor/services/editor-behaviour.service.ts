@@ -2,6 +2,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { EditorMode } from '../enums/editor-mode.enum';
 import { EditTableParameters } from '../models/edit-table-parameters';
+import { InputTextParameters } from '../models/input-text-parameters';
 
 @Injectable()
 export class EditorBehaviourService implements OnDestroy {
@@ -29,12 +30,30 @@ export class EditorBehaviourService implements OnDestroy {
     return this._editTableSubject.asObservable();
   }
 
+  public get openTextInputAction(): Observable<InputTextParameters> {
+    return this._openTextInputSubject.asObservable();
+  }
+
+  public get closeTextInputAction(): Observable<string> {
+    return this._closeTextInputSubject.asObservable();
+  }
+
   private _editorModeSubject = new Subject<EditorMode>();
   private _snappingScaleSubject = new Subject<number>();
   private _snappingAvailabilitySubject = new Subject<boolean>();
   private _snappingStateSubject = new BehaviorSubject<boolean>(false);
   private _saveActionSubject = new Subject<void>();
   private _editTableSubject = new Subject<EditTableParameters>();
+  private _openTextInputSubject = new Subject<InputTextParameters>();
+  private _closeTextInputSubject = new Subject<string>();
+
+  public openTextInput(parameters: InputTextParameters): void {
+    this._openTextInputSubject.next(parameters);
+  }
+
+  public closeTextInput(text: string): void {
+    this._closeTextInputSubject.next(text);
+  }
 
   public setEditorMode(mode: EditorMode): void {
     this._editorModeSubject.next(mode);

@@ -48,7 +48,7 @@ export class Table extends BoundingBox implements Drawable {
 
     drawLabel(...contexts: CanvasRenderingContext2D[]): void {
         contexts.forEach(context => {
-            context.font = `bold ${(this.height + this.width) / 8}px serif`;
+            context.font = `bold ${(this.height + this.width) / 6}px arial`;
             let [midX, midY] = this.middle;
             const textMeasurement = context.measureText(this.number.toString());
             midX = midX - textMeasurement.width / 2;

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:reservation_app/login.dart';
+import 'package:reservation_app/qr_scan.dart';
+import 'package:reservation_app/qr_scan_confirm.dart';
 import 'package:reservation_app/reservation/make_reservation.dart';
 import 'package:reservation_app/register.dart';
 import 'package:reservation_app/reservation/reservation_created.dart';
@@ -35,7 +37,9 @@ class MyApp extends StatelessWidget {
             '/restaurantDetails': (context) => RestaurantDetailsPage(settings.arguments),
             '/newReservation': (context) => MakeReservationPage(restaurant: settings.arguments),
             '/reservationCreated': (context) =>
-                ReservationCompletedPage(reservation: settings.arguments)
+                ReservationCompletedPage(reservation: settings.arguments),
+            '/qrScan': (context) => QrScanPage(),
+            '/qrScanConfirm': (context) => QrScanConfirmPage(message: settings.arguments)
           };
 
           final builder = routes[settings.name];

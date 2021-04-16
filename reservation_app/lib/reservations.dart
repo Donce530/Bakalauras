@@ -6,6 +6,7 @@ import 'package:reservation_app/services/http_requests.dart';
 import 'package:reservation_app/utils/loading_spinner.dart';
 
 import 'Models/reservations/reservation_list_item.dart';
+import 'Models/reservations/reservation_state.dart';
 
 class ReservationsPage extends StatefulWidget {
   @override
@@ -36,7 +37,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
       return Loader();
     }
 
-    return _buildRow(_upcomingReservations[index]);
+    return _buildRow(_upcomingReservations[index], true);
   }
 
   Widget _buildPreviousItem(BuildContext context, int i) {
@@ -49,126 +50,154 @@ class _ReservationsPageState extends State<ReservationsPage> {
       return Loader();
     }
 
-    return _buildRow(_previousReservations[index]);
+    return _buildRow(_previousReservations[index], false);
   }
 
-  Card _buildRow(ReservationListItem item) {
-    return Card(
+  Card _buildRow(ReservationListItem item, bool allowDelete) {
+    final cancelButton = Padding(
+      padding: EdgeInsets.only(top: 40, bottom: 40),
+      child: OutlinedButton(
+        style: ButtonStyle(foregroundColor: MaterialStateProperty.all(Colors.red)),
+        onPressed: () => _confirmCancel(item.id),
         child: Padding(
-      padding: EdgeInsets.fromLTRB(8, 8, 0, 8),
-      child: ExpansionTile(
-        onExpansionChanged: (value) {
-          setState(() {
-            item.isExpanded = value;
-          });
-        },
-        title: Text(item.restaurantTitle),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-                '${DateFormat("dd MM yyyy", 'lt').format(item.day)} ${DateFormat("kk:mm", 'lt').format(item.start)}'),
-            IconButton(
-                icon: Icon(item.isExpanded ? Icons.arrow_upward : Icons.arrow_downward),
-                onPressed: null),
-          ],
-        ),
-        children: [
-          Column(
+          padding: EdgeInsets.symmetric(vertical: 8),
+          child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Padding(
-                padding: EdgeInsets.all(8),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(right: 4),
-                      child: Icon(Icons.restaurant),
-                    ),
-                    Text(
-                      'Staliukas # ${item.tableNumber}',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ],
-                ),
+              Text(
+                'Atšaukti ',
+                style: TextStyle(fontSize: 30),
               ),
+              Icon(Icons.delete)
+            ],
+          ),
+        ),
+      ),
+    );
+
+    var content = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Padding(
+          padding: EdgeInsets.all(8),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
               Padding(
-                padding: EdgeInsets.all(8),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(right: 4),
-                      child: Icon(Icons.people),
-                    ),
-                    Text(
-                      '${item.tableSeats} sėdimos vietos',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ],
-                ),
+                padding: EdgeInsets.only(right: 4),
+                child: Icon(Icons.restaurant),
               ),
-              Padding(
-                padding: EdgeInsets.all(8),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(right: 4),
-                      child: Icon(Icons.arrow_forward),
-                    ),
-                    Text(
-                      'Pradžia: ${DateFormat("kk:mm", 'lt').format(item.start)}',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(8),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(right: 4),
-                      child: Icon(Icons.arrow_back),
-                    ),
-                    Text(
-                      'Pabaiga: ${DateFormat("kk:mm", 'lt').format(item.end)}',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.all(8),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.location_on),
-                    Text(
-                      '${item.restaurantAddress}',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ],
-                ),
+              Text(
+                'Staliukas # ${item.tableNumber}',
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 20),
               ),
             ],
           ),
-        ],
+        ),
+        Padding(
+          padding: EdgeInsets.all(8),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(right: 4),
+                child: Icon(Icons.people),
+              ),
+              Text(
+                '${item.tableSeats} sėdimos vietos',
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 20),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(8),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(right: 4),
+                child: Icon(Icons.arrow_forward),
+              ),
+              Text(
+                'Pradžia: ${DateFormat("kk:mm", 'lt').format(item.start)}',
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 20),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(8),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(right: 4),
+                child: Icon(Icons.arrow_back),
+              ),
+              Text(
+                'Pabaiga: ${DateFormat("kk:mm", 'lt').format(item.end)}',
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 20),
+              ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.all(8),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.location_on),
+              Text(
+                '${item.restaurantAddress}',
+                textAlign: TextAlign.left,
+                style: TextStyle(fontSize: 20),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+
+    if (allowDelete) {
+      content.children.add(cancelButton);
+    }
+
+    final card = Card(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(8, 8, 0, 8),
+        child: ExpansionTile(
+          onExpansionChanged: (value) {
+            setState(() {
+              item.isExpanded = value;
+            });
+          },
+          title: Text(item.restaurantTitle),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                  '${DateFormat("dd MM yyyy", 'lt').format(item.day)} ${DateFormat("kk:mm", 'lt').format(item.start)}'),
+              IconButton(
+                  icon: Icon(item.isExpanded ? Icons.arrow_upward : Icons.arrow_downward),
+                  onPressed: null),
+            ],
+          ),
+          children: [content],
+        ),
       ),
-    ));
+    );
+
+    return card;
   }
 
   @override
@@ -214,7 +243,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
         Expanded(
           child: ListView.builder(
             padding: EdgeInsets.all(16),
-            itemCount: _upcomingReservations != null ? _upcomingReservations.length : 1,
+            itemCount: _upcomingReservations != null ? _upcomingReservations.length * 2 : 1,
             itemBuilder: _buildUpcomingItem,
           ),
         ),
@@ -228,7 +257,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
         Expanded(
           child: ListView.builder(
             padding: EdgeInsets.all(16),
-            itemCount: _previousReservations != null ? _previousReservations.length : 1,
+            itemCount: _previousReservations != null ? _previousReservations.length * 2 : 1,
             itemBuilder: _buildPreviousItem,
           ),
         ),
@@ -266,10 +295,61 @@ class _ReservationsPageState extends State<ReservationsPage> {
           });
 
     setState(() {
-      _upcomingReservations =
-          reservations.where((r) => r.day.isAfter(DateTime.now().add(Duration(days: -1)))).toList();
+      _upcomingReservations = reservations
+          .where((r) =>
+              r.day.isAfter(DateTime.now().add(Duration(days: -1))) &&
+              r.state == ReservationState.Created)
+          .toList();
       _previousReservations =
           reservations.where((r) => !_upcomingReservations.contains(r)).toList();
+    });
+  }
+
+  Future<void> _confirmCancel(int id) async {
+    final okButton = TextButton(
+      child: Text("Taip"),
+      onPressed: () {
+        _cancel(id).then((_) => Navigator.of(context, rootNavigator: true).pop('dialog'));
+      },
+    );
+
+    final cancelButton = TextButton(
+      child: Text("Ne"),
+      onPressed: () {
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+      },
+    );
+
+    // set up the AlertDialog
+    final alert = AlertDialog(
+      title: Text("Įspėjimas"),
+      content: Text("Ar tikrai norite atšaukti rezervaciją ?"),
+      actions: [
+        cancelButton,
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  Future<void> _cancel(int id) async {
+    var url = '/api/Reservation/Cancel/$id';
+
+    var response = await HttpRequests.delete(url);
+
+    if (response.statusCode != 200) {
+      throw new Exception('Could not cancel reservaiton');
+    }
+
+    setState(() {
+      _upcomingReservations.removeWhere((element) => element.id == id);
     });
   }
 }

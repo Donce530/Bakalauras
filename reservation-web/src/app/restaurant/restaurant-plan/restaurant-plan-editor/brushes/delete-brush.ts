@@ -16,6 +16,14 @@ export class DeleteBrush extends BrushBase {
         });
 
         let deleted = false;
+
+        for (let i = 0; i < this.storage.labels.length; i++) {
+            if (this.storage.labels[i].collidesWith(cursorBox)) {
+                this.storage.labels.splice(i, 1);
+                deleted = true;
+                break;
+            }
+        }
         for (let i = 0; i < this.storage.walls.length; i++) {
             if (this.storage.walls[i].collidesWith(cursorBox)) {
                 this.storage.walls.splice(i, 1);

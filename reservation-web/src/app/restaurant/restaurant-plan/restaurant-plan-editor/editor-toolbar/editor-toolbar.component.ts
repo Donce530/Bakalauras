@@ -50,7 +50,6 @@ export class EditorToolbarComponent implements OnInit {
       new ModeButton({ mode: EditorMode.Wall, tooltip: 'Siena', icon: faVectorSquare }),
       new ModeButton({ mode: EditorMode.Table, tooltip: 'Stalas', icon: faChair }),
       new ModeButton({ mode: EditorMode.Link, tooltip: 'Susiejimas', icon: faProjectDiagram }),
-      new ModeButton({ mode: EditorMode.Door, tooltip: 'Durys', icon: faDoorOpen }),
       new ModeButton({ mode: EditorMode.Comment, tooltip: 'Komentaras', icon: faFont }),
       new ModeButton({ mode: EditorMode.Delete, tooltip: 'Naikinti', icon: faTrash }),
     ];

@@ -1,9 +1,9 @@
-import { WeekDay } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { OpenHours } from '../models/open-hours';
 import { Restaurant } from '../models/restaurant';
+import { Label } from '../restaurant-plan/restaurant-plan-editor/drawables/label';
 import { Table } from '../restaurant-plan/restaurant-plan-editor/drawables/table';
 import { Wall } from '../restaurant-plan/restaurant-plan-editor/drawables/wall';
 import { EditorStorage } from '../restaurant-plan/restaurant-plan-editor/models/editor-storage';
@@ -13,8 +13,6 @@ import { RestaurantHttpService } from './restaurant-http.service';
 @Injectable()
 export class RestaurantDataService {
   constructor(private _httpService: RestaurantHttpService) { }
-
-  private plan: RestaurantPlan;
 
   public GetDetails(): Observable<Restaurant> {
     return this._httpService.GetDetails().pipe(map<Restaurant, Restaurant>(
@@ -68,7 +66,8 @@ export class RestaurantDataService {
           const mappedPlan = new RestaurantPlan(plan.id, plan.webSvg,
             new EditorStorage({
               tables: plan.tables.map(t => new Table(t)),
-              walls: plan.walls.map(w => new Wall(w))
+              walls: plan.walls.map(w => new Wall(w)),
+              labels: plan.labels.map(l => new Label(l))
             }));
 
           mappedPlan.tables.forEach(table => {

@@ -12,5 +12,10 @@ namespace Reservations.Api.Services
         Task<ICollection<ReservationListItemDto>> GetByUser(string filter);
         Task<PagedResponse<ReservationDataRow>> GetPagedAndFiltered(PagedFilteredParams parameters);
         Task<ReservationDetails> GetDetails(int id);
+        Task<ReservationListItemDto> TryCheckIn(int restaurantId, DateTime localTime);
+        Task<ReservationListItemDto> TryCheckOut(int restaurantId);
+        Task CheckIn(int reservationId, DateTime localTime);
+        Task CheckOut(int reservationId, DateTime localTime);
+        Task Cancel(int id);
     }
 }

@@ -32,6 +32,12 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.qr_code),
+        onPressed: () {
+          Navigator.of(context, rootNavigator: true).pushNamed('/qrScan');
+        },
+      ),
       body: Navigator(
           key: _navigatorKey, initialRoute: 'restaurants', onGenerateRoute: _resolveRoute),
       bottomNavigationBar: _getNavigationBar(),

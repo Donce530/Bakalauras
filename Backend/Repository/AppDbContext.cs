@@ -18,6 +18,7 @@ namespace Repository
         public DbSet<RestaurantPlan> RestaurantPlans { get; set; }
         public DbSet<PlanWall> PlanWalls { get; set; }
         public DbSet<PlanTable> PlanTables { get; set; }
+        public DbSet<PlanLabel> PlanLabels { get; set; }
         public DbSet<PlanItem> PlanItems { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<TableLink> TableLinks { get; set; }
@@ -63,6 +64,12 @@ namespace Repository
 
             modelBuilder.Entity<RestaurantPlan>()
                 .HasMany(p => p.Walls)
+                .WithOne(w => w.Plan)
+                .HasForeignKey(w => w.PlanId)
+                .OnDelete(DeleteBehavior.Cascade);
+            
+            modelBuilder.Entity<RestaurantPlan>()
+                .HasMany(p => p.Labels)
                 .WithOne(w => w.Plan)
                 .HasForeignKey(w => w.PlanId)
                 .OnDelete(DeleteBehavior.Cascade);

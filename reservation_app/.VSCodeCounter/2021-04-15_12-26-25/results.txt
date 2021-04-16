@@ -1,0 +1,137 @@
+Date : 2021-04-15 12:26:25
+Directory : c:\Uni\bakis\Projektas\reservation_app
+Total : 71 files,  3449 codes, 177 comments, 489 blanks, all 4115 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| Dart       |         50 |      3,033 |         75 |        427 |      3,535 |
+| JSON       |          2 |        145 |          0 |          2 |        147 |
+| XML        |          9 |        127 |         51 |         11 |        189 |
+| Groovy     |          3 |         81 |          3 |         20 |        104 |
+| YAML       |          1 |         29 |         47 |         15 |         91 |
+| Markdown   |          2 |         13 |          0 |          9 |         22 |
+| Swift      |          1 |         12 |          0 |          2 |         14 |
+| Properties |          2 |          8 |          1 |          2 |         11 |
+| C++        |          1 |          1 |          0 |          1 |          2 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                 | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                    |         71 |      3,449 |        177 |        489 |      4,115 |
+| android                                                                                              |         12 |        155 |         53 |         31 |        239 |
+| android\app                                                                                          |          8 |        112 |         52 |         20 |        184 |
+| android\app\src                                                                                      |          7 |         66 |         49 |          9 |        124 |
+| android\app\src\debug                                                                                |          1 |          4 |          3 |          1 |          8 |
+| android\app\src\main                                                                                 |          5 |         58 |         43 |          7 |        108 |
+| android\app\src\main\res                                                                             |          4 |         26 |         32 |          6 |         64 |
+| android\app\src\main\res\drawable                                                                    |          1 |          4 |          7 |          2 |         13 |
+| android\app\src\main\res\drawable-v21                                                                |          1 |          4 |          7 |          2 |         13 |
+| android\app\src\main\res\values                                                                      |          1 |          9 |          9 |          1 |         19 |
+| android\app\src\main\res\values-night                                                                |          1 |          9 |          9 |          1 |         19 |
+| android\app\src\profile                                                                              |          1 |          4 |          3 |          1 |          8 |
+| android\gradle                                                                                       |          1 |          5 |          1 |          1 |          7 |
+| android\gradle\wrapper                                                                               |          1 |          5 |          1 |          1 |          7 |
+| integration_test                                                                                     |          2 |         19 |         15 |         13 |         47 |
+| ios                                                                                                  |          7 |        222 |          2 |          9 |        233 |
+| ios\Runner                                                                                           |          7 |        222 |          2 |          9 |        233 |
+| ios\Runner\Assets.xcassets                                                                           |          3 |        148 |          0 |          4 |        152 |
+| ios\Runner\Assets.xcassets\AppIcon.appiconset                                                        |          1 |        122 |          0 |          1 |        123 |
+| ios\Runner\Assets.xcassets\LaunchImage.imageset                                                      |          2 |         26 |          0 |          3 |         29 |
+| ios\Runner\Base.lproj                                                                                |          2 |         61 |          2 |          2 |         65 |
+| lib                                                                                                  |         47 |      3,000 |         50 |        407 |      3,457 |
+| lib\Models                                                                                           |         27 |        432 |         44 |        139 |        615 |
+| lib\Models\interfaces                                                                                |          1 |          5 |          0 |          3 |          8 |
+| lib\Models\login                                                                                     |          4 |         57 |          8 |         22 |         87 |
+| lib\Models\register                                                                                  |          2 |         35 |          4 |         11 |         50 |
+| lib\Models\reservations                                                                              |          5 |        116 |          8 |         29 |        153 |
+| lib\Models\restaurants                                                                               |         13 |        209 |         24 |         69 |        302 |
+| lib\Models\restaurants\plan                                                                          |          7 |        117 |         12 |         36 |        165 |
+| lib\Models\utils                                                                                     |          2 |         10 |          0 |          5 |         15 |
+| lib\config                                                                                           |          1 |          7 |          0 |          1 |          8 |
+| lib\reservation                                                                                      |          5 |        813 |          0 |         83 |        896 |
+| lib\services                                                                                         |          3 |        100 |          0 |         23 |        123 |
+| lib\utils                                                                                            |          1 |         13 |          0 |          2 |         15 |
+| test                                                                                                 |          1 |         14 |         10 |          7 |         31 |
++------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                                             | language   | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| c:\Uni\bakis\Projektas\reservation_app\README.md                                                     | Markdown   |         10 |          0 |          7 |         17 |
+| c:\Uni\bakis\Projektas\reservation_app\android\app\build.gradle                                      | Groovy     |         46 |          3 |         11 |         60 |
+| c:\Uni\bakis\Projektas\reservation_app\android\app\src\debug\AndroidManifest.xml                     | XML        |          4 |          3 |          1 |          8 |
+| c:\Uni\bakis\Projektas\reservation_app\android\app\src\main\AndroidManifest.xml                      | XML        |         32 |         11 |          1 |         44 |
+| c:\Uni\bakis\Projektas\reservation_app\android\app\src\main\res\drawable-v21\launch_background.xml   | XML        |          4 |          7 |          2 |         13 |
+| c:\Uni\bakis\Projektas\reservation_app\android\app\src\main\res\drawable\launch_background.xml       | XML        |          4 |          7 |          2 |         13 |
+| c:\Uni\bakis\Projektas\reservation_app\android\app\src\main\res\values-night\styles.xml              | XML        |          9 |          9 |          1 |         19 |
+| c:\Uni\bakis\Projektas\reservation_app\android\app\src\main\res\values\styles.xml                    | XML        |          9 |          9 |          1 |         19 |
+| c:\Uni\bakis\Projektas\reservation_app\android\app\src\profile\AndroidManifest.xml                   | XML        |          4 |          3 |          1 |          8 |
+| c:\Uni\bakis\Projektas\reservation_app\android\build.gradle                                          | Groovy     |         27 |          0 |          5 |         32 |
+| c:\Uni\bakis\Projektas\reservation_app\android\gradle.properties                                     | Properties |          3 |          0 |          1 |          4 |
+| c:\Uni\bakis\Projektas\reservation_app\android\gradle\wrapper\gradle-wrapper.properties              | Properties |          5 |          1 |          1 |          7 |
+| c:\Uni\bakis\Projektas\reservation_app\android\settings.gradle                                       | Groovy     |          8 |          0 |          4 |         12 |
+| c:\Uni\bakis\Projektas\reservation_app\integration_test\app_test.dart                                | Dart       |         17 |         11 |         10 |         38 |
+| c:\Uni\bakis\Projektas\reservation_app\integration_test\driver.dart                                  | Dart       |          2 |          4 |          3 |          9 |
+| c:\Uni\bakis\Projektas\reservation_app\ios\Runner\AppDelegate.swift                                  | Swift      |         12 |          0 |          2 |         14 |
+| c:\Uni\bakis\Projektas\reservation_app\ios\Runner\Assets.xcassets\AppIcon.appiconset\Contents.json   | JSON       |        122 |          0 |          1 |        123 |
+| c:\Uni\bakis\Projektas\reservation_app\ios\Runner\Assets.xcassets\LaunchImage.imageset\Contents.json | JSON       |         23 |          0 |          1 |         24 |
+| c:\Uni\bakis\Projektas\reservation_app\ios\Runner\Assets.xcassets\LaunchImage.imageset\README.md     | Markdown   |          3 |          0 |          2 |          5 |
+| c:\Uni\bakis\Projektas\reservation_app\ios\Runner\Base.lproj\LaunchScreen.storyboard                 | XML        |         36 |          1 |          1 |         38 |
+| c:\Uni\bakis\Projektas\reservation_app\ios\Runner\Base.lproj\Main.storyboard                         | XML        |         25 |          1 |          1 |         27 |
+| c:\Uni\bakis\Projektas\reservation_app\ios\Runner\Runner-Bridging-Header.h                           | C++        |          1 |          0 |          1 |          2 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\interfaces\json_format.dart                        | Dart       |          5 |          0 |          3 |          8 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\login\login_request.dart                           | Dart       |         12 |          0 |          6 |         18 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\login\login_request.g.dart                         | Dart       |         12 |          4 |          5 |         21 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\login\login_response.dart                          | Dart       |         15 |          0 |          6 |         21 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\login\login_response.g.dart                        | Dart       |         18 |          4 |          5 |         27 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\register\register_request.dart                     | Dart       |         17 |          0 |          6 |         23 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\register\register_request.g.dart                   | Dart       |         18 |          4 |          5 |         27 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\reservations\new_reservation.dart                  | Dart       |         14 |          0 |          6 |         20 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\reservations\new_reservation.g.dart                | Dart       |         18 |          4 |          5 |         27 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\reservations\reservation_list_item.dart            | Dart       |         23 |          0 |          7 |         30 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\reservations\reservation_list_item.g.dart          | Dart       |         60 |          4 |         10 |         74 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\reservations\reservation_state.dart                | Dart       |          1 |          0 |          1 |          2 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\restaurants\open_hours.dart                        | Dart       |         12 |          0 |          6 |         18 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\restaurants\open_hours.g.dart                      | Dart       |         13 |          4 |          5 |         22 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\restaurants\plan\plan_item_base.dart               | Dart       |         13 |          0 |          4 |         17 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\restaurants\plan\plan_table.dart                   | Dart       |         14 |          0 |          6 |         20 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\restaurants\plan\plan_table.g.dart                 | Dart       |         23 |          4 |          5 |         32 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\restaurants\plan\plan_wall.dart                    | Dart       |         11 |          0 |          5 |         16 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\restaurants\plan\plan_wall.g.dart                  | Dart       |         19 |          4 |          5 |         28 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\restaurants\plan\restaurant_plan.dart              | Dart       |         15 |          0 |          6 |         21 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\restaurants\plan\restaurant_plan.g.dart            | Dart       |         22 |          4 |          5 |         31 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\restaurants\restaurant_details.dart                | Dart       |         17 |          0 |          6 |         23 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\restaurants\restaurant_details.g.dart              | Dart       |         23 |          4 |          5 |         32 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\restaurants\restaurant_list_item.dart              | Dart       |         13 |          0 |          6 |         19 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\restaurants\restaurant_list_item.g.dart            | Dart       |         14 |          4 |          5 |         23 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\utils\id_wrapper.dart                              | Dart       |          4 |          0 |          2 |          6 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\Models\utils\new_reservation_params.dart                  | Dart       |          6 |          0 |          3 |          9 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\config\environment.dart                                   | Dart       |          7 |          0 |          1 |          8 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\home.dart                                                 | Dart       |         75 |          0 |          9 |         84 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\login.dart                                                | Dart       |        187 |          2 |         20 |        209 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\main.dart                                                 | Dart       |         43 |          1 |          6 |         50 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\qr_scan.dart                                              | Dart       |        387 |          0 |         27 |        414 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\qr_scan_confirm.dart                                      | Dart       |         45 |          0 |          6 |         51 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\register.dart                                             | Dart       |        173 |          1 |         17 |        191 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\reservation\date_time_picker.dart                         | Dart       |        162 |          0 |         16 |        178 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\reservation\make_reservation.dart                         | Dart       |        173 |          0 |         23 |        196 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\reservation\reservation_created.dart                      | Dart       |         67 |          0 |          8 |         75 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\reservation\reservation_summary.dart                      | Dart       |        168 |          0 |          4 |        172 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\reservation\table_picker.dart                             | Dart       |        243 |          0 |         32 |        275 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\reservations.dart                                         | Dart       |        321 |          2 |         33 |        356 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\restaurant_details.dart                                   | Dart       |        189 |          0 |         11 |        200 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\restaurants.dart                                          | Dart       |        179 |          0 |         24 |        203 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\services\animated_routes.dart                             | Dart       |         23 |          0 |          7 |         30 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\services\http_requests.dart                               | Dart       |         48 |          0 |          9 |         57 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\services\jwt_helper.dart                                  | Dart       |         29 |          0 |          7 |         36 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\splash.dart                                               | Dart       |         36 |          0 |          6 |         42 |
+| c:\Uni\bakis\Projektas\reservation_app\lib\utils\loading_spinner.dart                                | Dart       |         13 |          0 |          2 |         15 |
+| c:\Uni\bakis\Projektas\reservation_app\pubspec.yaml                                                  | YAML       |         29 |         47 |         15 |         91 |
+| c:\Uni\bakis\Projektas\reservation_app\test\widget_test.dart                                         | Dart       |         14 |         10 |          7 |         31 |
+| Total                                                                                                |            |      3,449 |        177 |        489 |      4,115 |
++------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

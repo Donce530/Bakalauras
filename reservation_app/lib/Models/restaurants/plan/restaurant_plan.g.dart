@@ -18,6 +18,10 @@ RestaurantPlan _$RestaurantPlanFromJson(Map<String, dynamic> json) {
         ?.map((e) =>
             e == null ? null : PlanTable.fromJson(e as Map<String, dynamic>))
         ?.toList(),
+    (json['labels'] as List)
+        ?.map((e) =>
+            e == null ? null : PlanLabel.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
   );
 }
 
@@ -27,4 +31,5 @@ Map<String, dynamic> _$RestaurantPlanToJson(RestaurantPlan instance) =>
       'webSvg': instance.webSvg,
       'walls': instance.walls?.map((e) => e?.toJson())?.toList(),
       'tables': instance.tables?.map((e) => e?.toJson())?.toList(),
+      'labels': instance.labels?.map((e) => e?.toJson())?.toList(),
     };

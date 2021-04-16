@@ -32,11 +32,20 @@ namespace Repository.Migrations
                     b.Property<TimeSpan>("End")
                         .HasColumnType("interval");
 
+                    b.Property<TimeSpan?>("RealEnd")
+                        .HasColumnType("interval");
+
+                    b.Property<TimeSpan?>("RealStart")
+                        .HasColumnType("interval");
+
                     b.Property<int>("RestaurantId")
                         .HasColumnType("integer");
 
                     b.Property<TimeSpan>("Start")
                         .HasColumnType("interval");
+
+                    b.Property<int>("State")
+                        .HasColumnType("integer");
 
                     b.Property<int>("TableId")
                         .HasColumnType("integer");
@@ -218,6 +227,24 @@ namespace Repository.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Models.Restaurants.Models.Data.PlanLabel", b =>
+                {
+                    b.HasBaseType("Models.Restaurants.Models.Data.PlanItem");
+
+                    b.Property<double>("FontSize")
+                        .HasColumnType("double precision");
+
+                    b.Property<int>("PlanId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("text");
+
+                    b.HasIndex("PlanId");
+
+                    b.ToTable("PlanLabels");
+                });
+
             modelBuilder.Entity("Models.Restaurants.Models.Data.PlanTable", b =>
                 {
                     b.HasBaseType("Models.Restaurants.Models.Data.PlanItem");
@@ -327,6 +354,23 @@ namespace Repository.Migrations
                     b.Navigation("SecondTable");
                 });
 
+            modelBuilder.Entity("Models.Restaurants.Models.Data.PlanLabel", b =>
+                {
+                    b.HasOne("Models.Restaurants.Models.Data.PlanItem", null)
+                        .WithOne()
+                        .HasForeignKey("Models.Restaurants.Models.Data.PlanLabel", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Models.Restaurants.Models.Data.RestaurantPlan", "Plan")
+                        .WithMany("Labels")
+                        .HasForeignKey("PlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Plan");
+                });
+
             modelBuilder.Entity("Models.Restaurants.Models.Data.PlanTable", b =>
                 {
                     b.HasOne("Models.Restaurants.Models.Data.PlanItem", null)
@@ -372,6 +416,8 @@ namespace Repository.Migrations
 
             modelBuilder.Entity("Models.Restaurants.Models.Data.RestaurantPlan", b =>
                 {
+                    b.Navigation("Labels");
+
                     b.Navigation("Tables");
 
                     b.Navigation("Walls");

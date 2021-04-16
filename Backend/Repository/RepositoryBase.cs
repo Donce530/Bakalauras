@@ -75,7 +75,7 @@ namespace Repository
         }
 
         public async Task<PagedResponse<TResult>> GetPaged<TResult>(Paginator paginator,
-            ICollection<Expression<Func<TEntity, bool>>> filters = null,
+            IEnumerable<Expression<Func<TEntity, bool>>> filters = null,
             Expression<Func<TEntity, object>> orderBy = null)
         {
             if (paginator is null)
@@ -128,6 +128,16 @@ namespace Repository
         {
             await DbContext.Set<TEntity>().AddAsync(entity);
             await DbContext.SaveChangesAsync();
+        }
+        
+        public async Task<int> Delete(Expression<Func<TEntity, bool>> filter)
+        {
+            var itemsToRemove = await DbContext.Set<TEntity>().Where(filter).ToListAsync();
+
+            DbContext.RemoveRange(itemsToRemove);
+            await DbContext.SaveChangesAsync();
+
+            return itemsToRemove.Count;
         }
 
         public abstract Task Update(TEntity entity, Expression<Func<TEntity, bool>> filter);

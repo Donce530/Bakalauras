@@ -31,6 +31,7 @@ class _DateTimePickerState extends State<DateTimePicker> {
   var _isTimeValid = true;
   OpenHours _currentOpenHours;
   final _calendarController = CalendarController();
+  final yesterday = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day - 1);
 
   @override
   void initState() {
@@ -63,7 +64,10 @@ class _DateTimePickerState extends State<DateTimePicker> {
             todayColor: Colors.orangeAccent,
           ),
           startingDayOfWeek: StartingDayOfWeek.monday,
-          enabledDayPredicate: (day) => day.isAfter(DateTime.now().subtract(Duration(days: 1))),
+          enabledDayPredicate: (day) {
+            final dayStart = DateTime(day.year, day.month, day.day);
+            return dayStart.isAfter(yesterday);
+          },
           onDaySelected: (day, events, holidays) => _onDaySelected(day),
         ),
         Padding(

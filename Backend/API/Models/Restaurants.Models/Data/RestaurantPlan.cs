@@ -11,5 +11,6 @@ namespace Models.Restaurants.Models.Data
         public int RestaurantId { get; set; }
         public ICollection<PlanWall> Walls { get; set; }
         public ICollection<PlanTable> Tables { get; set; }
+        public ICollection<PlanLabel> Labels { get; set; }
     }
 }

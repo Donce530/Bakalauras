@@ -10,6 +10,9 @@ namespace Models.Reservations.Models.Data
         public DateTime Day { get; set; }
         public TimeSpan Start { get; set; }
         public TimeSpan End { get; set; }
+        public ReservationState State { get; set; }
+        public TimeSpan? RealStart { get; set; }
+        public TimeSpan? RealEnd { get; set; }
         
         public int RestaurantId { get; set; }
         public Restaurant Restaurant { get; set; }

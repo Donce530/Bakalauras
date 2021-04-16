@@ -9,8 +9,8 @@ import { LoggedInGuard } from './shared/guards/logged-in.guard';
 const routes: Routes = [
   { path: 'restaurant', component: RestaurantComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [LoggedInGuard] },
-  { path: 'reservations', component: ReservationsComponent, canActivate: [LoggedInGuard] },
-  //{ path: '**', redirectTo: 'restaurant' }
+  { path: 'reservations', component: ReservationsComponent, canActivate: [AuthGuard] },
+  { path: '**', redirectTo: 'restaurant' }
 ];
 
 @NgModule({

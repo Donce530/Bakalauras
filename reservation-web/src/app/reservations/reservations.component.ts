@@ -26,6 +26,10 @@ export class ReservationsComponent {
   public startBefore: Date;
   public endAfter: Date;
   public endBefore: Date;
+  public realStartAfter: Date;
+  public realStartBefore: Date;
+  public realEndAfter: Date;
+  public realEndBefore: Date;
 
   constructor(private _reservationsDataService: ReservationsDataService) { }
 
@@ -55,6 +59,14 @@ export class ReservationsComponent {
           this.endAfter.getMonth(), this.endAfter.getDate(), this.endAfter.getHours(), this.endAfter.getMinutes())) : null,
         endUntil: this.endBefore != null ? new Date(Date.UTC(this.endBefore.getFullYear(),
           this.endBefore.getMonth(), this.endBefore.getDate(), this.endBefore.getHours(), this.endBefore.getMinutes())) : null,
+        realStartAfter: this.realStartAfter != null ? new Date(Date.UTC(this.realStartAfter.getFullYear(),
+          this.realStartAfter.getMonth(), this.realStartAfter.getDate(), this.realStartAfter.getHours(), this.realStartAfter.getMinutes())) : null,
+        realStartUntil: this.realEndBefore != null ? new Date(Date.UTC(this.realEndBefore.getFullYear(),
+          this.realEndBefore.getMonth(), this.realEndBefore.getDate(), this.realEndBefore.getHours(), this.realEndBefore.getMinutes())) : null,
+        realEndAfter: this.realEndAfter != null ? new Date(Date.UTC(this.realEndAfter.getFullYear(),
+          this.realEndAfter.getMonth(), this.realEndAfter.getDate(), this.realEndAfter.getHours(), this.realEndAfter.getMinutes())) : null,
+        realEndUntil: this.realEndBefore != null ? new Date(Date.UTC(this.realEndBefore.getFullYear(),
+          this.realEndBefore.getMonth(), this.realEndBefore.getDate(), this.realEndBefore.getHours(), this.realEndBefore.getMinutes())) : null,
         day: event.filters?.Day?.value != null ? new Date(Date.UTC(event.filters?.Day.value.getFullYear(),
           event.filters?.Day?.value.getMonth(), event.filters?.Day?.value.getDate())) : null,
       }),

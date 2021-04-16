@@ -33,5 +33,32 @@ namespace Reservations.Repository
                 ))
                 .Select(t => t.Id).ToListAsync();
         }
+
+        public async Task UpdateState(int reservationId, int userId, ReservationState state, DateTime localTime)
+        {
+            var reservation =
+                await DbContext.Reservations.SingleOrDefaultAsync(r => r.Id == reservationId && r.UserId == userId);
+
+            if (reservation is null || reservation.State == state)
+            {
+                throw new InvalidOperationException();
+            }
+
+            reservation.State = state;
+
+            switch (state)
+            {
+                case ReservationState.CheckedIn:
+                    reservation.RealStart = localTime.TimeOfDay;
+                    break;
+                case ReservationState.CheckedOut:
+                    reservation.RealEnd = localTime.TimeOfDay;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(state), state, null);
+            }
+
+            await DbContext.SaveChangesAsync();
+        }
     }
 }

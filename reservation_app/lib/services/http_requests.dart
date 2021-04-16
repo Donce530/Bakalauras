@@ -15,8 +15,7 @@ class HttpRequests {
     );
   }
 
-  static Future<Response> get(String endpoint,
-      [Map<String, String> queryParams]) async {
+  static Future<Response> get(String endpoint, [Map<String, String> queryParams]) async {
     final uri = queryParams == null
         ? Uri.http(
             Environment.apiAddress,
@@ -25,6 +24,20 @@ class HttpRequests {
         : Uri.http(Environment.apiAddress, endpoint, queryParams);
 
     return http.get(
+      uri,
+      headers: await _getHeaders(),
+    );
+  }
+
+  static Future<Response> delete(String endpoint, [Map<String, String> queryParams]) async {
+    final uri = queryParams == null
+        ? Uri.http(
+            Environment.apiAddress,
+            endpoint,
+          )
+        : Uri.http(Environment.apiAddress, endpoint, queryParams);
+
+    return http.delete(
       uri,
       headers: await _getHeaders(),
     );

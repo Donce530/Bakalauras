@@ -15,6 +15,8 @@ import { EditorStorage } from '../models/editor-storage';
 import { map } from 'rxjs/operators';
 import { RestaurantBehaviourService } from 'src/app/restaurant/services/restaurant-behaviour.service';
 import { LinkBrush } from '../brushes/link-brush';
+import { LabelBrush } from '../brushes/label-brush';
+import { InputTextParameters } from '../models/input-text-parameters';
 
 @Component({
   selector: 'app-editor-panel',
@@ -113,6 +115,13 @@ export class EditorPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         this.brush = brush;
         break;
       }
+      case EditorMode.Comment: {
+        const brush = new LabelBrush(this._editorDataService.storage, this._planContext, this._previewContext, this._svgContext);
+        this._brushSubsciptions.push(this._behaviourService.closeTextInputAction.subscribe(text => brush.onTextInput(text)));
+        brush.askForText = (parameters: InputTextParameters) => this._behaviourService.openTextInput(parameters);
+        this.brush = brush;
+        break;
+      }
       case EditorMode.Delete: {
         this.brush = new DeleteBrush(this._editorDataService.storage, this._planContext, this._previewContext, this._svgContext);
         break;
@@ -141,7 +150,8 @@ export class EditorPanelComponent implements OnInit, AfterViewInit, OnDestroy {
         this._editorDataService.planId = plan.id;
         this._editorDataService.storage = new EditorStorage({
           walls: plan.walls,
-          tables: plan.tables
+          tables: plan.tables,
+          labels: plan.labels
         });
 
 
@@ -150,6 +160,9 @@ export class EditorPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.changeBrush(EditorMode.Wall);
         this.brush.draw(this._editorDataService.storage.walls);
+
+        this.changeBrush(EditorMode.Comment);
+        this.brush.draw(this._editorDataService.storage.labels);
 
         this.changeBrush(EditorMode.None);
       });

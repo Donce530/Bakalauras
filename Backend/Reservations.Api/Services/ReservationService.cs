@@ -97,6 +97,26 @@ namespace Reservations.Api.Services
                 {
                     filters.Add(r => r.End <= parameters.Filters.EndUntil.Value.TimeOfDay);
                 }
+                
+                if (parameters.Filters.RealStartAfter is not null)
+                {
+                    filters.Add(r => r.RealStart >= parameters.Filters.RealStartAfter.Value.TimeOfDay);
+                }
+                
+                if (parameters.Filters.RealStartUntil is not null)
+                {
+                    filters.Add(r => r.RealStart <= parameters.Filters.RealStartUntil.Value.TimeOfDay);
+                }
+                
+                if (parameters.Filters.RealEndAfter is not null)
+                {
+                    filters.Add(r => r.RealEnd >= parameters.Filters.RealEndAfter.Value.TimeOfDay);
+                }
+                
+                if (parameters.Filters.RealEndUntil is not null)
+                {
+                    filters.Add(r => r.RealEnd <= parameters.Filters.RealEndUntil.Value.TimeOfDay);
+                }
             }
 
             Expression<Func<Reservation, object>> orderBy = null;
@@ -109,6 +129,8 @@ namespace Reservations.Api.Services
                     nameof(ReservationDataRow.Start) => r => r.Start,
                     nameof(ReservationDataRow.End) => r => r.End,
                     nameof(ReservationDataRow.TableNumber) => r => r.Table.Number,
+                    nameof(Reservation.RealStart) => r => r.RealStart,
+                    nameof(Reservation.RealEnd) => r => r.RealEnd,
                     _ => throw new ArgumentOutOfRangeException(nameof(parameters.Paginator.SortBy), parameters.Paginator.SortBy)
                 };
             }
@@ -116,6 +138,52 @@ namespace Reservations.Api.Services
             var pagedResults = await _reservationRepository.GetPaged<ReservationDataRow>(parameters.Paginator, filters, orderBy);
 
             return pagedResults;
+        }
+
+        public async Task<ReservationListItemDto> TryCheckIn(int restaurantId, DateTime localTime)
+        {
+            var localTimeOfDay = localTime.TimeOfDay;
+        
+            var reservation = await _reservationRepository.GetMapped<ReservationListItemDto>(r =>
+                r.Day.DayOfYear == localTime.DayOfYear && r.Day.Year == localTime.Year &&
+                r.Start.Hours - localTimeOfDay.Hours <= 1 &&
+                localTimeOfDay.Hours - r.Start.Hours >= -1 &&
+                r.State == ReservationState.Created &&
+                r.UserId == _userService.User.Id &&
+                r.RestaurantId == restaurantId);
+
+            return reservation;
+        }
+
+        public async Task<ReservationListItemDto> TryCheckOut(int restaurantId)
+        {
+            var reservation = await _reservationRepository.GetMapped<ReservationListItemDto>(r =>
+                r.Day.DayOfYear == DateTime.Today.DayOfYear && r.Day.Year == DateTime.Today.Year &&
+                r.State == ReservationState.CheckedIn &&
+                r.UserId == _userService.User.Id &&
+                r.RestaurantId == restaurantId);
+
+            return reservation;
+        }
+
+        public async Task CheckIn(int reservationId, DateTime localTime)
+        {
+            await _reservationRepository.UpdateState(reservationId, _userService.User.Id, ReservationState.CheckedIn, localTime);
+        }
+
+        public async Task CheckOut(int reservationId, DateTime localTime)
+        {
+            await _reservationRepository.UpdateState(reservationId, _userService.User.Id, ReservationState.CheckedOut, localTime);
+        }
+
+        public async Task Cancel(int id)
+        {
+            var removedItemsCount = await _reservationRepository.Delete(r => r.Id == id);
+
+            if (removedItemsCount < 0)
+            {
+                throw new InvalidOperationException();
+            }
         }
 
         public async Task<ReservationDetails> GetDetails(int id)
@@ -131,9 +199,12 @@ namespace Reservations.Api.Services
                 await _reservationRepository.GetAll<ReservationDetails>(r => linkedTableIds.Contains(r.TableId) && 
                     r.Day.Year == details.Day.Year &&
                     r.Day.DayOfYear == details.Day.DayOfYear &&
-                    ((r.Start < details.Start.TimeOfDay && (r.End > details.Start.TimeOfDay && r.End < details.End.TimeOfDay || r.End > details.End.TimeOfDay)) ||
-                     (r.Start >= details.Start.TimeOfDay && (details.End.TimeOfDay > r.Start && details.End.TimeOfDay < r.End || details.End.TimeOfDay > r.End)) ||
-                     (r.Start == details.Start.TimeOfDay && r.End == details.End.TimeOfDay)));
+                    (r.Start < details.Start.TimeOfDay && (r.End > details.Start.TimeOfDay && r.End < details.End.TimeOfDay || r.End > details.End.TimeOfDay) ||
+                     r.Start >= details.Start.TimeOfDay && (details.End.TimeOfDay > r.Start && details.End.TimeOfDay < r.End || details.End.TimeOfDay > r.End) ||
+                     r.Start == details.Start.TimeOfDay && r.End == details.End.TimeOfDay || 
+                    r.RealStart < details.RealStart.TimeOfDay && (r.RealEnd > details.RealStart.TimeOfDay && r.RealEnd < details.RealEnd.TimeOfDay || r.RealEnd > details.RealEnd.TimeOfDay) ||
+                     r.RealStart >= details.RealStart.TimeOfDay && (details.RealEnd.TimeOfDay > r.RealStart && details.RealEnd.TimeOfDay < r.RealEnd || details.RealEnd.TimeOfDay > r.RealEnd) ||
+                     r.RealStart == details.RealStart.TimeOfDay && r.RealEnd == details.RealEnd.TimeOfDay));
             
             return details;
         }

@@ -24,11 +24,8 @@ namespace Restaurants.Repository
                 .Where(filter)
                 .Include(rp => rp.Tables)
                 .Include(rp => rp.Walls)
+                .Include(rp => rp.Labels)
                 .SingleOrDefaultAsync();
-
-            var tableIds = existingItem.Tables.Select(t => t.Id).ToList();
-            var existingTableLinks = await DbContext.TableLinks.Where(tl =>
-                tableIds.Contains(tl.FirstTableId) || tableIds.Contains(tl.SecondTableId)).ToListAsync();
 
             if (existingItem is null)
             {
@@ -83,6 +80,30 @@ namespace Restaurants.Repository
                 else
                 {
                     existingItem.Walls.Add(entityWall);
+                }
+            }
+            
+            foreach (var existingItemLabel in existingItem.Labels)
+            {
+                if (entity.Labels.All(t => t.Id != existingItemLabel.Id))
+                {
+                    DbContext.PlanLabels.Remove(existingItemLabel);
+                }
+            }
+
+            foreach (var entityLabel in entity.Labels)
+            {
+                entityLabel.PlanId = entity.Id;
+                var existingChild = existingItem.Labels
+                    .SingleOrDefault(c => c.Id == entityLabel.Id && c.Id != 0);
+
+                if (existingChild is not null)
+                {
+                    DbContext.Entry(existingChild).CurrentValues.SetValues(entityLabel);
+                }
+                else
+                {
+                    existingItem.Labels.Add(entityLabel);
                 }
             }
 

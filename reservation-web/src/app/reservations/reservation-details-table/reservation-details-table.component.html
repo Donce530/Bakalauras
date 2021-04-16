@@ -22,6 +22,12 @@
             <th>
                 Pabaiga
             </th>
+            <th>
+                Atvyko
+            </th>
+            <th>
+                Išvyko
+            </th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-expanded="expanded">
@@ -33,6 +39,8 @@
             <td>{{rowData.tableSeats}}</td>
             <td>{{rowData.start | time}}</td>
             <td>{{rowData.end | time}}</td>
+            <td>{{rowData.realStart != null ? (rowData.realStart | time) : '-'}}</td>
+            <td>{{rowData.realEnd != null ? (rowData.realEnd | time) : '-'}}</td>
         </tr>
     </ng-template>
 </p-table>

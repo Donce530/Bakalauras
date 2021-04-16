@@ -28,15 +28,35 @@ class _MakeReservationPageState extends State<MakeReservationPage> {
   var _availableTableStream = StreamController<List<int>>();
 
   var _isTimeValid = true;
-  var _startTime = TimeOfDay.now()
-      .replacing(minute: (TimeOfDay.now().minute + (15 - TimeOfDay.now().minute % 15)) % 60);
-  var _endTime = TimeOfDay.now()
-      .replacing(minute: (TimeOfDay.now().minute + (15 - TimeOfDay.now().minute % 15) + 15) % 60);
+  TimeOfDay _startTime;
+  TimeOfDay _endTime;
   var _day = DateTime.now();
   PlanTable _selectedTable;
 
   @override
   void initState() {
+    var addHour = false;
+    var startMinutes = (TimeOfDay.now().minute + (15 - TimeOfDay.now().minute % 15));
+    if (startMinutes >= 60) {
+      startMinutes = startMinutes % 60;
+      addHour = true;
+    }
+    _startTime = TimeOfDay.now().replacing(minute: startMinutes);
+    if (addHour) {
+      _startTime = _startTime.replacing(hour: _startTime.hour + 1);
+      addHour = false;
+    }
+
+    var endMinutes = (TimeOfDay.now().minute + (15 - TimeOfDay.now().minute % 15) + 15);
+    if (endMinutes >= 60) {
+      endMinutes = endMinutes % 60;
+      addHour = true;
+    }
+    _endTime = TimeOfDay.now().replacing(minute: endMinutes);
+    if (addHour) {
+      _endTime = _endTime.replacing(hour: _endTime.hour + 1);
+    }
+
     _dateTimePicker = DateTimePicker(
       schedule: widget.restaurant.schedule,
       onTimeChanged: _onTimePicked,

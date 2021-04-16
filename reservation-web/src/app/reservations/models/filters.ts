@@ -5,6 +5,10 @@ export class Filters {
     public startUntil: Date;
     public endAfter: Date;
     public endUntil: Date;
+    public realStartAfter: Date;
+    public realStartUntil: Date;
+    public realEndAfter: Date;
+    public realEndUntil: Date;
     public tableNumber: number;
 
     constructor(data?: Partial<Filters>) {
