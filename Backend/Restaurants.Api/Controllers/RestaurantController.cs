@@ -49,6 +49,11 @@ namespace Restaurants.Api.Controllers
         [HttpPost("Details")]
         public async Task<IActionResult> SaveDetails([FromBody] RestaurantDto restaurant)
         {
+            if (restaurant is null)
+            {
+                return BadRequest();
+            }
+            
             await _restaurantService.SaveDetails(restaurant);
 
             return Ok();
@@ -77,7 +82,7 @@ namespace Restaurants.Api.Controllers
         [HttpGet("Page")]
         public async Task<IActionResult> GetPage([FromQuery] int page, [FromQuery] string city, [FromQuery] string filter)
         {
-            if (page < 0 || string.IsNullOrEmpty(city))
+            if (page < 0 || string.IsNullOrWhiteSpace(city))
             {
                 return BadRequest(new { message = "page cannot be negative and city must be provided"});
             }
@@ -129,6 +134,11 @@ namespace Restaurants.Api.Controllers
         [HttpPost("Plan")]
         public async Task<IActionResult> SavePlan([FromBody] RestaurantPlanDto plan)
         {
+            if (plan is null)
+            {
+                return BadRequest();
+            }
+
             await _restaurantService.SavePlan(plan);
 
             return Ok();

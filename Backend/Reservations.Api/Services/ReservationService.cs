@@ -12,7 +12,7 @@ using Users.Api.Services;
 
 namespace Reservations.Api.Services
 {
-    internal class ReservationService : IReservationService
+    public class ReservationService : IReservationService
     {
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
@@ -60,8 +60,10 @@ namespace Reservations.Api.Services
 
         public async Task<PagedResponse<ReservationDataRow>> GetPagedAndFiltered(PagedFilteredParams<ReservationFilters> parameters)
         {
-            var filters = new List<Expression<Func<Reservation, bool>>>();
-            filters.Add((r => r.Restaurant.UserId == _userService.User.Id));
+            var filters = new List<Expression<Func<Reservation, bool>>>
+            {
+                (r => r.Restaurant.UserId == _userService.User.Id)
+            };
             if (parameters.Filters is not null)
             {
                 if (!string.IsNullOrEmpty(parameters.Filters.Name))

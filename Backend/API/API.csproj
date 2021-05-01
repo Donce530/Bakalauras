@@ -34,18 +34,26 @@
 
   <ItemGroup>
     <Compile Remove="Models\**" />
+    <Compile Remove="Restaurants.Api.Tests\**" />
+    <Compile Remove="UnitTests\**" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Remove="Models\**" />
+    <EmbeddedResource Remove="Restaurants.Api.Tests\**" />
+    <EmbeddedResource Remove="UnitTests\**" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Models\**" />
+    <None Remove="Restaurants.Api.Tests\**" />
+    <None Remove="UnitTests\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="Models\**" />
+    <Content Remove="Restaurants.Api.Tests\**" />
+    <Content Remove="UnitTests\**" />
   </ItemGroup>
 
 </Project>

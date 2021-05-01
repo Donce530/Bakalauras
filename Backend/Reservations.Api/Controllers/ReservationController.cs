@@ -26,6 +26,11 @@ namespace Reservations.Api.Controllers
         [HttpPost(nameof(Create))]
         public async Task<IActionResult> Create([FromBody] NewReservationDto newReservation)
         {
+            if (newReservation is null)
+            {
+                return BadRequest();
+            }
+            
             await _reservationService.Create(newReservation);
 
             return Ok();

@@ -19,10 +19,17 @@ namespace Users.Api.Controllers
         [HttpPost(nameof(Authenticate))]
         public async Task<IActionResult> Authenticate(AuthenticateRequest model)
         {
+            if (model is null)
+            {
+                return BadRequest();
+            }
+            
             var response = await _userService.AuthenticateAsync(model);
 
-            if (response == null)
+            if (response is null)
+            {
                 return BadRequest(new { message = "Email or password is incorrect" });
+            }
 
             return Ok(response);
         }

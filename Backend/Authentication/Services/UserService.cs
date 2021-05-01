@@ -122,7 +122,6 @@ namespace Users.Api.Services
 
             var user = _mapper.Map<User>(userDao);
 
-            // authentication successful so generate jwt token
             var token = GenerateJwtToken(user);
 
             return new AuthenticateResponse(user, token);
@@ -163,7 +162,6 @@ namespace Users.Api.Services
 
         private string GenerateJwtToken(User user)
         {
-            // generate token that is valid for 7 days
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.ApiSecret);
             var tokenDescriptor = new SecurityTokenDescriptor
