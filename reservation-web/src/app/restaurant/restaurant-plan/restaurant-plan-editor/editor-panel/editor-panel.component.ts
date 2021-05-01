@@ -145,6 +145,13 @@ export class EditorPanelComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private initializePlan(): void {
+
+    this._editorDataService.storage = new EditorStorage({
+      walls: [],
+      tables: [],
+      labels: []
+    });
+
     combineLatest([this._restaurantDataService.getPlan(), this._contextReady.asObservable()])
       .pipe(map(combineResults => combineResults[0])).subscribe(plan => {
         this._editorDataService.planId = plan.id;

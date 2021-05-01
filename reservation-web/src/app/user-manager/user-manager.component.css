@@ -1,0 +1,10 @@
+.manager-button-wrapper {
+    max-height: 8vh;
+    max-width: 8vh;
+    padding-top: 1vw;
+    padding-left: 1vw;
+}
+
+:host() > * {
+    background-color: var(--cancel-col);
+}

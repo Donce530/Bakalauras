@@ -9,6 +9,7 @@ import { ReservationsDataService } from './services/reservations-data.service';
 import { ReservationsHttpService } from './services/reservations-http.service';
 import { ReservationDetailsComponent } from './reservation-details/reservation-details.component';
 import { ReservationDetailsTableComponent } from './reservation-details-table/reservation-details-table.component';
+import { ConfirmationService } from 'primeng/api';
 
 
 

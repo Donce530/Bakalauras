@@ -8,10 +8,11 @@
                 {{item.label}}
             </ng-template>
         </p-tabMenu>
-        <div class="ml-auto h-100">
-            <button pButton pRipple type="button" icon="pi pi-times"
-                class="p-button-rounded p-button-danger p-button-outlined"></button>
+        <div class="col-1 image-container ml-auto">
+            <button pButton pRipple type="button" icon="pi pi-sign-out" (click)="exit()"
+                class="p-button-rounded p-button-secondary p-button-outlined" pTooltip="Išeiti"></button>
         </div>
     </div>
 </div>
+<p-toast></p-toast>
 <router-outlet></router-outlet>

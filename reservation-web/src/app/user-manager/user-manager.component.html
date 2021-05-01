@@ -1,0 +1,106 @@
+<p-confirmDialog header="Įspėjimas" icon="pi pi-exclamation-triangle" acceptLabel="Taip" rejectLabel="Ne">
+</p-confirmDialog>
+
+<app-new-manager-dialog *ngIf="showNewManagerDialog" (closeDialog)="onManagerDialogClose($event)">
+
+</app-new-manager-dialog>
+
+<div class="d-flex align-items-stretch">
+    <div class="flex-even p-1">
+        <p-card class="full-height">
+            <ng-template pTemplate="header">
+                <div class="d-flex align-items-left ml-2 mt-1">
+                    <h1>Vartotojų valdymas</h1>
+                    <div class="manager-button-wrapper ml-auto mr-3">
+                        <button pButton pRipple type="button" icon="pi pi-plus" (click)="newManager()"
+                            class="p-button-rounded p-button-secondary p-button-outlined"
+                            pTooltip="Naujas vadybininkas"></button>
+                    </div>
+                </div>
+            </ng-template>
+            <p-table *ngIf="visible" #dt [value]="users" [rows]="paginator.rows" [totalRecords]="paginator.totalRows"
+                [lazy]="true" (onLazyLoad)="loadData($event)" [paginator]="true" paginatorPosition="bottom"
+                [loading]="loading" [rowsPerPageOptions]="[10,20,50]" dataKey="id" selectionMode="single">
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th pSortableColumn="FirstName">Vardas
+                            <p-sortIcon field="FirstName"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="LastName">Pavardė
+                            <p-sortIcon field="LastName"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="Email">El. pašto adresas
+                            <p-sortIcon field="Email"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="PhoneNumber">Telefono numeris
+                            <p-sortIcon field="PhoneNumber"></p-sortIcon>
+                        </th>
+                        <th pSortableColumn="Role">Rolė
+                            <p-sortIcon field="Role"></p-sortIcon>
+                        </th>
+                        <th style="width: 7rem">Veiksmai</th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <p-columnFilter field="FirstName" matchMode="contains" [showMenu]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <input placeholder="Paieška..." pInputText type="text"
+                                        (change)="filter($event.target)">
+                                </ng-template>
+                            </p-columnFilter>
+                        </th>
+                        <th>
+                            <p-columnFilter field="LastName" matchMode="contains" [showMenu]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <input placeholder="Paieška..." pInputText type="text"
+                                        (change)="filter($event.target)">
+                                </ng-template>
+                            </p-columnFilter>
+                        </th>
+                        <th>
+                            <p-columnFilter field="Email" matchMode="contains" [showMenu]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <input placeholder="Paieška..." pInputText type="text"
+                                        (change)="filter($event.target)">
+                                </ng-template>
+                            </p-columnFilter>
+                        </th>
+                        <th>
+                            <p-columnFilter field="PhoneNumber" matchMode="contains" [showMenu]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <input placeholder="Paieška..." pInputText type="text"
+                                        (change)="filter($event.target)">
+                                </ng-template>
+                            </p-columnFilter>
+                        </th>
+                        <th>
+                            <p-columnFilter field="Role" matchMode="contains" [showMenu]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <p-dropdown [options]="roleFilterOptions" [(ngModel)]="currentRoleOption"
+                                        optionLabel="label" (onChange)="filter($event.target)"></p-dropdown>
+                                </ng-template>
+                            </p-columnFilter>
+                        </th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData>
+                    <tr>
+                        <td>{{rowData.firstName}}</td>
+                        <td>{{rowData.lastName}}</td>
+                        <td>{{rowData.email}}</td>
+                        <td>{{rowData.phoneNumber}}</td>
+                        <td class="text-center">
+                            {{getRoleLabel(rowData.role)}}
+                        </td>
+                        <td class="text-center">
+                            <button type="button" pTooltip="Ištrinti" pButton pRipple
+                                class="p-button-text p-button-rounded p-button-plain" icon="pi pi-trash"
+                                (click)="deleteUser(rowData)"></button>
+                        </td>
+                </ng-template>
+
+            </p-table>
+        </p-card>
+    </div>
+</div>

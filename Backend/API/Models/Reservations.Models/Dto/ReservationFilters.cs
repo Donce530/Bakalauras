@@ -2,7 +2,7 @@
 
 namespace Models.Reservations.Models.Dto
 {
-    public class Filters
+    public class ReservationFilters
     {
         public string Name { get; set; }
         public DateTime? Day { get; set; }

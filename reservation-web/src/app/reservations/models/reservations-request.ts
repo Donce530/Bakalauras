@@ -1,5 +1,5 @@
 import { Filters } from './filters';
-import { Paginator } from './paginator';
+import { Paginator } from '../../shared/models/data/paginator';
 
 export class ReservationsRequest {
     public paginator: Paginator;

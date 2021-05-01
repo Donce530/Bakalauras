@@ -40,7 +40,7 @@ namespace Reservations.Api.Controllers
         }
 
         [HttpPost(nameof(PagedAndFiltered))]
-        public async Task<IActionResult> PagedAndFiltered([FromBody] PagedFilteredParams parameters)
+        public async Task<IActionResult> PagedAndFiltered([FromBody] PagedFilteredParams<ReservationFilters> parameters)
         {
             if (parameters is null || _userService.User.Role == Role.Client)
             {

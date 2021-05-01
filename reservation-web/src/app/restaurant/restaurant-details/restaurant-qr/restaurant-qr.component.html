@@ -1,6 +1,10 @@
 <p-fieldset styleClass="h-100">
     <ng-template pTemplate="header">Apsilankymo kodas</ng-template>
-    <p-progressSpinner *ngIf="qrSource == null"></p-progressSpinner>
+    <div class="wrapper" *ngIf="qrSource == null">
+        <div class="inner">
+            <p-progressSpinner></p-progressSpinner>
+        </div>
+    </div>
     <p-galleria [value]="images" [showThumbnails]="false" (click)="download()">
         <ng-template pTemplate="item" let-item>
             <img [src]="item.src" />

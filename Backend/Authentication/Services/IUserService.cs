@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Models.Reservations.Models.Dto;
 using Models.Users.Models.Data;
 using Models.Users.Models.Dto;
 
@@ -10,5 +11,7 @@ namespace Users.Api.Services
         User GetById(int id);
         public User User { get; }
         Task Register(RegisterRequest registerRequest);
+        Task<PagedResponse<UserDataRow>> GetPagedAndFiltered(PagedFilteredParams<UserFilters> parameters);
+        Task Delete(int userId);
     }
 }

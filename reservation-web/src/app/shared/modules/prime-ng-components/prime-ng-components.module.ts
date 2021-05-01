@@ -19,6 +19,10 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { DropdownModule } from 'primeng/dropdown';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DialogModule } from 'primeng/dialog';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   exports: [
@@ -41,7 +45,11 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     OverlayPanelModule,
     InputNumberModule,
     TabMenuModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    DropdownModule,
+    ConfirmDialogModule,
+    DialogModule,
+    ToastModule
   ]
 })
 export class PrimeNgComponentsModule { }

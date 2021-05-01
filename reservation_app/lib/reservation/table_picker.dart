@@ -172,7 +172,7 @@ class _TablePickerState extends State<TablePicker> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8),
                   child: Text(
-                    'Sėdimų vietų: ${table.number.toString()}',
+                    'Sėdimų vietų: ${table.seats.toString()}',
                     textAlign: TextAlign.center,
                   ),
                 ),

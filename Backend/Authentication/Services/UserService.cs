@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq.Expressions;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -8,6 +10,8 @@ using AutoMapper;
 using Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Models.Reservations.Models.Data;
+using Models.Reservations.Models.Dto;
 using Models.Users.Models.Dao;
 using Models.Users.Models.Data;
 using Models.Users.Models.Dto;
@@ -39,11 +43,67 @@ namespace Users.Api.Services
 
             var user = _mapper.Map<UserDao>(registerRequest);
             (user.Password, user.Salt) = HashPassword(registerRequest.Password);
-            user.Role = Role.Client;
 
             await _usersRepository.Create(user);
         }
 
+        public async Task<PagedResponse<UserDataRow>> GetPagedAndFiltered(PagedFilteredParams<UserFilters> parameters)
+        {
+            var filters = new List<Expression<Func<UserDao, bool>>>
+            {
+                u => u.Role != Role.Admin
+            };
+            if (parameters.Filters is not null)
+            {
+                if (!string.IsNullOrEmpty(parameters.Filters.FirstName))
+                {
+                    filters.Add(u => u.FirstName.ToLower().Contains(parameters.Filters.FirstName.ToLower()));
+                }
+                
+                if (!string.IsNullOrEmpty(parameters.Filters.LastName))
+                {
+                    filters.Add(u => u.LastName.ToLower().Contains(parameters.Filters.LastName.ToLower()));
+                }
+                
+                if (!string.IsNullOrEmpty(parameters.Filters.Email))
+                {
+                    filters.Add(u => u.Email.ToLower().Contains(parameters.Filters.Email.ToLower()));
+                }
+                
+                if (!string.IsNullOrEmpty(parameters.Filters.PhoneNumber))
+                {
+                    filters.Add(u => u.PhoneNumber.ToLower().Contains(parameters.Filters.PhoneNumber.ToLower()));
+                }
+
+                if (parameters.Filters.Role is not null)
+                {
+                    filters.Add(u => u.Role == parameters.Filters.Role);
+                }
+            }
+
+            Expression<Func<UserDao, object>> orderBy = null;
+            if (parameters.Paginator.SortOrder != 0 && !string.IsNullOrEmpty(parameters.Paginator.SortBy))
+            {
+                orderBy = parameters.Paginator.SortBy switch
+                {
+                    nameof(UserDataRow.FirstName) => u => u.FirstName,
+                    nameof(UserDataRow.LastName) => u => u.LastName,
+                    nameof(UserDataRow.Email) => u => u.Email,
+                    nameof(UserDataRow.Role) => u => u.Role,
+                    nameof(UserDataRow.PhoneNumber) => u => u.PhoneNumber,
+                    _ => throw new ArgumentOutOfRangeException(nameof(parameters.Paginator.SortBy), parameters.Paginator.SortBy)
+                };
+            }
+
+            var pagedResults = await _usersRepository.GetPaged<UserDataRow>(parameters.Paginator, filters, orderBy);
+
+            return pagedResults;
+        }
+
+        public async Task Delete(int userId)
+        {
+            await _usersRepository.Delete(u => u.Id == userId);
+        }
 
         public async Task<AuthenticateResponse> AuthenticateAsync(AuthenticateRequest model)
         {

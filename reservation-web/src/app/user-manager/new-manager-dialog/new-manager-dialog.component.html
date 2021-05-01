@@ -1,0 +1,67 @@
+<form [formGroup]="userForm" (ngSubmit)="register()">
+    <p-dialog [(visible)]="visible" [style]="{width: '30vw'}" (onHide)="cancel()">
+        <ng-template pTemplate="header">
+            <h3>Naujas vadybininkas</h3>
+        </ng-template>
+
+
+        <div class="row">
+            <div class="col-12 pb-1">
+                <div class="p-inputgroup"
+                    [class.invalid-field]="userForm.controls.firstName.invalid && userForm.controls.firstName.dirty">
+                    <span class="p-inputgroup-addon">
+                        <fa-icon [icon]="icons.user"></fa-icon>
+                    </span>
+                    <input type="text" formControlName="firstName" pInputText placeholder="Vardas">
+                </div>
+            </div>
+            <div class="col-12 pb-1">
+                <div class="p-inputgroup"
+                    [class.invalid-field]="userForm.controls.lastName.invalid && userForm.controls.lastName.dirty">
+                    <span class="p-inputgroup-addon">
+                        <fa-icon [icon]="icons.user"></fa-icon>
+                    </span>
+                    <input type="text" formControlName="lastName" pInputText placeholder="Pavardė">
+                </div>
+            </div>
+            <div class="col-12 pb-1">
+                <div class="p-inputgroup"
+                    [class.invalid-field]="userForm.controls.email.invalid && userForm.controls.email.dirty">
+                    <span class="p-inputgroup-addon">
+                        <fa-icon [icon]="icons.user"></fa-icon>
+                    </span>
+                    <input type="text" formControlName="email" pInputText placeholder="El. pašto adresas">
+                </div>
+            </div>
+            <div class="col-12  pb-1">
+                <div class="p-inputgroup"
+                    [class.invalid-field]="userForm.controls.password.invalid && userForm.controls.password.dirty">
+                    <span class="p-inputgroup-addon">
+                        <fa-icon [icon]="icons.key"></fa-icon>
+                    </span>
+                    <input type="password" formControlName="password" pInputText placeholder="Slaptažodis">
+                </div>
+            </div>
+            <div class="col-12 pb-1">
+                <div class="p-inputgroup"
+                    [class.invalid-field]="userForm.controls.phoneNumber.invalid && userForm.controls.phoneNumber.dirty">
+                    <span class="p-inputgroup-addon">
+                        <fa-icon [icon]="icons.user"></fa-icon>
+                    </span>
+                    <input type="text" formControlName="phoneNumber" pInputText placeholder="Telefono numeris">
+                </div>
+            </div>
+        </div>
+
+        <p-footer>
+            <div class="d-flex flex-row-reverse">
+                <div class="p-2">
+                    <p-button type="submit" [disabled]="userForm.invalid" label="Registruoti"
+                        pTooltip="Įveskite vartotojo vardą ir slaptažodį" [showDelay]="500"
+                        [tooltipDisabled]="!userForm.invalid">
+                    </p-button>
+                </div>
+            </div>
+        </p-footer>
+    </p-dialog>
+</form>

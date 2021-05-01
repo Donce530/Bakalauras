@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { PagedResponse } from '../models/paged-response';
+import { PagedResponse } from '../../shared/models/data/paged-response';
 import { ReservationDataRow } from '../models/reservation-data-row';
 import { ReservationDetails } from '../models/reservation-details';
 import { ReservationsRequest } from '../models/reservations-request';

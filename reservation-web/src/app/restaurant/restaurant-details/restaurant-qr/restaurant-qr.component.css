@@ -10,6 +10,15 @@ p-galleria {
     cursor: pointer;
 }
 
+.wrapper {
+    display: grid; 
+    place-items: center;
+}
+
+.inner {
+    padding: 5vh;
+}
+
 :host ::ng-deep .p-fieldset-content {
     padding: 0;
 }

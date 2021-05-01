@@ -14,6 +14,8 @@ import { LoggedInGuard } from './shared/guards/logged-in.guard';
 import { PrimeNgComponentsModule } from './shared/modules/prime-ng-components/prime-ng-components.module';
 import { JwtTokenInterceptor } from './shared/interceptors/jwt-token.interceptor';
 import { ReservationsModule } from './reservations/reservations.module';
+import { UserManagerModule } from './user-manager/user-manager.module';
+import { MessageService } from 'primeng/api';
 
 
 @NgModule({
@@ -29,12 +31,14 @@ import { ReservationsModule } from './reservations/reservations.module';
     HttpClientModule,
     FontAwesomeModule,
     PrimeNgComponentsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    UserManagerModule
   ],
   providers: [AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: JwtTokenInterceptor, multi: true },
     LoggedInGuard,
-    AuthenticationService],
+    AuthenticationService,
+    MessageService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

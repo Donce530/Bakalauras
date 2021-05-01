@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PagedResponse } from '../models/paged-response';
+import { PagedResponse } from '../../shared/models/data/paged-response';
 import { ReservationDataRow } from '../models/reservation-data-row';
 import { ReservationDetails } from '../models/reservation-details';
 import { ReservationsRequest } from '../models/reservations-request';

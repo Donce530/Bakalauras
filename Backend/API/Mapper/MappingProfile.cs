@@ -18,6 +18,7 @@ namespace API.Mapper
         public MappingProfile()
         {
             CreateMap<UserDao, User>();
+            CreateMap<UserDao, UserDataRow>();
             CreateMap<RegisterRequest, UserDao>();
 
             CreateMap<Restaurant, RestaurantDto>()
