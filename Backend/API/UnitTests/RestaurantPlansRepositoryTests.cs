@@ -38,72 +38,6 @@ namespace UnitTests
         }
 
         [Fact]
-        public void CannotConstructWithNullDbContext()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-                new RestaurantPlansRepository(default, new Mock<IMapper>().Object));
-        }
-
-        [Fact]
-        public void CannotConstructWithNullMapper()
-        {
-            Assert.Throws<ArgumentNullException>(() =>
-                new RestaurantPlansRepository(new AppDbContext(new Mock<IOptions<AppSettings>>().Object), default));
-        }
-
-        // [Fact]
-        // public async Task CanCallUpdate()
-        // {
-        //     var entity = new RestaurantPlan
-        //     {
-        //         Id = 638261545, WebSvg = "TestValue894961497",
-        //         Restaurant = new Restaurant
-        //         {
-        //             Id = 56303483, Title = "TestValue2054492885", Description = "TestValue827074939",
-        //             Address = "TestValue1698535768", City = "TestValue1452777817",
-        //             Schedule = new[]
-        //             {
-        //                 new OpenHours
-        //                 {
-        //                     Open = new DateTime(642938099), Close = new DateTime(938986487), WeekDay = WeekDay.Tuesday,
-        //                     Restaurant = default, RestaurantId = 2077231425
-        //                 },
-        //                 new OpenHours
-        //                 {
-        //                     Open = new DateTime(566118373), Close = new DateTime(1383243863),
-        //                     WeekDay = WeekDay.Wednesday, Restaurant = default, RestaurantId = 1600367864
-        //                 },
-        //                 new OpenHours
-        //                 {
-        //                     Open = new DateTime(1417114590), Close = new DateTime(50099970), WeekDay = WeekDay.Monday,
-        //                     Restaurant = default, RestaurantId = 1382599589
-        //                 }
-        //             },
-        //             User = new UserDao
-        //             {
-        //                 Id = 240994975, FirstName = "TestValue259916186", LastName = "TestValue1771081575",
-        //                 Email = "TestValue727624779", Password = "TestValue588063661",
-        //                 PhoneNumber = "TestValue1311656173", Salt = "TestValue620256073", Role = Role.Admin
-        //             },
-        //             UserId = 50593665, RestaurantPlan = default,
-        //             Reservations = new Mock<ICollection<Reservation>>().Object
-        //         },
-        //         RestaurantId = 2012762727, Walls = new Mock<ICollection<PlanWall>>().Object,
-        //         Tables = new Mock<ICollection<PlanTable>>().Object, Labels = new Mock<ICollection<PlanLabel>>().Object
-        //     };
-        //     var filter = new Expression<Func<RestaurantPlan, bool>>();
-        //     await _testClass.Update(entity, filter);
-        //     Assert.True(false, "Create or modify test");
-        // }
-        //
-        // [Fact]
-        // public async Task CannotCallUpdateWithNullEntity()
-        // {
-        //     await Assert.ThrowsAsync<ArgumentNullException>(() =>
-        //         _testClass.Update(default, new Expression<Func<RestaurantPlan, bool>>()));
-        // }
-
-        [Fact]
         public async Task CannotCallUpdateWithNullFilter()
         {
             await Assert.ThrowsAsync<ArgumentNullException>(() =>
@@ -146,43 +80,6 @@ namespace UnitTests
                         Tables = new Mock<ICollection<PlanTable>>().Object,
                         Labels = new Mock<ICollection<PlanLabel>>().Object
                     }, default));
-        }
-
-        [Fact]
-        public async Task CanCallUpdateTableLinks()
-        {
-            var links = new Mock<ICollection<TableLink>>().Object;
-            var planTableIds = new Mock<ICollection<int>>().Object;
-            await _testClass.UpdateTableLinks(links, planTableIds);
-            Assert.True(false, "Create or modify test");
-        }
-
-        [Fact]
-        public async Task CannotCallUpdateTableLinksWithNullLinks()
-        {
-            await Assert.ThrowsAsync<ArgumentNullException>(() =>
-                _testClass.UpdateTableLinks(default, new Mock<ICollection<int>>().Object));
-        }
-
-        [Fact]
-        public async Task CannotCallUpdateTableLinksWithNullPlanTableIds()
-        {
-            await Assert.ThrowsAsync<ArgumentNullException>(() =>
-                _testClass.UpdateTableLinks(new Mock<ICollection<TableLink>>().Object, default));
-        }
-
-        // [Fact]
-        // public async Task CanCallGetTableLinks()
-        // {
-        //     var filter = new Expression<Func<TableLink, bool>>();
-        //     var result = await _testClass.GetTableLinks(filter);
-        //     Assert.True(false, "Create or modify test");
-        // }
-
-        [Fact]
-        public async Task CannotCallGetTableLinksWithNullFilter()
-        {
-            await Assert.ThrowsAsync<ArgumentNullException>(() => _testClass.GetTableLinks(default));
         }
     }
 }

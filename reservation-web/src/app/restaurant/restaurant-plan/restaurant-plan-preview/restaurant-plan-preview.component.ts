@@ -20,6 +20,7 @@ export class RestaurantPlanPreviewComponent implements OnInit {
     this._dataService.getPlanWebPreview().subscribe(
       (plan: string) => this.planPreview = this._sanitizer.bypassSecurityTrustHtml(plan)
     );
+
   }
 
   public openEdit(): void {

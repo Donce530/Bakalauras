@@ -1,0 +1,3 @@
+export class DefaultSvg {
+    public static svg = "<svg version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"  style=\"position: absolute;fill-rule:evenodd;display: block;max-width: 100%;max-height: 100%;left: 0;right: 0;top: 0;bottom: 0;margin: auto;\" viewBox=\"0 0 3840 2160\"width=\"2160\" height=\"3840\"><defs/><g transform=\"scale(3.5036496350364965,3.153284671532847)\"><text fill=\"#000000\" stroke=\"none\" font-family=\"arial\" font-size=\"91px\" font-style=\"normal\" font-weight=\"normal\" text-decoration=\"normal\" x=\"207.060546875\" y=\"364.046875\" text-anchor=\"start\" dominant-baseline=\"alphabetic\">Sudarykite planą</text></g></svg>"
+}

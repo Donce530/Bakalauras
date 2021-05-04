@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { DefaultSvg } from '../models/default-svg';
 import { OpenHours } from '../models/open-hours';
 import { Restaurant } from '../models/restaurant';
 import { Label } from '../restaurant-plan/restaurant-plan-editor/drawables/label';
@@ -82,7 +83,7 @@ export class RestaurantDataService {
 
   public getPlanWebPreview(): Observable<string> {
     return this._httpService.getPlanWebPreview().pipe(
-      map(svg => svg == null ? '' : svg)
+      map(svg => svg == null ? DefaultSvg.svg : svg)
     );
   }
 

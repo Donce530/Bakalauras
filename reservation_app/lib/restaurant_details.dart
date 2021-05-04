@@ -193,6 +193,10 @@ class _RestaurantDetailsPageState extends State<RestaurantDetailsPage> {
     details.schedule.sort((a, b) => a.weekDay < b.weekDay ? -1 : 1);
     details.schedule.firstWhere((element) => element.weekDay == 0).weekDay = 7;
     details.schedule.add(details.schedule.removeAt(0));
+    details.schedule.forEach((element) {
+      element.open = element.open.add(element.open.timeZoneOffset);
+      element.close = element.close.add(element.open.timeZoneOffset);
+    });
 
     return details;
   }

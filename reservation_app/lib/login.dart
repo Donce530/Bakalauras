@@ -42,13 +42,11 @@ class _LoginPageState extends State<LoginPage> {
           Padding(
               padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
               child: TextFormField(
-                decoration: const InputDecoration(
-                    icon: Icon(Icons.person), labelText: 'Vartotojo vardas'),
+                decoration:
+                    const InputDecoration(icon: Icon(Icons.person), labelText: 'El. pašto adresas'),
                 controller: _usernameController,
                 validator: (value) {
-                  return value != null && value.isEmpty
-                      ? 'Būtina užpildyti'
-                      : null;
+                  return value != null && value.isEmpty ? 'Būtina užpildyti' : null;
                 },
                 textInputAction: TextInputAction.next,
                 onEditingComplete: () => focusNode.nextFocus(),
@@ -56,13 +54,10 @@ class _LoginPageState extends State<LoginPage> {
           Padding(
             padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
             child: TextFormField(
-              decoration: const InputDecoration(
-                  icon: Icon(Icons.lock), labelText: 'Slaptažodis'),
+              decoration: const InputDecoration(icon: Icon(Icons.lock), labelText: 'Slaptažodis'),
               controller: _passwordController,
               validator: (value) {
-                return value != null && value.isEmpty
-                    ? 'Būtina užpildyti'
-                    : null;
+                return value != null && value.isEmpty ? 'Būtina užpildyti' : null;
               },
               obscureText: true,
               textInputAction: TextInputAction.done,
@@ -159,10 +154,8 @@ class _LoginPageState extends State<LoginPage> {
       return;
     }
 
-    final loginRequest =
-        new LoginRequest(_usernameController.text, _passwordController.text);
-    final response =
-        await HttpRequests.post('api/Token/Authenticate', loginRequest);
+    final loginRequest = new LoginRequest(_usernameController.text, _passwordController.text);
+    final response = await HttpRequests.post('api/Token/Authenticate', loginRequest);
     if (response.statusCode == 200) {
       //final loginResponse = LoginResponse.fromJson(jsonDecode(response.body));
       // check role.
@@ -171,8 +164,7 @@ class _LoginPageState extends State<LoginPage> {
       var token = jsonDecode(response.body)['token'] as String;
       preferences.setString('token', token);
 
-      Navigator.of(context)
-          .pushReplacement(AnimatedRoutes.slideToRight(context, HomePage()));
+      Navigator.of(context).pushReplacement(AnimatedRoutes.slideToRight(context, HomePage()));
 
       return;
     } else {
@@ -189,8 +181,8 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _register() async {
-    final registerResult = await Navigator.of(context)
-        .push(AnimatedRoutes.slideToLeft(context, RegisterPage()));
+    final registerResult =
+        await Navigator.of(context).push(AnimatedRoutes.slideToLeft(context, RegisterPage()));
 
     if (registerResult != 'registered') {
       return;

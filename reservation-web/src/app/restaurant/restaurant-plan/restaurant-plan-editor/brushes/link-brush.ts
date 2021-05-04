@@ -89,7 +89,7 @@ export class LinkBrush extends BrushBase {
         this.previewContext.setLineDash([10, 20]);
         this.previewContext.lineWidth = 5;
         this.previewContext.lineCap = 'round';
-        this.previewContext.strokeStyle = 'green';
+        this.previewContext.strokeStyle = 'red';
     }
 
     private previewLink(firstTable: Table, secondTable: Table): void {

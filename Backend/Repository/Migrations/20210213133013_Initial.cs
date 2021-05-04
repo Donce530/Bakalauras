@@ -15,7 +15,7 @@ namespace Repository.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     FirstName = table.Column<string>(type: "text", nullable: true),
                     LastName = table.Column<string>(type: "text", nullable: true),
-                    Username = table.Column<string>(type: "text", nullable: true),
+                    Email = table.Column<string>(type: "text", nullable: true),
                     Password = table.Column<string>(type: "text", nullable: true),
                     Salt = table.Column<string>(type: "text", nullable: true),
                     Role = table.Column<int>(type: "integer", nullable: false)
@@ -28,7 +28,7 @@ namespace Repository.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "FirstName", "LastName", "Password", "Role", "Salt", "Email" },
-                values: new object[] { 1, "Administrator", "Administrator", "GL2wAuCc9zf3Laur5fp+Q8dymRZIxrf3Vxa8DsyV8QAtLMFx", 2, "GL2wAuCc9zf3Laur5fp+Qw==", "admin" });
+                values: new object[] { 1, "Administrator", "Administrator", "eGUbJFewsKY17IqyrTaz297hLwRF4AtbBpdUFuViEC+LsVKt", 2, "eGUbJFewsKY17IqyrTaz2w==", "admin@admin.com" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Username",

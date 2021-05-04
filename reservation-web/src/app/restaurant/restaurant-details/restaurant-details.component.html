@@ -27,7 +27,7 @@
                 <app-restaurant-location [edit]="edit" [locationFormGroup]="locationFormGroup">
                 </app-restaurant-location>
             </div>
-            <div class="col-6 pt-1 bottom-row">
+            <div class="col-6 pt-1 bottom-row" *ngIf="!edit">
                 <app-restaurant-qr>
                 </app-restaurant-qr>
             </div>

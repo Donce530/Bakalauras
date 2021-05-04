@@ -83,7 +83,7 @@ namespace Reservations.Api.Controllers
             return Ok(reservationToConfirm);
         }
         
-        [HttpGet("CheckIn/{reservationId}")]
+        [HttpGet("CheckIn/{reservationId}/{localTime}")]
         public async Task<IActionResult> CheckIn([FromRoute] int reservationId,  [FromRoute] DateTime localTime)
         {
             await _reservationService.CheckIn(reservationId, localTime);
@@ -104,7 +104,7 @@ namespace Reservations.Api.Controllers
             return Ok(reservationToConfirm);
         }
         
-        [HttpGet("CheckOut/{reservationId}")]
+        [HttpGet("CheckOut/{reservationId}/{localTime}")]
         public async Task<IActionResult> CheckOut([FromRoute] int reservationId,  [FromRoute] DateTime localTime)
         {
             await _reservationService.CheckOut(reservationId, localTime);

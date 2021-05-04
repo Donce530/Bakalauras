@@ -7,8 +7,8 @@ part 'open_hours.g.dart';
 class OpenHours implements JsonFormat {
   OpenHours(this.open, this.close, this.weekDay);
 
-  final DateTime open;
-  final DateTime close;
+  DateTime open;
+  DateTime close;
   int weekDay;
 
   factory OpenHours.fromJson(Map<String, dynamic> json) => _$OpenHoursFromJson(json);

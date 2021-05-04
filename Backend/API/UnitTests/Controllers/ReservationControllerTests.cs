@@ -19,8 +19,8 @@ namespace UnitTests.Controllers
         private readonly Mock<IReservationService> _reservationService = new();
         private readonly Mock<IUserService> _userService = new();
 
-        private ReservationController TestClass => new ReservationController(_reservationService.Object, _userService.Object);
-        private Fixture Fixture => new Fixture();
+        private ReservationController TestClass => new(_reservationService.Object, _userService.Object);
+        private static Fixture Fixture => new();
 
         [Fact]
         public void CanConstruct()
@@ -52,6 +52,7 @@ namespace UnitTests.Controllers
         {
             const string filter = "TestValue1369811919";
             var reservations = Fixture.CreateMany<ReservationListItemDto>().ToList();
+            
             _reservationService.Setup(_ => _.GetByUser(filter)).ReturnsAsync(reservations);
             
             var result = await TestClass.GetByUser(filter);
@@ -73,8 +74,8 @@ namespace UnitTests.Controllers
         {
             var parameters = Fixture.Create<PagedFilteredParams<ReservationFilters>>();
             var response = Fixture.Create<PagedResponse<ReservationDataRow>>();
-            var user = Fixture.Create<User>();
-            user.Role = Role.Manager;
+            var user = Fixture.Build<User>()
+                .With(u => u.Role, Role.Manager).Create();
 
             _userService.Setup(_ => _.User).Returns(user);
             _reservationService.Setup(_ => _.GetPagedAndFiltered(parameters)).ReturnsAsync(response);

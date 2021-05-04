@@ -1,9 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.reservation_app">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA"/>
    <application
         android:usesCleartextTraffic="true"
-        android:label="reservation_app"
+        android:label="Rezervacijų programėlė"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

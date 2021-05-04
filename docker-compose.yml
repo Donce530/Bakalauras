@@ -1,0 +1,20 @@
+version: '3'
+services:
+  website:
+    build: reservation-web
+    ports:
+      - "5000:80"
+  api:
+    build: Backend
+    ports:
+      - "5050:80"
+  database:
+    image: "postgres"
+    ports:
+      - "5433:5432"
+    env_file:
+      - database.env
+    volumes:
+      - database-data:/var/lib/postgresql/data/
+volumes:
+  database-data:

@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { faUser } from '@fortawesome/free-regular-svg-icons';
 import { faKey } from '@fortawesome/free-solid-svg-icons';
+import { MessageService } from 'primeng/api';
 import { Role } from '../shared/enums/role.enum';
 import { AuthenticationService } from '../shared/services/authentication.service';
 import { LoginRequest } from './models/login-request';
@@ -20,11 +21,12 @@ export class LoginComponent implements OnInit {
 
   constructor(private _authenticationService: AuthenticationService,
     private _route: ActivatedRoute,
-    private _router: Router) { }
+    private _router: Router,
+    private _messageService: MessageService) { }
 
   public ngOnInit(): void {
     this.loginForm = new FormGroup({
-      email: new FormControl(null, [Validators.required]),
+      email: new FormControl(null, [Validators.required, Validators.email]),
       password: new FormControl(null, [Validators.required])
     });
 
@@ -38,7 +40,8 @@ export class LoginComponent implements OnInit {
         if (user) {
           this._router.navigateByUrl(user.role === Role.Admin ? 'users' : 'restaurants');
         }
-      }
+      },
+      error => this._messageService.add({ severity: 'error', summary: 'Klaida!', detail: 'Neteisingi prisijungimo duomenys' })
     );
   }
 

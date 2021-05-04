@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { faSave } from '@fortawesome/free-regular-svg-icons';
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { MessageService } from 'primeng/api';
 import { OpenHours } from '../models/open-hours';
 import { Restaurant } from '../models/restaurant';
 import { RestaurantDataService } from '../services/restaurant-data.service';
@@ -56,7 +57,8 @@ export class RestaurantDetailsComponent implements OnInit {
   private _initialRestaurantValue: Restaurant;
 
   constructor(private _formBuilder: FormBuilder,
-    private _dataService: RestaurantDataService) {
+    private _dataService: RestaurantDataService,
+    private _messageService: MessageService) {
     this.restaurantForm = this._formBuilder.group({
       title: ['', Validators.required],
       description: ['', Validators.required],
@@ -111,6 +113,7 @@ export class RestaurantDetailsComponent implements OnInit {
       () => {
         this.edit = !this.edit;
         this.restaurant = restaurant;
+        this._messageService.add({ severity: 'success', summary: 'Pavyko!', detail: 'Įstaigos duomenys sėkmingai išsaugoti' })
       }
     );
   }

@@ -125,7 +125,8 @@ class _RestaurantsPageState extends State<RestaurantsPage> {
         Expanded(
           child: ListView.builder(
               padding: EdgeInsets.all(16),
-              itemCount: _hasMoreRestaurants ? _restaurants.length + 1 : _restaurants.length,
+              itemCount:
+                  _hasMoreRestaurants ? _restaurants.length * 2 + 1 : _restaurants.length * 2,
               itemBuilder: (context, i) {
                 return FutureBuilder(
                     future: _buildListItemAsync(context, i),

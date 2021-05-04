@@ -296,9 +296,7 @@ class _ReservationsPageState extends State<ReservationsPage> {
 
     setState(() {
       _upcomingReservations = reservations
-          .where((r) =>
-              r.day.isAfter(DateTime.now().add(Duration(days: -1))) &&
-              r.state == ReservationState.Created)
+          .where((r) => r.start.isAfter(DateTime.now()) && r.state == ReservationState.Created)
           .toList();
       _previousReservations =
           reservations.where((r) => !_upcomingReservations.contains(r)).toList();

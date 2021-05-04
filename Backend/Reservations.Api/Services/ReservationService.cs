@@ -60,6 +60,15 @@ namespace Reservations.Api.Services
 
         public async Task<PagedResponse<ReservationDataRow>> GetPagedAndFiltered(PagedFilteredParams<ReservationFilters> parameters)
         {
+            var filters = ApplyFilters(parameters, out var orderBy);
+
+            var pagedResults = await _reservationRepository.GetPaged<ReservationDataRow>(parameters.Paginator, filters, orderBy);
+
+            return pagedResults;
+        }
+
+        private List<Expression<Func<Reservation, bool>>> ApplyFilters(PagedFilteredParams<ReservationFilters> parameters, out Expression<Func<Reservation, object>> orderBy)
+        {
             var filters = new List<Expression<Func<Reservation, bool>>>
             {
                 (r => r.Restaurant.UserId == _userService.User.Id)
@@ -68,7 +77,9 @@ namespace Reservations.Api.Services
             {
                 if (!string.IsNullOrEmpty(parameters.Filters.Name))
                 {
-                    filters.Add(r => (r.User.FirstName.ToLower() + " " + r.User.LastName.ToLower()).Contains(parameters.Filters.Name.ToLower()));
+                    filters.Add(r =>
+                        (r.User.FirstName.ToLower() + " " + r.User.LastName.ToLower()).Contains(
+                            parameters.Filters.Name.ToLower()));
                 }
 
                 if (parameters.Filters.TableNumber is not null)
@@ -78,51 +89,53 @@ namespace Reservations.Api.Services
 
                 if (parameters.Filters.Day is not null)
                 {
-                    filters.Add(r => r.Day.Year.Equals(parameters.Filters.Day.Value.Year) && r.Day.DayOfYear.Equals(parameters.Filters.Day.Value.DayOfYear));
+                    filters.Add(r =>
+                        r.Day.Year.Equals(parameters.Filters.Day.Value.Year) &&
+                        r.Day.DayOfYear.Equals(parameters.Filters.Day.Value.DayOfYear));
                 }
 
                 if (parameters.Filters.StartAfter is not null)
                 {
                     filters.Add(r => r.Start >= parameters.Filters.StartAfter.Value.TimeOfDay);
                 }
-                
+
                 if (parameters.Filters.StartUntil is not null)
                 {
                     filters.Add(r => r.Start <= parameters.Filters.StartUntil.Value.TimeOfDay);
                 }
-                
+
                 if (parameters.Filters.EndAfter is not null)
                 {
                     filters.Add(r => r.End >= parameters.Filters.EndAfter.Value.TimeOfDay);
                 }
-                
+
                 if (parameters.Filters.EndUntil is not null)
                 {
                     filters.Add(r => r.End <= parameters.Filters.EndUntil.Value.TimeOfDay);
                 }
-                
+
                 if (parameters.Filters.RealStartAfter is not null)
                 {
                     filters.Add(r => r.RealStart >= parameters.Filters.RealStartAfter.Value.TimeOfDay);
                 }
-                
+
                 if (parameters.Filters.RealStartUntil is not null)
                 {
                     filters.Add(r => r.RealStart <= parameters.Filters.RealStartUntil.Value.TimeOfDay);
                 }
-                
+
                 if (parameters.Filters.RealEndAfter is not null)
                 {
                     filters.Add(r => r.RealEnd >= parameters.Filters.RealEndAfter.Value.TimeOfDay);
                 }
-                
+
                 if (parameters.Filters.RealEndUntil is not null)
                 {
                     filters.Add(r => r.RealEnd <= parameters.Filters.RealEndUntil.Value.TimeOfDay);
                 }
             }
 
-            Expression<Func<Reservation, object>> orderBy = null;
+            orderBy = null;
             if (parameters.Paginator.SortOrder != 0 && !string.IsNullOrEmpty(parameters.Paginator.SortBy))
             {
                 orderBy = parameters.Paginator.SortBy switch
@@ -138,9 +151,7 @@ namespace Reservations.Api.Services
                 };
             }
 
-            var pagedResults = await _reservationRepository.GetPaged<ReservationDataRow>(parameters.Paginator, filters, orderBy);
-
-            return pagedResults;
+            return filters;
         }
 
         public async Task<ReservationListItemDto> TryCheckIn(int restaurantId, DateTime localTime)
