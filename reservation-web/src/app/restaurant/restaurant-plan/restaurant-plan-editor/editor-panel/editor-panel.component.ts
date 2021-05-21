@@ -17,6 +17,7 @@ import { RestaurantBehaviourService } from 'src/app/restaurant/services/restaura
 import { LinkBrush } from '../brushes/link-brush';
 import { LabelBrush } from '../brushes/label-brush';
 import { InputTextParameters } from '../models/input-text-parameters';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-editor-panel',
@@ -44,12 +45,14 @@ export class EditorPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     private _editorDataService: EditorDataService,
     private _snappingService: EditorSnappingService,
     private _restaurantDataService: RestaurantDataService,
-    private _restaurantBehaviourService: RestaurantBehaviourService) { }
+    private _restaurantBehaviourService: RestaurantBehaviourService,
+    private _messageService: MessageService) { }
 
   public ngOnInit(): void {
     this.initializePlan();
     this._behaviourService.editorMode.subscribe(this.changeBrush.bind(this));
     this._behaviourService.saveAction.subscribe(this.save.bind(this));
+    this._behaviourService.updatePlanAction.subscribe(this.drawPlan.bind(this));
   }
 
   public ngAfterViewInit(): void {
@@ -161,25 +164,36 @@ export class EditorPanelComponent implements OnInit, AfterViewInit, OnDestroy {
           labels: plan.labels
         });
 
+        this.drawPlan();
 
-        this.changeBrush(EditorMode.Table);
-        this.brush.draw(this._editorDataService.storage.tables);
-
-        this.changeBrush(EditorMode.Wall);
-        this.brush.draw(this._editorDataService.storage.walls);
-
-        this.changeBrush(EditorMode.Comment);
-        this.brush.draw(this._editorDataService.storage.labels);
-
-        this.changeBrush(EditorMode.None);
       });
+  }
+
+  private drawPlan(): void {
+    const initialBrush = this.brush;
+
+    this.changeBrush(EditorMode.Table);
+
+    this.brush.clear(this._planContext, this._svgContext);
+    this.brush.draw(this._editorDataService.storage.tables);
+
+    this.changeBrush(EditorMode.Wall);
+    this.brush.draw(this._editorDataService.storage.walls);
+
+    this.changeBrush(EditorMode.Comment);
+    this.brush.draw(this._editorDataService.storage.labels);
+
+    this.brush = initialBrush;
   }
 
   private save(): void {
     this._editorDataService.svg = this._svgContext.getSerializedSvg();
     const plan = this._editorDataService.plan;
     this._restaurantDataService.savePlan(plan).subscribe(
-      () => this._restaurantBehaviourService.setEditorOpenState(false)
+      () => {
+        this._restaurantBehaviourService.setEditorOpenState(false);
+        this._messageService.add({ severity: 'success', summary: 'Pavyko!', detail: 'Planas išsaugotas' });
+      }
     );
   }
 }

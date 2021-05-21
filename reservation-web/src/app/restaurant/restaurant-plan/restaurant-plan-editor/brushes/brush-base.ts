@@ -81,7 +81,7 @@ export abstract class BrushBase implements Brush {
     protected abstract move(): void;
     protected abstract leave(): void;
 
-    protected clear(...contexts: CanvasRenderingContext2D[]): void {
+    public clear(...contexts: CanvasRenderingContext2D[]): void {
         contexts.forEach(context => {
             context.clearRect(0, 0, context.canvas.width, context.canvas.height);
         });

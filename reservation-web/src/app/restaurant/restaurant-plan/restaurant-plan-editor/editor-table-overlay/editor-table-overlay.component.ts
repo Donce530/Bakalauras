@@ -33,6 +33,10 @@ export class EditorTableOverlayComponent implements OnInit, AfterViewInit {
     this.overlayPanel.onHide.subscribe(() => this._isVisible = false);
   }
 
+  public update(): void {
+    this._behaviourService.updatePlan();
+  }
+
   private startEdit(parameters: EditTableParameters): void {
     if (!this._isVisible) {
       this.displayPanel(parameters);

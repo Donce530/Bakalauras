@@ -113,7 +113,7 @@ export class RestaurantDetailsComponent implements OnInit {
       () => {
         this.edit = !this.edit;
         this.restaurant = restaurant;
-        this._messageService.add({ severity: 'success', summary: 'Pavyko!', detail: 'Įstaigos duomenys sėkmingai išsaugoti' })
+        this._messageService.add({ severity: 'success', summary: 'Pavyko!', detail: 'Įstaigos duomenys sėkmingai išsaugoti' });
       }
     );
   }

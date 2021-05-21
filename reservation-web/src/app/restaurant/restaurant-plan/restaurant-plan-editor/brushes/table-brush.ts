@@ -108,7 +108,8 @@ export class TableBrush extends SnappingBrushBase {
                 this._table.draw(this.drawContext, this.svgContext);
 
                 this._table.svg = this.getNewSvg(this.svgContext.getSerializedSvg());
-                this._table.number = this.storage.tables.length + 1;
+
+                this._table.number = this.generateTableNumber();
 
                 this._table.drawLabel(this.drawContext, this.svgContext);
                 this.storage.tables.push(this._table);
@@ -134,5 +135,16 @@ export class TableBrush extends SnappingBrushBase {
             drawable.draw(this.drawContext, this.svgContext);
             drawable.drawLabel(this.drawContext, this.svgContext);
         });
+    }
+
+    private generateTableNumber(): number {
+        const existingNumbers = this.storage.tables.map(t => t.number);
+        let i = 1;
+        while (true) {
+            if (!existingNumbers.includes(i)) {
+                return i;
+            }
+            i++;
+        }
     }
 }

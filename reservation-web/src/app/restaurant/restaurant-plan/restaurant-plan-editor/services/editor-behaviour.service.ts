@@ -38,6 +38,10 @@ export class EditorBehaviourService implements OnDestroy {
     return this._closeTextInputSubject.asObservable();
   }
 
+  public get updatePlanAction(): Observable<void> {
+    return this._planUpdateSubject.asObservable();
+  }
+
   private _editorModeSubject = new Subject<EditorMode>();
   private _snappingScaleSubject = new Subject<number>();
   private _snappingAvailabilitySubject = new Subject<boolean>();
@@ -46,9 +50,14 @@ export class EditorBehaviourService implements OnDestroy {
   private _editTableSubject = new Subject<EditTableParameters>();
   private _openTextInputSubject = new Subject<InputTextParameters>();
   private _closeTextInputSubject = new Subject<string>();
+  private _planUpdateSubject = new Subject<void>();
 
   public openTextInput(parameters: InputTextParameters): void {
     this._openTextInputSubject.next(parameters);
+  }
+
+  public updatePlan(): void {
+    this._planUpdateSubject.next();
   }
 
   public closeTextInput(text: string): void {

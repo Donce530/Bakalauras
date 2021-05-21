@@ -6,4 +6,5 @@ export interface Brush {
     onUp(event: MouseEvent): void;
     onMove(event: MouseEvent): void;
     onLeave(event: MouseEvent): void;
+    clear(...contexts: CanvasRenderingContext2D[]): void;
 }
